@@ -1,7 +1,7 @@
 # Plan-Roguelike-Knight
 team of COMSM0166
 
-## Group
+## Group 18
 |Name|Email|GithubID|
 |:---------:|:---------:|:---------:|
 |Tianyu Qi|yn24649@bristol.ac.uk|qtyohh|
