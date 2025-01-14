@@ -7,3 +7,4 @@ team of COMSM0166
 |Tianyu Qi|yn24649@bristol.ac.uk|qtyohh|
 |Likun Liang|oy24839@bristol.ac.uk|lycorisadiata|
 |Yutong Liu|xm24685@bristol.ac.uk|WILLOW579|
+|Zihao Xia|qh24613@bristol.ac.uk|WeirdDruid|
