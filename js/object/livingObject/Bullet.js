@@ -53,6 +53,7 @@ class Bullet extends LivingObject {
     }
 
     show() {
+        fill(0, 255, 0);
         rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
     }
 }

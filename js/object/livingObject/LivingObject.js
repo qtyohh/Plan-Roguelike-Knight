@@ -3,10 +3,13 @@ class LivingObject extends BasicObject {
         super(name, xCoordinate, yCoordinate, xSize, ySize, attackBit);
         this.HP = HP;
         this.speed = speed;
+        this.isAlive = true;
     }
 
     move(dirX, dirY) {
-        this.xCoordinate += dirX * this.speed;
-        this.yCoordinate += dirY * this.speed;
+        if (this.isAlive) {
+            this.xCoordinate += dirX * this.speed;
+            this.yCoordinate += dirY * this.speed;
+        }
     }
 }

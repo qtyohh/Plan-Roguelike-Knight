@@ -26,8 +26,8 @@ const ENEMY_MODEL = [
     {
         name : "easy_enemy_1",
         type : EASY_ENEMY_MODEL_1_TYPE,
-        xSize : 30,  
-        ySize : 30,
+        xSize : 15,  
+        ySize : 15,
         HP : 5,
         speed : 1
     },

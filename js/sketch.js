@@ -1,7 +1,7 @@
 let game;
 let mapp;
 function setup() {
-    mapp = new Map(600, 400);
+    mapp = new Map(1000, 950);
     mapp.initMainMap();
     game = new Game();
     game.initPlayer();

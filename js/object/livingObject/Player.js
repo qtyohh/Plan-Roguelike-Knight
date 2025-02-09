@@ -14,6 +14,7 @@ class Player extends LivingObject {
     }
     
     show() {
+        fill(255);
         rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
     }
 
