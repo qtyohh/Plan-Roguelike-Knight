@@ -1,19 +1,3 @@
-
-/* basic values of enemies */
-const EASY_ENEMY_MODEL_1_TYPE = 0;
-
-const ENEMY_MODEL = [
-    {
-        name : "easy_enemy_1",
-        type : EASY_ENEMY_MODEL_1_TYPE,
-        xSize : 30,  
-        ySize : 30,
-        HP : 5,
-        speed : 1
-    },
-
-];
-
 class Enemy extends LivingObject {
     constructor(xCoordinate, yCoordinate, enemyModelType) {
         super(
@@ -33,5 +17,10 @@ class Enemy extends LivingObject {
         rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
     }
 
+    
+    updateHP(change) {
+        this.HP += change;
+    }
+    
 }
 

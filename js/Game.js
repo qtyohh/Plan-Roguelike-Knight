@@ -30,34 +30,50 @@ class Game {
         for (let enemy of this.enemies) {
             enemy.show();
         }
-
-        for (let bullet of this.bullets) {
+        console.log("enemy update ok");
+        for (let i = 0; i < this.bullets.length; i++) {
+            let bullet = this.bullets[i];
             bullet.updateStatus();
-            if (checkHit(bullet)) {
-                
+            if (this.checkCollide(bullet)) {
+                this.bullets[i].toDelete = true;
             } else {
                 bullet.show();
             }
         }
+        this.bullets = this.bullets.filter(bullet => !bullet.toDelete);
+    }   
 
-    }
+    checkCollide(bullet) {
+        /*for (island of this.islands) {
+            if (myCollide(island, bullet)) {
+                
+                if (bullet.attackBit & ISLAND_TYPE) {
 
-    checkHit(bullet) {
-        if (bullet.attackBit & PLAYER_TYPE) {
-            
+                }
+            }
+        }*/
+        
+        for (let enemy of this.enemies) {
+            if (myCollide(enemy, bullet)) {
+                if (bullet.attackBit & ENEMY_TYPE) {
+                    enemy.updateHP(-1 * bullet.harm);
+                    return true;
+                }
+            }
         }
 
-        if (bullet.attackBit & ENEMY_TYPE) {
-
+        if (myCollide(this.player, bullet)) {
+            if (bullet.attackBit & PLAYER_TYPE) {
+                this.player.updateHP(-1 * bullet.harm);
+                return true;
+            }
         }
+        
 
-        if (bullet.attackBit & BUILDING_TYPE) {
+        /*if (bullet.attackBit & BUILDING_TYPE) {
 
-        }
+        }*/
 
-        if (bullet.attackBit & ISLAND_TYPE) {
-
-        }
     }
 
     addBullet(xCoordinate, yCoordinate, xSpeed, ySpeed, bulletType) {

@@ -44,6 +44,7 @@ class Bullet extends LivingObject {
         }
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
+        this.toDelete = false;
     }
 
     updateStatus() {

@@ -17,6 +17,10 @@ class Player extends LivingObject {
         rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
     }
 
+    updateHP(change) {
+        this.HP += change;
+    }
+
     putOnBuff() {
         
     }
