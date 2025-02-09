@@ -15,7 +15,7 @@ class Game {
     }
 
     initEnemies() {
-        const enemy = new Enemy(300, 20, EASY_ENEMY_MODEL_1_TYPE);
+        const enemy = new Enemy(300, 100, EASY_ENEMY_MODEL_1_TYPE);
         this.enemies.push(enemy);
     }
 
@@ -26,10 +26,15 @@ class Game {
     updateObjectStatus() {
         this.playerController.updateStatus();
         this.player.show();
-        
-        for (let enemy of this.enemies) {
+
+        for (let i = this.enemies.length - 1; i >= 0; --i) {
+            let enemy = this.enemies[i];
             enemy.show();
+            if (!enemy.isAlive) {
+                this.enemies.splice(i, 1);
+            }
         }
+
         console.log("enemy update ok");
         for (let i = 0; i < this.bullets.length; i++) {
             let bullet = this.bullets[i];
