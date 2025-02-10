@@ -43,7 +43,7 @@ const ENEMY_MODEL = [
 ];
 
 function getEnemyModel(enemyType) {
-    if (enemyType >= ENEMY_MODEL.length) {
+    if (enemyType >= ENEMY_MODEL.length || enemyType < 0) {
         console.log("getEnemyModel : enemyType error.");
         return ENEMY_MODEL[ENEMY_MODEL_ERROR_TYPE];
     }
@@ -71,13 +71,38 @@ const ISLAND_MODEL = [
 ]
 
 function getIslandModel(islandType) {
-    if (islandType >= ISLAND_MODEL.length) {
+    if (islandType >= ISLAND_MODEL.length || islandType < 0) {
         console.log("getIslandModel : islandType error.");
         return ISLAND_MODEL[ISLAND_MODEL_ERROR_TYPE];
     }
     return ISLAND_MODEL[islandType];
 }
 
+/** basic of building models */
+const BUILDING_MODEL_ERROR_TYPE = 0;
+const BUILDING_MODEL_TNT_TYPE = 1;
+
+const BUILDING_MODEL = [
+    {
+        name : 0,
+        type : 0,
+        xSize : 0,
+        ySize : 0
+    }, {
+        name : "TNT",
+        type : BUILDING_MODEL_TNT_TYPE,
+        xSize : 10,
+        ySize : 10
+    },
+];
+
+function getBuildingModel(buildingType) {
+    if (buildingType >= BUILDING_MODEL.length || buildingType < 0 ) {
+        console.log("getIslandModel : islandType error.");
+        return BUILDING_MODEL[BUILDING_MODEL_ERROR_TYPE];
+    }
+    return BUILDING_MODEL[buildingType];
+}
 
 function myCollide(itemA, itemB) {
     return collideRectRect(

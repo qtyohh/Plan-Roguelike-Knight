@@ -25,6 +25,11 @@ class Game {
         this.islands.push(island);
     }
 
+    initBuilding() {
+        const building = new Building(100, 100, BUILDING_MODEL_TNT_TYPE);
+        this.buildings.push(building);
+    }
+
     updateObjectStatus() {
         this.playerController.updateStatus();
         this.player.show();
