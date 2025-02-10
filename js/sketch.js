@@ -7,6 +7,7 @@ function setup() {
     game.initPlayer();
     game.initEnemies();
     game.initIslands();
+    game.initBuilding();
 }
 
 function draw() {

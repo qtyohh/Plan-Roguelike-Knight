@@ -4,6 +4,7 @@ class Game {
         this.enemies = [];
         this.bullets = [];
         this.islands = [];
+        this.buildings = [];
         this.playerController = null;
     }
 
@@ -30,7 +31,20 @@ class Game {
         this.buildings.push(building);
     }
 
-    updateObjectStatus() {
+    updateObjectStatus() {        
+        for (let island of this.islands) {
+            island.show();
+        }
+
+        for (let i = this.buildings.length - 1; i >= 0; --i) {
+            let building = this.buildings[i];
+            /*if (!enemy.isAlive) {
+                this.buildings.splice(i, 1);
+            } else {*/
+                building.show();
+            //}
+        }
+
         this.playerController.updateStatus();
         this.player.show();
 
@@ -52,6 +66,7 @@ class Game {
             }
         }
         this.bullets = this.bullets.filter(bullet => !bullet.toDelete);
+        
     }   
 
     checkCollide(bullet) {
