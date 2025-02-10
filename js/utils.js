@@ -20,10 +20,18 @@ const ISLAND_TYPE = 0b0001;
 
 
 /* basic values of enemies */
-const EASY_ENEMY_MODEL_1_TYPE = 0;
+const ENEMY_MODEL_ERROR_TYPE = 0;
+const EASY_ENEMY_MODEL_1_TYPE = 1;
 
 const ENEMY_MODEL = [
     {
+        name : 0,
+        type : 0,
+        xSize : 0,  
+        ySize : 0,
+        HP : 0,
+        speed : 0
+    }, {
         name : "easy_enemy_1",
         type : EASY_ENEMY_MODEL_1_TYPE,
         xSize : 15,  
@@ -33,6 +41,42 @@ const ENEMY_MODEL = [
     },
 
 ];
+
+function getEnemyModel(enemyType) {
+    if (enemyType >= ENEMY_MODEL.length) {
+        console.log("getEnemyModel : enemyType error.");
+        return ENEMY_MODEL[ENEMY_MODEL_ERROR_TYPE];
+    }
+    return ENEMY_MODEL[enemyType];
+}
+
+
+
+/* basic values of islands */
+const ISLAND_MODEL_ERROR_TYPE = 0;
+const ISLAND_MODEL_1_TYPE = 1;
+
+const ISLAND_MODEL = [
+    {
+        name : 0,
+        type : 0,
+        xSize : 0,
+        ySize : 0
+    }, {
+        name : "island_1",
+        type : ISLAND_MODEL_1_TYPE,
+        xSize : 50,
+        ySize : 50
+    },
+]
+
+function getIslandModel(islandType) {
+    if (islandType >= ISLAND_MODEL.length) {
+        console.log("getIslandModel : islandType error.");
+        return ISLAND_MODEL[ISLAND_MODEL_ERROR_TYPE];
+    }
+    return ISLAND_MODEL[islandType];
+}
 
 
 function myCollide(itemA, itemB) {

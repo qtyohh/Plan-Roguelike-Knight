@@ -1,17 +1,18 @@
 class Enemy extends LivingObject {
     constructor(xCoordinate, yCoordinate, enemyModelType) {
+        const enemyModel = getEnemyModel(enemyModelType);
         super(
-            ENEMY_MODEL[enemyModelType].name,
+            enemyModel.name,
             xCoordinate,
             yCoordinate,
-            ENEMY_MODEL[enemyModelType].xSize,
-            ENEMY_MODEL[enemyModelType].ySize,
-            ENEMY_MODEL[enemyModelType].HP,
-            ENEMY_MODEL[enemyModelType].speed,
+            enemyModel.xSize,
+            enemyModel.ySize,
+            enemyModel.HP,
+            enemyModel.speed,
             ENEMY_ATTACK_BIT
         );
-        this.type = ENEMY_MODEL[enemyModelType].type;
-        this.maxHP = ENEMY_MODEL[enemyModelType].HP;
+        this.type = enemyModel.type;
+        this.maxHP = enemyModel.HP;
     }
 
     show() {

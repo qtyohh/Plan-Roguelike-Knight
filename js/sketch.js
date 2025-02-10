@@ -6,6 +6,7 @@ function setup() {
     game = new Game();
     game.initPlayer();
     game.initEnemies();
+    game.initIslands();
 }
 
 function draw() {

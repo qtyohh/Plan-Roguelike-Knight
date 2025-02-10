@@ -3,6 +3,7 @@ class Game {
         this.player = null;
         this.enemies = [];
         this.bullets = [];
+        this.islands = [];
         this.playerController = null;
     }
 
@@ -20,7 +21,8 @@ class Game {
     }
 
     initIslands() {
-
+        const island = new Island(200, 300, ISLAND_MODEL_1_TYPE);
+        this.islands.push(island);
     }
 
     updateObjectStatus() {
@@ -35,7 +37,6 @@ class Game {
             }
         }
 
-        console.log("enemy update ok");
         for (let i = 0; i < this.bullets.length; i++) {
             let bullet = this.bullets[i];
             bullet.updateStatus();
@@ -49,14 +50,11 @@ class Game {
     }   
 
     checkCollide(bullet) {
-        /*for (island of this.islands) {
+        for (let island of this.islands) {
             if (myCollide(island, bullet)) {
-                
-                if (bullet.attackBit & ISLAND_TYPE) {
-
-                }
+                return true;
             }
-        }*/
+        }
         
         for (let enemy of this.enemies) {
             if (myCollide(enemy, bullet)) {
