@@ -87,12 +87,14 @@ const BUILDING_MODEL = [
         name : 0,
         type : 0,
         xSize : 0,
-        ySize : 0
+        ySize : 0,
+        HP : 0
     }, {
         name : "TNT",
         type : BUILDING_MODEL_TNT_TYPE,
         xSize : 10,
-        ySize : 10
+        ySize : 10,
+        HP : 1
     },
 ];
 
