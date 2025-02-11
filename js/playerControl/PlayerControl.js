@@ -1,7 +1,7 @@
 class PlayerControl {
-    constructor(player, shootCallBack) {
-        this.player = player;
+    constructor(shootCallBack, playerMoveCallBack) {
         this.shootCallBack = shootCallBack;
+        this.playerMoveCallBack = playerMoveCallBack; 
         this.keyMap = {
             up: false,
             down: false,
@@ -60,8 +60,6 @@ class PlayerControl {
     shoot(xSpeed, ySpeed) {
         console.log("Shooting!");
         this.shootCallBack(
-            this.player.xCoordinate + xSpeed * 5, 
-            this.player.yCoordinate + ySpeed * 5, 
             xSpeed, 
             ySpeed, 
             PLAYER_BULLET_TYPE
@@ -69,19 +67,21 @@ class PlayerControl {
     }
 
     updateCoordinate() {
-        let speed = this.player.speed;
+        let xMove = 0;
+        let yMove = 0;
         if (this.keyMap.up) {
-            this.player.yCoordinate -= speed;
+            yMove--;
         } 
         if (this.keyMap.down) {
-            this.player.yCoordinate += speed;
+            yMove++;
         }
         if (this.keyMap.left) {
-            this.player.xCoordinate -= speed;
+            xMove--;
         }
         if (this.keyMap.right) {
-            this.player.xCoordinate += speed;
+            xMove++;
         }
+        this.playerMoveCallBack(xMove, yMove);
     }
 
     updateStatus() {
