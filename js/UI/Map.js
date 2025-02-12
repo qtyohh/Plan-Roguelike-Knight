@@ -3,7 +3,4 @@ class Map {
         this.xSize = xSize;
         this.ySize = ySize;
     }
-    initMainMap() {
-        createCanvas(this.xSize, this.ySize);
-    }
 }

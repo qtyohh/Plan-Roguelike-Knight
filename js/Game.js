@@ -148,5 +148,13 @@ class Game {
         if (this.checkCollidePlayer(xMove, yMove) == false) {
             this.player.move(xMove, yMove);
         }
+        else {
+            if (this.checkCollidePlayer(xMove, 0) == false) {
+                this.player.move(xMove, 0);
+            }
+            if (this.checkCollidePlayer(0, yMove) == false) {
+                this.player.move(0, yMove);
+            }
+        }
     }
 }

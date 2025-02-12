@@ -1,25 +1,22 @@
 let game;
 let mapp;
+let main;
 function setup() {
-    mapp = new Map(1000, 950);
-    mapp.initMainMap();
-    game = new Game();
-    game.initPlayer();
-    game.initEnemies();
-    game.initIslands();
-    game.initBuilding();
+    createCanvas(1000, 950);
+    main = new Main();
+    main.initNewGame();
 }
 
 function draw() {
     background(220);
-    game.updateObjectStatus();
+    main.updateAll();
 }
 
 function keyPressed() {
-    game.playerController.keyPressed();
+    main.keyPressed();
   }
   
   // 侦听键盘松开
 function keyReleased() {
-    game.playerController.keyReleased();
+    main.keyReleased();
 }
