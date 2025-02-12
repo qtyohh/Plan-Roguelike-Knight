@@ -1,6 +1,5 @@
-let game;
-let mapp;
 let main;
+
 function setup() {
     createCanvas(1000, 950);
     main = new Main();

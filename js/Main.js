@@ -1,10 +1,14 @@
+
 class Main {
     #UI = null;
     #status = null;
     #game = null;
+    #step = MAIN_STEP_START_UI;
 
     constructor() {
-        this.#UI = new UI();
+        this.#UI = new UI(
+            (stepChangeType) => this.updateStep(stepChangeType)
+        );
         this.#status = new Status();
     }
     initNewGame() {
@@ -16,19 +20,44 @@ class Main {
     }
 
     updateAll() {
-        this.#game.updateObjectStatus();
+        switch(this.#step) {
+            case MAIN_STEP_START_UI: {
+                this.#UI.showStartUI();
+                break;
+            }
+            case MAIN_STEP_IN_GAME: {
+                if (this.#game == null) {
+                    this.initNewGame();
+                }
+                this.#game.updateObjectStatus();
+                break;
+            }
+        }
     }
 
     keyPressed() {
-        this.#game.playerController.keyPressed();
+        switch(this.#step) {
+            case MAIN_STEP_START_UI: {
+                this.#UI.startUIKeyPressed();
+                break;
+            }
+            case MAIN_STEP_IN_GAME: {
+                this.#game.playerController.keyPressed();
+                break;
+            }
+        }
     }
 
     keyReleased() {
         this.#game.playerController.keyReleased();
     }
 
+    updateStep(stepChangeType) {
+        this.#step = stepChangeType;
+    }
+
     callStartUI() {
-        this.UI.startUI();
+        this.#UI.showStartUI();
     }
     callChooseShipUI() {
 
