@@ -15,8 +15,8 @@ class Building extends BasicObject {
         fill(255, 255, 255);
         rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
     }
-    show() {
-        fill(255, 255, 255);
-        rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
+
+    updateHP(change) {
+        this.HP += change;
     }
 }
