@@ -1,5 +1,6 @@
 class PlayerControl {
-    constructor(shootCallBack, playerMoveCallBack) {
+    constructor(player, shootCallBack, playerMoveCallBack) {
+        this.player = player;
         this.shootCallBack = shootCallBack;
         this.playerMoveCallBack = playerMoveCallBack; 
         this.keyMap = {
@@ -39,6 +40,11 @@ class PlayerControl {
             this.shoot(1, 0);
         }
 
+        // switch weapon
+        if (key == 'q' || key == 'Q') {
+            this.player.equipment.switchWeaponByKey();
+        }
+
         //skill
     }
 
@@ -59,11 +65,20 @@ class PlayerControl {
     
     shoot(xSpeed, ySpeed) {
         console.log("Shooting!");
-        this.shootCallBack(
-            xSpeed, 
-            ySpeed, 
-            PLAYER_BULLET_TYPE
-        );
+        const currentWeapon = this.player.equipment.getCurrentWeapon();
+        if (currentWeapon) {
+            this.shootCallBack(
+                xSpeed, 
+                ySpeed, 
+                PLAYER_BULLET_TYPE, 
+                currentWeapon.attackPower,
+                currentWeapon.bulletSize, 
+                currentWeapon.bulletSpeed, 
+                currentWeapon.explosionSize
+            );
+        } else {
+            console.log("No weapon equipped");
+        }
     }
 
     updateCoordinate() {

@@ -11,6 +11,7 @@ class Player extends LivingObject {
             NO_HARM_ATTACK_BIT
         );
         this.abilityCD = 0;
+        this.equipment = new Equipment(name, 0, 0, 0, 0, 0, {});
     }
     
     show() {
