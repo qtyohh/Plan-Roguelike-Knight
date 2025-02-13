@@ -1,9 +1,8 @@
 let main;
 
 function setup() {
-    createCanvas(1000, 950);
+    createCanvas(1000, 1000);
     main = new Main();
-    main.initNewGame();
 }
 
 function draw() {
@@ -14,7 +13,11 @@ function draw() {
 function keyPressed() {
     main.keyPressed();
   }
-  
+
+function mousePressed() {
+    main.mousePressed();
+}
+
   // 侦听键盘松开
 function keyReleased() {
     main.keyReleased();

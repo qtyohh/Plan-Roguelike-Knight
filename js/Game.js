@@ -8,8 +8,15 @@ class Game {
         this.playerController = null;
     }
 
-    initPlayer() {
-        this.player = new Player(0, 300, 200, 10, 10, 5, 5);
+    initPlayer(playerBasicStatus) {
+        this.player = new Player(
+            0, 
+            300, 
+            200, 
+            playerBasicStatus.xSize, 
+            playerBasicStatus.ySize, 
+            playerBasicStatus.HP, 
+            playerBasicStatus.speed);
         this.playerController = new PlayerControl(
             (xSpeed, ySpeed, bulletType) => this.addBullet(xSpeed, ySpeed, bulletType),
             (xMove, yMove) => this.playerMove(xMove, yMove)

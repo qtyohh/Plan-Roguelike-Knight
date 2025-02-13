@@ -25,6 +25,46 @@ const BUILDING_TYPE = 0b0010;
 const ISLAND_TYPE = 0b0001;
 
 
+/** basic values of ships */
+const SHIP_MODEL_ERROR_TYPE = 0;
+const SHIP_MODEL_1_TYPE = 1;
+const SHIP_MODEL_2_TYPE = 2;
+const SHIP_MODEL_3_TYPE = 3;
+const SHIP_MODEL_MAX_TYPE = 4;
+
+const SHIP_MODEL = [
+    {
+        name : 0,
+        type : 0,
+        xSize : 0,
+        ySize : 0,
+        HPmax : 0,
+        speed : 0
+    } , {
+        name : "ship1",
+        type : SHIP_MODEL_1_TYPE,
+        xSize : 10,
+        ySize : 10,
+        HPmax : 5,
+        speed : 5
+    } , {
+        name : "ship2",
+        type : SHIP_MODEL_2_TYPE,
+        xSize : 10,
+        ySize : 10,
+        HPmax : 7,
+        speed : 3
+    } , {
+        name : "ship3",
+        type : SHIP_MODEL_3_TYPE,
+        xSize : 8,
+        ySize : 8,
+        HPmax : 4,
+        speed : 7
+    }
+];
+
+
 /* basic values of enemies */
 const ENEMY_MODEL_ERROR_TYPE = 0;
 const EASY_ENEMY_MODEL_1_TYPE = 1;
