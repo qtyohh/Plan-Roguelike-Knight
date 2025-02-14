@@ -57,6 +57,10 @@ class PlayerControl {
         }
     }
     
+    mousePressed() {
+        
+    }
+
     shoot(xSpeed, ySpeed) {
         console.log("Shooting!");
         this.shootCallBack(
