@@ -69,7 +69,7 @@ class Main {
                 break;
             }
             case MAIN_STEP_IN_GAME: {
-                this.#game.playerController.keyPressed();
+                this.#game.playerController.mousePressed();
                 break;
             }
         }

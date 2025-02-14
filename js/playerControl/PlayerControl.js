@@ -63,6 +63,10 @@ class PlayerControl {
         }
     }
     
+    mousePressed() {
+        
+    }
+
     shoot(xSpeed, ySpeed) {
         console.log("Shooting!");
         const currentWeapon = this.player.equipment.getCurrentWeapon();

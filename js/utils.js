@@ -53,14 +53,14 @@ const SHIP_MODEL = [
         xSize : 10,
         ySize : 10,
         HPmax : 7,
-        speed : 3
+        speed : 1
     } , {
         name : "ship3",
         type : SHIP_MODEL_3_TYPE,
         xSize : 8,
         ySize : 8,
         HPmax : 4,
-        speed : 7
+        speed : 10
     }
 ];
 
