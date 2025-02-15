@@ -1,4 +1,13 @@
 class Game {
+    /*#player;
+    #enemies = [];
+    #bullets = [];
+    #islands = [];
+    #buildings = [];
+    #playerController;
+    #gameOver = false;
+    #gameWin = false;*/
+
     constructor() {
         this.player = null;
         this.enemies = [];
@@ -38,29 +47,41 @@ class Game {
         this.buildings.push(building);
     }
 
-    updateObjectStatus() {        
+    updateObjectStatus() {
+        this.playerController.updateStatus();
+        this.player.updateHP(0);
+        if (this.player.isAlive == false) {
+            this.gameOver = true;
+            console.log("Game Over!");
+            // return;
+        }
+        this.player.show();    
+
         for (let island of this.islands) {
             island.show();
         }
 
-        for (let i = this.buildings.length - 1; i >= 0; --i) {
-            let building = this.buildings[i];
-            /*if (!enemy.isAlive) {
-                this.buildings.splice(i, 1);
-            } else {*/
+        if (this.buildings.length != 0) {
+            for (let i = this.buildings.length - 1; i >= 0; --i) {
+                let building = this.buildings[i];
                 building.show();
-            //}
-        }
-
-        this.playerController.updateStatus();
-        this.player.show();
-
-        for (let i = this.enemies.length - 1; i >= 0; --i) {
-            let enemy = this.enemies[i];
-            enemy.show();
-            if (!enemy.isAlive) {
-                this.enemies.splice(i, 1);
+                if (!building.isAlive) {
+                    this.buildings.splice(i, 1);
+                }
             }
+        }
+        if (this.enemies.length != 0) {
+            for (let i = this.enemies.length - 1; i >= 0; --i) {
+                let enemy = this.enemies[i];
+                enemy.show();
+                if (!enemy.isAlive) {
+                    this.enemies.splice(i, 1);
+                }
+            }
+        }
+        if (this.enemies.length == 0) {
+            this.gameWin = true;
+            // return;
         }
 
         for (let i = 0; i < this.bullets.length; i++) {
