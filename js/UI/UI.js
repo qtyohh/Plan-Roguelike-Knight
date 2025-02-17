@@ -100,6 +100,10 @@ class UI {
         }
     }
 
+    gameFinishGetSeamanUI() {
+        
+    }
+
     startUIPressed() {
         if(key != null || keyCode != null) {
             this.updateStep(MAIN_STEP_CHOOSE_SHIP_UI);
@@ -122,4 +126,5 @@ class UI {
             }
         }
     }
+
 }

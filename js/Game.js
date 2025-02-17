@@ -77,6 +77,9 @@ class Game {
         }
         this.bullets = this.bullets.filter(bullet => !bullet.toDelete);
         
+        if (this.enemies.length == 0) {
+            const chest = new Building(500, 500, )
+        }
     }   
 
     checkCollideBullet(bullet) {

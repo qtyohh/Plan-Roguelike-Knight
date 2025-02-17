@@ -127,6 +127,7 @@ function getIslandModel(islandType) {
 /** basic of building models */
 const BUILDING_MODEL_ERROR_TYPE = 0;
 const BUILDING_MODEL_TNT_TYPE = 1;
+const BUILDING_MODEL_CHEST_TYPE = 2;
 
 const BUILDING_MODEL = [
     {
@@ -141,7 +142,13 @@ const BUILDING_MODEL = [
         xSize : 10,
         ySize : 10,
         HP : 1
-    },
+    }, {
+        name : "chest",
+        type : BUILDING_MODEL_CHEST_TYPE,
+        xSize : 20,
+        ySize : 20,
+        HP : 1
+    }
 ];
 
 function getBuildingModel(buildingType) {
