@@ -13,6 +13,7 @@ class Player extends LivingObject {
         this.HPmax = HP;
         this.isAlive = true;
         this.abilityCD = 0;
+        this.equipment = new Equipment(name, 0, 0, 0, 0, 0, {});
     }
     
     show() {

@@ -19,14 +19,16 @@ class Game {
 
     initPlayer(playerBasicStatus) {
         this.player = new Player(
-            0, 
+            "Player", 
             300, 
             200, 
             playerBasicStatus.xSize, 
             playerBasicStatus.ySize, 
             playerBasicStatus.HP, 
-            playerBasicStatus.speed);
+            playerBasicStatus.speed
+        );
         this.playerController = new PlayerControl(
+            this.player,
             (xSpeed, ySpeed, bulletType) => this.addBullet(xSpeed, ySpeed, bulletType),
             (xMove, yMove) => this.playerMove(xMove, yMove)
         );
@@ -89,6 +91,7 @@ class Game {
             bullet.updateStatus();
             if (this.checkCollideBullet(bullet)) {
                 this.bullets[i].toDelete = true;
+                this.bullets[i].explode();
             } else {
                 bullet.show();
             }
@@ -162,12 +165,17 @@ class Game {
     }
 
     addBullet(xSpeed, ySpeed, bulletType) {
+        const currentWeapon = this.player.equipment.getCurrentWeapon();
         const bullet = new Bullet(
             this.player.xCoordinate + xSpeed * 5, 
             this.player.yCoordinate + ySpeed * 5, 
             xSpeed, 
             ySpeed, 
-            bulletType
+            bulletType, 
+            currentWeapon.attackPower, 
+            currentWeapon.explosionSize,
+            currentWeapon.bulletSize,
+            currentWeapon.bulletSpeed
         );
         this.bullets.push(bullet);
     }
