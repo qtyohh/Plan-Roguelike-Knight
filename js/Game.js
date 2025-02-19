@@ -1,11 +1,12 @@
 class Game {
-    constructor() {
+    constructor(updateStepCallBack) {
         this.player = null;
         this.enemies = [];
         this.bullets = [];
         this.islands = [];
         this.buildings = [];
         this.playerController = null;
+        this.updateStepCallBack = updateStepCallBack;
     }
 
     initPlayer(playerBasicStatus) {
@@ -47,11 +48,12 @@ class Game {
 
         for (let i = this.buildings.length - 1; i >= 0; --i) {
             let building = this.buildings[i];
-            /*if (!enemy.isAlive) {
+            if (!building.isAlive) {
+                building.deadRattle();
                 this.buildings.splice(i, 1);
-            } else {*/
+            } else {
                 building.show();
-            //}
+            }
         }
 
         this.playerController.updateStatus();
@@ -78,7 +80,7 @@ class Game {
         this.bullets = this.bullets.filter(bullet => !bullet.toDelete);
         
         if (this.enemies.length == 0) {
-            const chest = new Building(500, 500, )
+            this.updateStepCallBack(MAIN_STEP_GAME_REWARD);
         }
     }   
 

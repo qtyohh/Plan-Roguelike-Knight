@@ -10,6 +10,8 @@ class Building extends BasicObject {
             NO_HARM_ATTACK_BIT
         );
         this.HP = buildingModel.HP;
+        this.type = buildingModel.type;
+        this.isAlive = true;
     }
     show() {
         fill(255, 255, 255);
@@ -18,5 +20,24 @@ class Building extends BasicObject {
 
     updateHP(change) {
         this.HP += change;
+        if (this.HP <= 0) {
+            this.isAlive = false;
+        }
     }
+
+    deadRattle() {
+        switch(this.type) {
+            case BUILDING_MODEL_TNT_TYPE: {
+                this.explore();
+                break;
+            }
+        }
+    }
+
+    explore() {
+
+    }
+
+
+
 }
