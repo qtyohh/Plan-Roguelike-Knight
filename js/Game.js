@@ -4,7 +4,7 @@ class Game {
     #bullets;
     #islands;
     #buildings;
-    playerController;
+    #playerController;
     #gameOver;
     #gameWin;
 
@@ -14,7 +14,7 @@ class Game {
         this.#bullets = [];
         this.#islands = [];
         this.#buildings = [];
-        this.playerController = null;
+        this.#playerController = null;
         this.#gameOver = false;
         this.#gameWin = false;
     }
@@ -29,7 +29,7 @@ class Game {
             playerBasicStatus.HP, 
             playerBasicStatus.speed
         );
-        this.playerController = new PlayerControl(
+        this.#playerController = new PlayerControl(
             this.#player,
             (xSpeed, ySpeed, bulletType) => this.addBullet(xSpeed, ySpeed, bulletType),
             (xMove, yMove) => this.playerMove(xMove, yMove)
@@ -49,6 +49,10 @@ class Game {
     initBuilding() {
         const building = new Building(100, 100, BUILDING_MODEL_TNT_TYPE);
         this.#buildings.push(building);
+    }
+
+    getPlayerController() {
+        return this.#playerController;
     }
 
     getGameOver() {
@@ -77,7 +81,7 @@ class Game {
             console.log("Game Over!");
         }
 
-        this.playerController.updateStatus();
+        this.#playerController.updateStatus();
         this.#player.show();    
 
         for (let island of this.#islands) {
