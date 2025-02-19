@@ -15,7 +15,7 @@ const PLAYER_BULLET_ATTACK_BIT = 0b0110;
 const ENEMY_BULLET_ATTACK_BIT = 0b1000;
 const NO_HARM_ATTACK_BIT = 0b0000;
 const ENVIRONMENT_ATTACK_BIT = 0b1100;
-const EXPLORE_ATTACK_BIT = 0b1110;
+const EXPLODE_ATTACK_BIT = 0b1110;
 
 /**
  *  
@@ -129,6 +129,8 @@ function getIslandModel(islandType) {
 const BUILDING_MODEL_ERROR_TYPE = 0;
 const BUILDING_MODEL_TNT_TYPE = 1;
 const BUILDING_MODEL_CHEST_TYPE = 2;
+const BUILDING_MODEL_BOMB_TYPE = 3;
+const BUILDING_MODEL_MAX_TYPE = 4;
 
 const BUILDING_MODEL = [
     {
@@ -149,15 +151,60 @@ const BUILDING_MODEL = [
         xSize : 20,
         ySize : 20,
         HP : 1
+    }, {
+        name : "bomb",
+        type : BUILDING_MODEL_BOMB_TYPE,
+        xSize : 20,
+        ySize : 20,
+        HP : 200
     }
 ];
 
 function getBuildingModel(buildingType) {
-    if (buildingType >= BUILDING_MODEL.length || buildingType < 0 ) {
-        console.log("getIslandModel : islandType error.");
+    if (buildingType >= BUILDING_MODEL_MAX_TYPE || buildingType < 0 ) {
+        console.log("getBuildingModel : buidingType error.");
         return BUILDING_MODEL[BUILDING_MODEL_ERROR_TYPE];
     }
     return BUILDING_MODEL[buildingType];
+}
+
+
+const EXPLODE_MODEL_ERROR_TYPE = 0;
+const EXPLODE_MODEL_BULLET_TYPE = 1;
+const EXPLODE_MODEL_TNT_TYPE = 2;
+const EXPLODE_MODEL_BOMB_TYPE = 3;
+const EXPLODE_MODEL_MAX_TYPE = 4;
+
+const EXPLODE_MODEL = [
+    {
+        name : 0,
+        type : EXPLODE_MODEL_ERROR_TYPE,
+        xSize : 0,
+        ySize : 0
+    }, {
+        name : "bullet_explode",
+        type : EXPLODE_MODEL_BULLET_TYPE,
+        xSize : 10,
+        ySize : 10
+    }, {
+        name : "TNT_explode",
+        type : EXPLODE_MODEL_TNT_TYPE,
+        xSize : 40,
+        ySize : 40
+    }, {
+        name : "bomb_explode",
+        type : EXPLODE_MODEL_BOMB_TYPE,
+        xSize : 50,
+        ySize : 50
+    }
+];
+
+function getExplodeModel(explodeType) {
+    if (explodeType >= EXPLODE_MODEL_MAX_TYPE || explodeType < 0 ) {
+        console.log("getExplodeModel : explodeType error.");
+        return EXPLODE_MODEL[EXPLODE_MODEL_ERROR_TYPE];
+    }
+    return EXPLODE_MODEL[explodeType];
 }
 
 function myCollide(itemA, itemB) {

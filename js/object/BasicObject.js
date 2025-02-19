@@ -8,4 +8,6 @@ class BasicObject {
         this.ySize = ySize;
         this.attackBit = attackBit;
     }
+
+    
 }

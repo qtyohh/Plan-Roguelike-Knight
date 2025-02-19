@@ -22,7 +22,8 @@ class Game {
         this.playerController = new PlayerControl(
             this.player,
             (xSpeed, ySpeed, bulletType) => this.addBullet(xSpeed, ySpeed, bulletType),
-            (xMove, yMove) => this.playerMove(xMove, yMove)
+            (xMove, yMove) => this.playerMove(xMove, yMove),
+            () => this.addBomb()
         );
     }
 
@@ -37,7 +38,14 @@ class Game {
     }
 
     initBuilding() {
-        const building = new Building(100, 100, BUILDING_MODEL_TNT_TYPE);
+
+        const building = new Building(
+            100, 
+            100, 
+            BUILDING_MODEL_TNT_TYPE,
+            (xCoor, yCoor, harm, attackBit, explodeType) => 
+                this.addExplode(xCoor, yCoor, harm, attackBit, explodeType)
+        );
         this.buildings.push(building);
     }
 
@@ -72,7 +80,13 @@ class Game {
             bullet.updateStatus();
             if (this.checkCollideBullet(bullet)) {
                 this.bullets[i].toDelete = true;
-                this.bullets[i].explode();
+                this.addExplode(
+                    bullet.xCoordinate,
+                    bullet.yCoordinate,
+                    bullet.harm,
+                    bullet.attackBit,
+                    EXPLODE_MODEL_BULLET_TYPE
+                );
             } else {
                 bullet.show();
             }
@@ -93,26 +107,17 @@ class Game {
         
         for (let enemy of this.enemies) {
             if (myCollide(enemy, bullet)) {
-                if (bullet.attackBit & ENEMY_TYPE) {
-                    enemy.updateHP(-1 * bullet.harm);
-                    return true;
-                }
+                return true;
             }
         }
 
         if (myCollide(this.player, bullet)) {
-            if (bullet.attackBit & PLAYER_TYPE) {
-                this.player.updateHP(-1 * bullet.harm);
-                return true;
-            }
+            return true;
         }
         
         for (let building of this.buildings) {
             if (myCollide(building, bullet)) {
-                if (bullet.attackBit & BUILDING_TYPE) {
-                    building.updateHP(-1 * bullet.harm);
-                    return true;
-                }
+                return true;
             }
         }
         return false;
@@ -132,6 +137,9 @@ class Game {
         }
 
         for (let building of this.buildings) {
+            if (building.type == BUILDING_MODEL_BOMB_TYPE) {
+                continue;
+            }
             if (myCollide(location, building)) {
                 return true;
             }
@@ -148,11 +156,33 @@ class Game {
 
     }
 
+    checkCollideExplode(explode) {
+        if (explode.attackBit & BUILDING_TYPE) {
+            for (let building of this.buildings) {
+                if (myCollide(explode, building)) {
+                    building.updateHP(explode.harm * -1);
+                }
+            }
+        }
+        if (explode.attackBit & ENEMY_TYPE) {
+            for (let enemy of this.enemies) {
+                if (myCollide(explode, enemy)) {
+                    enemy.updateHP(explode.harm * -1);
+                }
+            }
+        }
+        if (explode.attackBit & PLAYER_TYPE) {
+            if (myCollide(explode, this.player)) {
+                this.player.updateHP(explode.harm * -1);
+            }
+        }
+    }
+
     addBullet(xSpeed, ySpeed, bulletType) {
         const currentWeapon = this.player.equipment.getCurrentWeapon();
         const bullet = new Bullet(
-            this.player.xCoordinate + xSpeed * 5, 
-            this.player.yCoordinate + ySpeed * 5, 
+            this.player.xCoordinate + xSpeed * 10, 
+            this.player.yCoordinate + ySpeed * 10, 
             xSpeed, 
             ySpeed, 
             bulletType, 
@@ -162,6 +192,25 @@ class Game {
             currentWeapon.bulletSpeed
         );
         this.bullets.push(bullet);
+    }
+
+    addBomb() {
+        let xCoor = this.player.xCoordinate + this.player.xSize / 2;
+        let yCoor = this.player.yCoordinate + this.player.xSize / 2;
+        const bomb = new Building(
+            xCoor, 
+            yCoor, 
+            BUILDING_MODEL_BOMB_TYPE,
+            (x, y, harm, attackBit, explodeType) => 
+                this.addExplode(x, y, harm, attackBit, explodeType)
+        );
+        this.buildings.push(bomb);
+    }
+
+    addExplode(xCoor, yCoor, harm, attackBit, explodeType) {
+        const explode = new Explode(xCoor, yCoor, harm, attackBit, explodeType);
+        explode.show();
+        this.checkCollideExplode(explode);
     }
 
     playerMove(xMove, yMove) {

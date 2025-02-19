@@ -1,8 +1,9 @@
 class PlayerControl {
-    constructor(player, shootCallBack, playerMoveCallBack) {
+    constructor(player, shootCallBack, playerMoveCallBack, skillUseCallBack) {
         this.player = player;
         this.shootCallBack = shootCallBack;
         this.playerMoveCallBack = playerMoveCallBack; 
+        this.skillUseCallBack = skillUseCallBack;
         this.keyMap = {
             up: false,
             down: false,
@@ -46,6 +47,9 @@ class PlayerControl {
         }
 
         //skill
+        if (key == " ") {
+            this.skillUseCallBack();
+        }
     }
 
     keyReleased() {
@@ -75,10 +79,10 @@ class PlayerControl {
                 xSpeed, 
                 ySpeed, 
                 PLAYER_BULLET_TYPE, 
-                currentWeapon.attackPower,
+                /*currentWeapon.attackPower,
                 currentWeapon.bulletSize, 
                 currentWeapon.bulletSpeed, 
-                currentWeapon.explosionSize
+                currentWeapon.explosionSize*/
             );
         } else {
             console.log("No weapon equipped");
