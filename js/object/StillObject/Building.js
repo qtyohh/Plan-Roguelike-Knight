@@ -10,6 +10,7 @@ class Building extends BasicObject {
             NO_HARM_ATTACK_BIT
         );
         this.HP = buildingModel.HP;
+        this.MaxHP = buildingModel.HP;
         this.isAlive = true;
     }
     show() {
@@ -20,7 +21,7 @@ class Building extends BasicObject {
     updateHP(change) {
         if (this.isAlive) {
             this.HP += change;
-            this.HP = constrain(this.HP, 0, this.buildingModel.HP);
+            this.HP = constrain(this.HP, 0, this.MaxHP);
             if (this.HP <= 0) {
                 this.isAlive = false;
             }
