@@ -22,13 +22,16 @@ class Building extends BasicObject {
     show() {
         fill(255, 255, 255);
         super.show();
-        if (this.type == BUILDING_MODEL_BOMB_TYPE) {
+        if (this.modelType == BUILDING_MODEL_BOMB_TYPE) {
             this.updateHP(-1);
         }
     }
     
     updateHP(change) {
         super.updateHP(change);
+        if (!this.isAlive) {
+            console.log(this);
+        }
     }
 
     move(xSpeed, ySpeed) {
@@ -36,7 +39,8 @@ class Building extends BasicObject {
     }
 
     deadRattle() {
-        switch(this.type) {
+        console.log("----dead rattle----");
+        switch(this.modelType) {
             case BUILDING_MODEL_TNT_TYPE: {
                 this.explodeCallBack(
                     this.xCoordinate,

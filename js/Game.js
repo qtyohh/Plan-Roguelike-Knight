@@ -78,6 +78,7 @@ class Game {
             bullet.updateStatus();
             if (this.checkCollideBullet(bullet)) {
                 this.#bullets[i].toDelete = true;
+                console.log(bullet);
                 this.addExplode(
                     bullet.xCoordinate,
                     bullet.yCoordinate,
@@ -93,6 +94,20 @@ class Game {
         }
         this.#bullets = this.#bullets.filter(bullet => !bullet.toDelete);
 
+        
+        if (this.#buildings.length != 0) {
+            for (let i = this.#buildings.length - 1; i >= 0; --i) {
+                let building = this.#buildings[i];
+                if (!building.isAlive) {
+                    this.#buildings.splice(i, 1);
+                    building.deadRattle();
+                } else {
+                    building.show();
+                }
+            }
+        }
+
+
         if (this.#player.isAlive == false) {
             this.#gameOver = true;
             console.log("Game Over!");
@@ -102,18 +117,6 @@ class Game {
 
         for (let island of this.#islands) {
             island.show();
-        }
-
-        if (this.#buildings.length != 0) {
-            for (let i = this.#buildings.length - 1; i >= 0; --i) {
-                let building = this.#buildings[i];
-                if (!building.isAlive) {
-                    building.deadRattle();
-                    this.#buildings.splice(i, 1);
-                } else {
-                    building.show();
-                }
-            }
         }
 
         if (this.#enemies.length != 0) {
@@ -174,7 +177,7 @@ class Game {
         }
 
         for (let building of this.#buildings) {
-            if (building.type == BUILDING_MODEL_BOMB_TYPE) {
+            if (building.modelType == BUILDING_MODEL_BOMB_TYPE) {
                 continue;
             }
             if (myCollide(location, building)) {
@@ -202,7 +205,7 @@ class Game {
             }
         }
         if (explode.attackBit & ENEMY_TYPE) {
-            for (let enemy of this.enemies) {
+            for (let enemy of this.#enemies) {
                 if (myCollide(explode, enemy)) {
                     enemy.updateHP(explode.harm * -1);
                 }
@@ -241,7 +244,7 @@ class Game {
             (x, y, harm, attackBit, explodeType) => 
                 this.addExplode(x, y, harm, attackBit, explodeType)
         );
-        this.buildings.push(bomb);
+        this.#buildings.push(bomb);
     }
 
     addExplode(xCoor, yCoor, harm, attackBit, explodeType) {

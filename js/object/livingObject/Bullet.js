@@ -13,35 +13,37 @@ class Bullet extends BasicObject {
                 yCoordinate, 
                 size, // bullet size
                 size, 
+                PLAYER_BULLET_ATTACK_BIT,
                 1, 
                 speed, 
-                PLAYER_BULLET_ATTACK_BIT
             );
             this.harm = attackPower;
             this.explosionSize = explosionSize;
         } else if (bulletType == ENEMY_BULLET_TYPE) {
             super(
                 "bullet", 
+                BULLET_TYPE,
                 xCoordinate, 
                 yCoordinate, 
                 2, 
                 2, 
+                ENEMY_BULLET_ATTACK_BIT,
                 1, 
-                3, 
-                ENEMY_BULLET_ATTACK_BIT
+                3
             );
             this.harm = 0.5;
             this.explosionSize = 1;
         } else if (bulletType == BOSS_BULLET_TYPE) {
             super(
                 "bullet", 
+                BULLET_TYPE,
                 xCoordinate, 
                 yCoordinate, 
                 3, 
                 3, 
+                ENEMY_BULLET_ATTACK_BIT,
                 1, 
-                5, 
-                ENEMY_BULLET_ATTACK_BIT
+                5
             );
             this.harm = 1;
             this.explosionSize = 2;
