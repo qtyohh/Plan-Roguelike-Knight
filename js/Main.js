@@ -1,4 +1,3 @@
-
 class Main {
     #UI = null;
     #status = null;
@@ -6,12 +5,13 @@ class Main {
     #step = MAIN_STEP_START_UI;
 
     constructor() {
-        this.#UI = new UI(
+        this.#UI = new MainUI(
             (stepChangeType) => this.updateStep(stepChangeType),
             (shipType) => this.setShipBasic(shipType)
         );
         this.#status = new Status();
     }
+
     initNewGame() {
         let playerBasicStatus = this.#status.getShipBasicStatus();
         this.#game = new Game(
@@ -51,6 +51,10 @@ class Main {
         }
     }
 
+    windowResized() {
+        this.#UI.windowResized();
+    }
+
     keyPressed() {
         switch(this.#step) {
             case MAIN_STEP_START_UI: {
@@ -65,7 +69,9 @@ class Main {
     }
 
     keyReleased() {
-        this.#game.playerController.keyReleased();
+        if (this.#step === MAIN_STEP_IN_GAME && this.#game) {
+            this.#game.playerController.keyReleased();
+        }
     }
 
     mousePressed() {
@@ -80,6 +86,19 @@ class Main {
             }
             case MAIN_STEP_IN_GAME: {
                 this.#game.playerController.mousePressed();
+                break;
+            }
+        }
+    }
+
+    mouseReleased() {
+        switch(this.#step) {
+            case MAIN_STEP_START_UI: {
+                this.#UI.startUIReleased();
+                break;
+            }
+            case MAIN_STEP_CHOOSE_SHIP_UI: {
+                this.#UI.chooseShipUIMouseReleased();
                 break;
             }
         }

@@ -1,0 +1,121 @@
+class MainUI {
+  
+    #currentStep = MAIN_STEP_START_UI;
+    #startUI;
+    #chooseShipUI;
+  
+    constructor(updateStep, updateShipStatus) {
+        this.updateStep = updateStep;
+        this.updateShipStatus = updateShipStatus;
+        
+        // Init UI
+        this.#startUI = new StartUI(this.#handleStartUIButtonClick.bind(this));
+        this.#chooseShipUI = new ChooseShipUI(this.#handleShipSelection.bind(this));
+    }
+  
+    showStartUI() {
+        if (!this.#startUI) {
+            this.#startUI = new StartUI(this.#handleStartUIButtonClick.bind(this));
+        }
+        this.#startUI.init();
+        this.#startUI.draw();
+    }
+  
+    showChooseShipUI() {
+        if (!this.#chooseShipUI) {
+            this.#chooseShipUI = new ChooseShipUI(this.#handleShipSelection.bind(this));
+        }
+        this.#currentStep = MAIN_STEP_CHOOSE_SHIP_UI;
+        this.#chooseShipUI.init();
+        this.#chooseShipUI.draw();
+    }
+  
+    gameFinishGetSeamanUI() {
+      // ...
+    }
+  
+    startUIPressed() {
+        if (this.#currentStep == MAIN_STEP_START_UI && this.#startUI) {
+            this.#startUI.handleMousePressed();
+        }
+    }
+      
+    startUIReleased() {
+        if (this.#currentStep == MAIN_STEP_START_UI && this.#startUI) {
+            this.#startUI.handleMouseReleased();
+        }
+    }
+    
+    chooseShipUIMousePressed() {
+        if (this.#currentStep == MAIN_STEP_CHOOSE_SHIP_UI && this.#chooseShipUI) {
+            this.#chooseShipUI.handleMousePressed();
+        }
+    }
+      
+    chooseShipUIMouseReleased() {
+        if (this.#currentStep == MAIN_STEP_CHOOSE_SHIP_UI && this.#chooseShipUI) {
+            this.#chooseShipUI.handleMouseReleased();
+        }
+    }
+    
+    windowResized() {
+        switch (this.#currentStep) {
+            case MAIN_STEP_START_UI:
+                if (this.#startUI) {
+                    this.#startUI.handleWindowResized();
+                }
+                break;
+            case MAIN_STEP_CHOOSE_SHIP_UI:
+                if (this.#chooseShipUI) {
+                    this.#chooseShipUI.handleWindowResized();
+                }
+                break;
+        }
+    }
+    
+    // Handle current UI state mouse pressed
+    handleMousePressed() {
+        switch (this.#currentStep) {
+            case MAIN_STEP_START_UI:
+                this.startUIPressed();
+                break;
+            case MAIN_STEP_CHOOSE_SHIP_UI:
+                this.chooseShipUIMousePressed();
+                break;
+        }
+    }
+  
+    // Handle current UI state mouse released
+    handleMouseReleased() {
+        switch (this.#currentStep) {
+            case MAIN_STEP_START_UI:
+                this.startUIReleased();
+                break;
+            case MAIN_STEP_CHOOSE_SHIP_UI:
+                this.chooseShipUIMouseReleased();
+                break;
+        }
+    }
+  
+    // private, callback by StartUI
+    #handleStartUIButtonClick(buttonType) {
+        if (buttonType == MAIN_STEP_START_UI) {
+            // PLAN ROGUELIKE KNIGHT
+            this.updateStep(MAIN_STEP_CHOOSE_SHIP_UI);
+            this.showChooseShipUI();
+        } else if (buttonType == MAIN_TEEM) {
+            // Team Overview
+        }
+    }
+  
+    // private, callback by ChooseShipUI
+    #handleShipSelection(shipType) {
+        if (this.updateShipStatus) {
+            this.updateShipStatus(shipType);
+        }
+        
+        if (this.updateStep) {
+            this.updateStep(MAIN_STEP_IN_GAME);
+        }
+    }
+}
