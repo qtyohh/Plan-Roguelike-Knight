@@ -3,11 +3,12 @@ const PLAYER_BULLET_TYPE = 0;
 const ENEMY_BULLET_TYPE  = 1;
 const BOSS_BULLET_TYPE   = 2;
 
-class Bullet extends LivingObject {
+class Bullet extends BasicObject {
     constructor(xCoordinate, yCoordinate, xSpeed, ySpeed, bulletType, attackPower, explosionSize, size, speed) {
         if (bulletType == PLAYER_BULLET_TYPE) {
             super(
                 "bullet", 
+                BULLET_TYPE,
                 xCoordinate, 
                 yCoordinate, 
                 size, // bullet size

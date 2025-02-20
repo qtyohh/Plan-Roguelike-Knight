@@ -3,17 +3,29 @@
         const islandModel = getIslandModel(islandType);
         super(
             islandModel.name, 
+            ISLAND_TYPE,
             xCoordinate, 
             yCoordinate, 
             islandModel.xSize, 
             islandModel.ySize, 
-            NO_HARM_ATTACK_BIT
+            NO_HARM_ATTACK_BIT,
+            1,
+            0
         );
-        this.type = islandModel.type;
+        this.modelType = islandModel.type;
     }
 
     show() {
         fill(255, 255, 255);
-        rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
+        super.show();
     }
+
+    updateHP(change) {
+        super.updateHP(change);
+    }
+
+    move(xSpeed, ySpeed) {
+        super.move(xSpeed, ySpeed);
+    }
+
  }

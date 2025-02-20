@@ -1,34 +1,31 @@
-class Player extends LivingObject {
+class Player extends BasicObject {
     constructor(name, xCoordinate, yCoordinate, xSize, ySize, HP, speed) {
         super(
             name, 
+            PLAYER_TYPE,
             xCoordinate, 
             yCoordinate, 
             xSize, 
             ySize, 
+            NO_HARM_ATTACK_BIT,
             HP, 
             speed, 
-            NO_HARM_ATTACK_BIT
         );
-        this.HPmax = HP;
-        this.isAlive = true;
         this.abilityCD = 0;
         this.equipment = new Equipment(name, 0, 0, 0, 0, 0, {});
     }
     
     show() {
         fill(255);
-        rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
+        super.show();
     }
 
     updateHP(change) {
-        if (this.isAlive) {
-            this.HP += change;
-            this.HP = constrain(this.HP, 0, this.HPmax);
-            if (this.HP <= 0) {
-                this.isAlive = false;
-            }
-        }
+        super.updateHP(change);
+    }
+
+    move(xSpeed, ySpeed) {
+        super.move(xSpeed, ySpeed);
     }
 
     putOnBuff() {

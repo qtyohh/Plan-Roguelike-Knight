@@ -6,35 +6,33 @@ class Building extends BasicObject {
     constructor(xCoor, yCoor, modelType, explodeCallBack) {
         const buildingModel = getBuildingModel(modelType);
         super(
-            buildingModel.name, 
+            buildingModel.name,
+            BUILDING_TYPE,
             xCoor - buildingModel.xSize / 2, 
             yCoor - buildingModel.ySize / 2, 
             buildingModel.xSize, 
             buildingModel.ySize, 
-            NO_HARM_ATTACK_BIT
+            NO_HARM_ATTACK_BIT,
+            buildingModel.HP,
+            0
         );
-        this.HP = buildingModel.HP;
-        this.type = buildingModel.type;
+        this.modelType = buildingModel.type;
         this.explodeCallBack = explodeCallBack;
-        this.MaxHP = buildingModel.HP;
-        this.isAlive = true;
     }
     show() {
         fill(255, 255, 255);
-        rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
+        super.show();
         if (this.type == BUILDING_MODEL_BOMB_TYPE) {
             this.updateHP(-1);
         }
     }
-
+    
     updateHP(change) {
-        if (this.isAlive) {
-            this.HP += change;
-            this.HP = constrain(this.HP, 0, this.MaxHP);
-            if (this.HP <= 0) {
-                this.isAlive = false;
-            }
-        }
+        super.updateHP(change);
+    }
+
+    move(xSpeed, ySpeed) {
+        super.move(xSpeed, ySpeed);
     }
 
     deadRattle() {

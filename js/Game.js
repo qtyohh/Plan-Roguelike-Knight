@@ -8,7 +8,7 @@ class Game {
     #gameOver;
     #gameWin;
 
-    constructor() {
+    constructor(updateStepCallBack) {
         this.#player = null;
         this.#enemies = [];
         this.#bullets = [];
@@ -17,6 +17,7 @@ class Game {
         this.#playerController = null;
         this.#gameOver = false;
         this.#gameWin = false;
+        this.updateObjectStatus = updateStepCallBack;
     }
 
     initPlayer(playerBasicStatus) {
@@ -72,6 +73,7 @@ class Game {
     }
 
     updateObjectStatus() {
+        console.log("----update object status----");
         for (let i = 0; i < this.#bullets.length; i++) {
             let bullet = this.#bullets[i];
             bullet.updateStatus();
@@ -96,7 +98,6 @@ class Game {
             this.#gameOver = true;
             console.log("Game Over!");
         }
-
         this.#playerController.updateStatus();
         this.#player.show();    
 
@@ -130,10 +131,9 @@ class Game {
             this.#gameWin = true;
         }
 
-        
-        if (this.enemies.length == 0) {
+        /*if (this.#enemies.length == 0) {
             this.updateStepCallBack(MAIN_STEP_GAME_REWARD);
-        }
+        }*/
     }   
 
     checkCollideBullet(bullet) {
@@ -151,7 +151,8 @@ class Game {
 
         if (myCollide(this.#player, bullet)) {
             return true;
-        
+        }
+
         for (let building of this.#buildings) {
             if (myCollide(building, bullet)) {
                 return true;
@@ -195,7 +196,7 @@ class Game {
 
     checkCollideExplode(explode) {
         if (explode.attackBit & BUILDING_TYPE) {
-            for (let building of this.buildings) {
+            for (let building of this.#buildings) {
                 if (myCollide(explode, building)) {
                     building.updateHP(explode.harm * -1);
                 }
@@ -209,8 +210,8 @@ class Game {
             }
         }
         if (explode.attackBit & PLAYER_TYPE) {
-            if (myCollide(explode, this.player)) {
-                this.player.updateHP(explode.harm * -1);
+            if (myCollide(explode, this.#player)) {
+                this.#player.updateHP(explode.harm * -1);
             }
         }
     }
@@ -232,8 +233,8 @@ class Game {
     }
 
     addBomb() {
-        let xCoor = this.player.xCoordinate + this.player.xSize / 2;
-        let yCoor = this.player.yCoordinate + this.player.xSize / 2;
+        let xCoor = this.#player.xCoordinate + this.#player.xSize / 2;
+        let yCoor = this.#player.yCoordinate + this.#player.xSize / 2;
         const bomb = new Building(
             xCoor, 
             yCoor, 
