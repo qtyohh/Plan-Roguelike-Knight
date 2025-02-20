@@ -24,7 +24,6 @@ class Main {
     }
 
     updateAll() {
-        console.log(this.#step);
         switch(this.#step) {
             case MAIN_STEP_START_UI: {
                 this.#UI.showStartUI();
@@ -38,7 +37,6 @@ class Main {
                 if (this.#game == null) {
                     this.initNewGame();
                 }
-                console.log(this.#game);
                 this.#game.updateObjectStatus();
                 //console.log("update error");
                 break;

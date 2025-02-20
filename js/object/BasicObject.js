@@ -21,11 +21,10 @@ class BasicObject {
         this.#HP = HP;
         this.#maxHP = HP;
         this.#speed = speed;
-        this.#isAlive = true;
+        this.isAlive = true;
     }
 
     show() {
-        console.log(this);
         rect(this.#xCoordinate, this.#yCoordinate, this.#xSize, this.#ySize);
     }
     

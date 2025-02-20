@@ -17,7 +17,7 @@ class Game {
         this.#playerController = null;
         this.#gameOver = false;
         this.#gameWin = false;
-        this.updateObjectStatus = updateStepCallBack;
+        this.updateStepCallBack = updateStepCallBack;
     }
 
     initPlayer(playerBasicStatus) {
@@ -73,7 +73,6 @@ class Game {
     }
 
     updateObjectStatus() {
-        console.log("----update object status----");
         for (let i = 0; i < this.#bullets.length; i++) {
             let bullet = this.#bullets[i];
             bullet.updateStatus();

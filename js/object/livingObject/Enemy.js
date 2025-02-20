@@ -18,15 +18,15 @@ class Enemy extends BasicObject {
     show() {
         if (this.isAlive) {
             fill(100);
-            rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
+            rect(this.#xCoordinate, this.#yCoordinate, this.#xSize, this.#ySize);
             
-            let hpBar = this.xSize * (this.HP / this.maxHP);
+            let hpBar = this.#xSize * (this.#HP / this.#maxHP);
 
             fill(220);
-            rect(this.xCoordinate, this.yCoordinate - 10, this.xSize, 5);
+            rect(this.#xCoordinate, this.#yCoordinate - 10, this.#xSize, 5);
             
             fill(255, 0, 0);
-            rect(this.xCoordinate, this.yCoordinate - 10, hpBar, 5);
+            rect(this.#xCoordinate, this.#yCoordinate - 10, hpBar, 5);
         }
     }
 
