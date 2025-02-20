@@ -1,18 +1,19 @@
-class Enemy extends BasicObject {
+class Boss extends Enemy {
     constructor(xCoordinate, yCoordinate, enemyModelType) {
-        const enemyModel = getEnemyModel(enemyModelType);
+        const bossModel = getEnemyModel(enemyModelType);
         super(
-            enemyModel.name,
-            ENEMY_TYPE,
+            bossModel.name,
             xCoordinate,
             yCoordinate,
-            enemyModel.xSize,
-            enemyModel.ySize,
-            ENEMY_ATTACK_BIT,
-            enemyModel.HP,
-            enemyModel.speed
+            bossModel.xSize,
+            bossModel.ySize,
+            bossModel.HP,
+            bossModel.speed,
+            ENEMY_ATTACK_BIT
         );
-        this.modelType = enemyModel.type;
+        this.type = enemyModel.type;
+        this.maxHP = enemyModel.HP;
+        this.abilityCD = 0;
     }
 
     show() {
@@ -31,12 +32,19 @@ class Enemy extends BasicObject {
     }
 
     updateHP(change) {
-        super.updateHP(change);
+        if (this.isAlive) {
+            this.HP += change;
+            this.HP = constrain(this.HP, 0, this.maxHP);
+
+            if (this.HP <= 0) {
+                this.isAlive = false;
+            }
+        }
     }
 
-    move(xSpeed, ySpeed) {
-        super.move(xSpeed, ySpeed);
+    putOnBuff() {
+       
     }
-
+    
 }
 

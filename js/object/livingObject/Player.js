@@ -1,14 +1,15 @@
-class Player extends LivingObject {
+class Player extends BasicObject {
     constructor(name, xCoordinate, yCoordinate, xSize, ySize, HP, speed) {
         super(
             name, 
+            PLAYER_TYPE,
             xCoordinate, 
             yCoordinate, 
             xSize, 
             ySize, 
+            NO_HARM_ATTACK_BIT,
             HP, 
             speed, 
-            NO_HARM_ATTACK_BIT
         );
         this.abilityCD = 0;
         this.equipment = new Equipment(name, 0, 0, 0, 0, 0, {});
@@ -16,11 +17,15 @@ class Player extends LivingObject {
     
     show() {
         fill(255);
-        rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
+        super.show();
     }
 
     updateHP(change) {
-        this.HP += change;
+        super.updateHP(change);
+    }
+
+    move(xSpeed, ySpeed) {
+        super.move(xSpeed, ySpeed);
     }
 
     putOnBuff() {

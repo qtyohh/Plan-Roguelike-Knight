@@ -1,43 +1,67 @@
+const BASIC_EXPLORE_SIZE = 80;
+const EXPLORE_WAITING_TIME = 100;
+const TNT_EXPLODE_HARM = 2;
+
 class Building extends BasicObject {
-    constructor(xCoordinate, yCoordinate, modelType) {
+    constructor(xCoor, yCoor, modelType, explodeCallBack) {
         const buildingModel = getBuildingModel(modelType);
         super(
-            buildingModel.name, 
-            xCoordinate, 
-            yCoordinate, 
+            buildingModel.name,
+            BUILDING_TYPE,
+            xCoor - buildingModel.xSize / 2, 
+            yCoor - buildingModel.ySize / 2, 
             buildingModel.xSize, 
             buildingModel.ySize, 
-            NO_HARM_ATTACK_BIT
+            NO_HARM_ATTACK_BIT,
+            buildingModel.HP,
+            0
         );
-        this.HP = buildingModel.HP;
-        this.type = buildingModel.type;
-        this.isAlive = true;
+        this.modelType = buildingModel.type;
+        this.explodeCallBack = explodeCallBack;
     }
     show() {
         fill(255, 255, 255);
-        rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
+        super.show();
+        if (this.modelType == BUILDING_MODEL_BOMB_TYPE) {
+            this.updateHP(-1);
+        }
     }
-
+    
     updateHP(change) {
-        this.HP += change;
-        if (this.HP <= 0) {
-            this.isAlive = false;
+        super.updateHP(change);
+        if (!this.isAlive) {
+            console.log(this);
         }
     }
 
+    move(xSpeed, ySpeed) {
+        super.move(xSpeed, ySpeed);
+    }
+
     deadRattle() {
-        switch(this.type) {
+        console.log("----dead rattle----");
+        switch(this.modelType) {
             case BUILDING_MODEL_TNT_TYPE: {
-                this.explore();
+                this.explodeCallBack(
+                    this.xCoordinate,
+                    this.yCoordinate,
+                    TNT_EXPLODE_HARM,
+                    EXPLODE_ATTACK_BIT,
+                    EXPLODE_MODEL_TNT_TYPE
+                );
+                break;
+            }
+            case BUILDING_MODEL_BOMB_TYPE: {
+                this.explodeCallBack(
+                    this.xCoordinate,
+                    this.yCoordinate,
+                    TNT_EXPLODE_HARM,
+                    EXPLODE_ATTACK_BIT,
+                    EXPLODE_MODEL_BOMB_TYPE
+                );
                 break;
             }
         }
     }
-
-    explore() {
-
-    }
-
-
 
 }
