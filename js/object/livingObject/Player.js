@@ -10,6 +10,8 @@ class Player extends LivingObject {
             speed, 
             NO_HARM_ATTACK_BIT
         );
+        this.HPmax = HP;
+        this.isAlive = true;
         this.abilityCD = 0;
         this.equipment = new Equipment(name, 0, 0, 0, 0, 0, {});
     }
@@ -20,7 +22,13 @@ class Player extends LivingObject {
     }
 
     updateHP(change) {
-        this.HP += change;
+        if (this.isAlive) {
+            this.HP += change;
+            this.HP = constrain(this.HP, 0, this.HPmax);
+            if (this.HP <= 0) {
+                this.isAlive = false;
+            }
+        }
     }
 
     putOnBuff() {

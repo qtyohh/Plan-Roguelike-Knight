@@ -58,14 +58,14 @@ class Main {
                 break;
             }
             case MAIN_STEP_IN_GAME: {
-                this.#game.playerController.keyPressed();
+                this.#game.getPlayerController().keyPressed();
                 break;
             }
         }
     }
 
     keyReleased() {
-        this.#game.playerController.keyReleased();
+        this.#game.getPlayerController().keyReleased();
     }
 
     mousePressed() {
@@ -79,7 +79,7 @@ class Main {
                 break;
             }
             case MAIN_STEP_IN_GAME: {
-                this.#game.playerController.mousePressed();
+                this.#game.getPlayerController().mousePressed();
                 break;
             }
         }

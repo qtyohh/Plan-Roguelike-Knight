@@ -1,5 +1,4 @@
 class BasicObject {
-
     constructor(name, xCoordinate, yCoordinate, xSize, ySize, attackBit) {
         this.name = name;
         this.xCoordinate = xCoordinate;

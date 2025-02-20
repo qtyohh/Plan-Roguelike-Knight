@@ -1,16 +1,26 @@
 class Game {
-    constructor(updateStepCallBack) {
-        this.player = null;
-        this.enemies = [];
-        this.bullets = [];
-        this.islands = [];
-        this.buildings = [];
-        this.playerController = null;
-        this.updateStepCallBack = updateStepCallBack;
+    #player;
+    #enemies;
+    #bullets;
+    #islands;
+    #buildings;
+    #playerController;
+    #gameOver;
+    #gameWin;
+
+    constructor() {
+        this.#player = null;
+        this.#enemies = [];
+        this.#bullets = [];
+        this.#islands = [];
+        this.#buildings = [];
+        this.#playerController = null;
+        this.#gameOver = false;
+        this.#gameWin = false;
     }
 
     initPlayer(playerBasicStatus) {
-        this.player = new Player(
+        this.#player = new Player(
             "Player", 
             300, 
             200, 
@@ -19,8 +29,8 @@ class Game {
             playerBasicStatus.HP, 
             playerBasicStatus.speed
         );
-        this.playerController = new PlayerControl(
-            this.player,
+        this.#playerController = new PlayerControl(
+            this.#player,
             (xSpeed, ySpeed, bulletType) => this.addBullet(xSpeed, ySpeed, bulletType),
             (xMove, yMove) => this.playerMove(xMove, yMove),
             () => this.addBomb()
@@ -29,12 +39,12 @@ class Game {
 
     initEnemies() {
         const enemy = new Enemy(300, 100, EASY_ENEMY_MODEL_1_TYPE);
-        this.enemies.push(enemy);
+        this.#enemies.push(enemy);
     }
 
     initIslands() {
         const island = new Island(200, 300, ISLAND_MODEL_1_TYPE);
-        this.islands.push(island);
+        this.#islands.push(island);
     }
 
     initBuilding() {
@@ -46,40 +56,27 @@ class Game {
             (xCoor, yCoor, harm, attackBit, explodeType) => 
                 this.addExplode(xCoor, yCoor, harm, attackBit, explodeType)
         );
-        this.buildings.push(building);
+        this.#buildings.push(building);
     }
 
-    updateObjectStatus() {        
-        for (let island of this.islands) {
-            island.show();
-        }
+    getPlayerController() {
+        return this.#playerController;
+    }
 
-        for (let i = this.buildings.length - 1; i >= 0; --i) {
-            let building = this.buildings[i];
-            if (!building.isAlive) {
-                building.deadRattle();
-                this.buildings.splice(i, 1);
-            } else {
-                building.show();
-            }
-        }
+    getGameOver() {
+        return this.#gameOver;
+    }
 
-        this.playerController.updateStatus();
-        this.player.show();
+    getGameWin() {
+        return this.#gameWin;
+    }
 
-        for (let i = this.enemies.length - 1; i >= 0; --i) {
-            let enemy = this.enemies[i];
-            enemy.show();
-            if (!enemy.isAlive) {
-                this.enemies.splice(i, 1);
-            }
-        }
-
-        for (let i = 0; i < this.bullets.length; i++) {
-            let bullet = this.bullets[i];
+    updateObjectStatus() {
+        for (let i = 0; i < this.#bullets.length; i++) {
+            let bullet = this.#bullets[i];
             bullet.updateStatus();
             if (this.checkCollideBullet(bullet)) {
-                this.bullets[i].toDelete = true;
+                this.#bullets[i].toDelete = true;
                 this.addExplode(
                     bullet.xCoordinate,
                     bullet.yCoordinate,
@@ -87,11 +84,52 @@ class Game {
                     bullet.attackBit,
                     EXPLODE_MODEL_BULLET_TYPE
                 );
+                this.#bullets[i].toDelete = true;
+                this.#bullets[i].explode();
             } else {
                 bullet.show();
             }
         }
-        this.bullets = this.bullets.filter(bullet => !bullet.toDelete);
+        this.#bullets = this.#bullets.filter(bullet => !bullet.toDelete);
+
+        if (this.#player.isAlive == false) {
+            this.#gameOver = true;
+            console.log("Game Over!");
+        }
+
+        this.#playerController.updateStatus();
+        this.#player.show();    
+
+        for (let island of this.#islands) {
+            island.show();
+        }
+
+        if (this.#buildings.length != 0) {
+            for (let i = this.#buildings.length - 1; i >= 0; --i) {
+                let building = this.#buildings[i];
+                if (!building.isAlive) {
+                    building.deadRattle();
+                    this.#buildings.splice(i, 1);
+                } else {
+                    building.show();
+                }
+            }
+        }
+
+        if (this.#enemies.length != 0) {
+            for (let i = this.#enemies.length - 1; i >= 0; --i) {
+                let enemy = this.#enemies[i];
+                if (!enemy.isAlive) {
+                    this.#enemies.splice(i, 1);
+                } else {
+                    enemy.show();
+                }
+            }
+        }
+        if (this.#enemies.length == 0) {
+            this.#gameWin = true;
+        }
+
         
         if (this.enemies.length == 0) {
             this.updateStepCallBack(MAIN_STEP_GAME_REWARD);
@@ -99,23 +137,22 @@ class Game {
     }   
 
     checkCollideBullet(bullet) {
-        for (let island of this.islands) {
+        for (let island of this.#islands) {
             if (myCollide(island, bullet)) {
                 return true;
             }
         }
         
-        for (let enemy of this.enemies) {
+        for (let enemy of this.#enemies) {
             if (myCollide(enemy, bullet)) {
                 return true;
             }
         }
 
-        if (myCollide(this.player, bullet)) {
+        if (myCollide(this.#player, bullet)) {
             return true;
-        }
         
-        for (let building of this.buildings) {
+        for (let building of this.#buildings) {
             if (myCollide(building, bullet)) {
                 return true;
             }
@@ -125,18 +162,18 @@ class Game {
 
     checkCollidePlayer(xMove, yMove) {
         let location = {
-            xCoordinate : this.player.xCoordinate + xMove * this.player.speed,
-            yCoordinate : this.player.yCoordinate + yMove * this.player.speed,
-            xSize : this.player.xSize,
-            ySize : this.player.ySize
+            xCoordinate : this.#player.xCoordinate + xMove * this.#player.speed,
+            yCoordinate : this.#player.yCoordinate + yMove * this.#player.speed,
+            xSize : this.#player.xSize,
+            ySize : this.#player.ySize
         };
-        for (let island of this.islands) {
+        for (let island of this.#islands) {
             if (myCollide(location, island)) {
                 return true;
             } 
         }
 
-        for (let building of this.buildings) {
+        for (let building of this.#buildings) {
             if (building.type == BUILDING_MODEL_BOMB_TYPE) {
                 continue;
             }
@@ -144,7 +181,7 @@ class Game {
                 return true;
             }
         }
-        for (let enemy of this.enemies) {
+        for (let enemy of this.#enemies) {
             if (myCollide(location, enemy)) {
                 return true;
             }
@@ -179,10 +216,10 @@ class Game {
     }
 
     addBullet(xSpeed, ySpeed, bulletType) {
-        const currentWeapon = this.player.equipment.getCurrentWeapon();
+        const currentWeapon = this.#player.equipment.getCurrentWeapon();
         const bullet = new Bullet(
-            this.player.xCoordinate + xSpeed * 10, 
-            this.player.yCoordinate + ySpeed * 10, 
+            this.#player.xCoordinate + xSpeed * 10, 
+            this.#player.yCoordinate + ySpeed * 10, 
             xSpeed, 
             ySpeed, 
             bulletType, 
@@ -191,7 +228,7 @@ class Game {
             currentWeapon.bulletSize,
             currentWeapon.bulletSpeed
         );
-        this.bullets.push(bullet);
+        this.#bullets.push(bullet);
     }
 
     addBomb() {
@@ -215,14 +252,14 @@ class Game {
 
     playerMove(xMove, yMove) {
         if (this.checkCollidePlayer(xMove, yMove) == false) {
-            this.player.move(xMove, yMove);
+            this.#player.move(xMove, yMove);
         }
         else {
             if (this.checkCollidePlayer(xMove, 0) == false) {
-                this.player.move(xMove, 0);
+                this.#player.move(xMove, 0);
             }
             if (this.checkCollidePlayer(0, yMove) == false) {
-                this.player.move(0, yMove);
+                this.#player.move(0, yMove);
             }
         }
     }

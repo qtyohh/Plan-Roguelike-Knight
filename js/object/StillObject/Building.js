@@ -15,8 +15,9 @@ class Building extends BasicObject {
         );
         this.HP = buildingModel.HP;
         this.type = buildingModel.type;
-        this.isAlive = true;
         this.explodeCallBack = explodeCallBack;
+        this.MaxHP = buildingModel.HP;
+        this.isAlive = true;
     }
     show() {
         fill(255, 255, 255);
@@ -27,9 +28,12 @@ class Building extends BasicObject {
     }
 
     updateHP(change) {
-        this.HP += change;
-        if (this.HP <= 0) {
-            this.isAlive = false;
+        if (this.isAlive) {
+            this.HP += change;
+            this.HP = constrain(this.HP, 0, this.MaxHP);
+            if (this.HP <= 0) {
+                this.isAlive = false;
+            }
         }
     }
 
