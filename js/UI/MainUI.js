@@ -103,7 +103,7 @@ class MainUI {
             // PLAN ROGUELIKE KNIGHT
             this.updateStep(MAIN_STEP_CHOOSE_SHIP_UI);
             this.showChooseShipUI();
-        } else if (buttonType == MAIN_TEEM) {
+        } else if (buttonType == MAIN_STEP_START_UI_TEAM) {
             // Team Overview
         }
     }
