@@ -1,9 +1,9 @@
 class Wave {
   constructor(edge) {
-      this.speed = random(1, 4); // 波浪速度
+      this.speed = random(1, 5); //波浪速度
       this.edge = edge;
 
-      // **波浪尺寸**
+      //波浪大小
       if (edge === "left" || edge === "right") {
           this.xSize = 70;
           this.ySize = 200;
@@ -12,7 +12,6 @@ class Wave {
           this.ySize = 70;
       }
 
-      // **初始化波浪中心坐标**
       if (edge === "left") {
           this.xCoordinate = -this.xSize / 2;
           this.yCoordinate = random(this.ySize / 2, height - this.ySize / 2);
@@ -42,26 +41,57 @@ class Wave {
       this.xCoordinate += this.vx;
       this.yCoordinate += this.vy;
 
-      // **检查是否超出边界**
-      if (this.edge === "left" && this.xCoordinate - this.xSize / 2 > width) {
-          this.finished = true;
-      } else if (this.edge === "right" && (this.xCoordinate + this.xSize / 2) < 0) {
-          this.finished = true;
-      } else if (this.edge === "up" && this.yCoordinate - this.ySize / 2 > height) {
-          this.finished = true;
-      } else if (this.edge === "down" && (this.yCoordinate + this.ySize / 2) < 0) {
+      if (this.xCoordinate - this.xSize / 2 > width || this.xCoordinate + this.xSize / 2 < 0 ||
+          this.yCoordinate - this.ySize / 2 > height || this.yCoordinate + this.ySize / 2 < 0) {
           this.finished = true;
       }
   }
 
   show() {
       noStroke();
-      fill(0, 0, 255, 127);
+      fill(0, 0, 255, 127);//蓝色-小波浪
       rect(this.xCoordinate - this.xSize / 2, this.yCoordinate - this.ySize / 2, this.xSize, this.ySize);
   }
 }
 
-  
+class BigWave {
+  constructor(x, y, vx, vy) {
+      this.xCoordinate = x;
+      this.yCoordinate = y;
+      this.vx = vx;
+      this.vy = vy;
+      this.speed = Math.sqrt(vx * vx + vy * vy);
+
+      //巨浪大小
+      if (Math.abs(vx) > Math.abs(vy)) {
+          this.xSize = 100;
+          this.ySize = 300;
+      } else {
+          this.xSize = 300;
+          this.ySize = 100;
+      }
+
+      this.finished = false;
+  }
+
+  updateStatus() {
+      this.xCoordinate += this.vx;
+      this.yCoordinate += this.vy;
+
+      // **检查是否超出边界**
+      if (this.xCoordinate - this.xSize / 2 > width || this.xCoordinate + this.xSize / 2 < 0 ||
+          this.yCoordinate - this.ySize / 2 > height || this.yCoordinate + this.ySize / 2 < 0) {
+          this.finished = true;
+      }
+  }
+
+  show() {
+      noStroke();
+      fill(255, 0, 0, 127);//红色-巨浪
+      rect(this.xCoordinate - this.xSize / 2, this.yCoordinate - this.ySize / 2, this.xSize, this.ySize);
+  }
+}
+
 class WaveManager {
   constructor() {
       this.waves = [];
@@ -70,27 +100,26 @@ class WaveManager {
   }
 
   update() {
-    let waveCount = this.waves.length;
-    if (waveCount < 20) {
-        if (waveCount < 15 || (waveCount < 20 && random() < 0.5)) {
-            if (millis() - this.lastWaveTime > this.interval) {
-                this.generateWave();
-                this.lastWaveTime = millis();
-            }
-        }
-    }
+      let waveCount = this.waves.length;
+      if (waveCount < 20) {
+          if (waveCount < 15 || (waveCount < 20 && random() < 0.5)) {
+              if (millis() - this.lastWaveTime > this.interval) {
+                  this.generateWave();
+                  this.lastWaveTime = millis();
+              }
+          }
+      }
 
-    for (let i = this.waves.length - 1; i >= 0; i--) {
-        let wave = this.waves[i];
-        wave.updateStatus();
-        if (wave.finished) {
-            this.waves.splice(i, 1);
-        }
-    }
+      for (let i = this.waves.length - 1; i >= 0; i--) {
+          let wave = this.waves[i];
+          wave.updateStatus();
+          if (wave.finished) {
+              this.waves.splice(i, 1);
+          }
+      }
 
-    // **检测波浪碰撞**
-    this.checkWaveCollisions();
-}
+      this.checkWaveCollisions();
+  }
 
   show() {
       for (let wave of this.waves) {
@@ -106,33 +135,41 @@ class WaveManager {
   }
 
   checkWaveCollisions() {
-    for (let i = this.waves.length - 1; i >= 0; i--) {
-        for (let j = i - 1; j >= 0; j--) {
-            let waveA = this.waves[i];
-            let waveB = this.waves[j];
+      let wavesToRemove = new Set();
+      let newWaves = [];
 
-            // **检测是否有碰撞**
-            if (myCollide(waveA, waveB)) {
+      for (let i = 0; i < this.waves.length; i++) {
+          for (let j = i + 1; j < this.waves.length; j++) {
+              let waveA = this.waves[i];
+              let waveB = this.waves[j];
 
-                // **情况1：左右对向波浪（→ ←）**
-                let horizontalOpposite = (waveA.vx > 0 && waveB.vx < 0) || (waveA.vx < 0 && waveB.vx > 0);
+              if (myCollide(waveA, waveB)) {
+                  let oppositeHorizontal = (waveA.vx > 0 && waveB.vx < 0) || (waveA.vx < 0 && waveB.vx > 0);
+                  let oppositeVertical = (waveA.vy > 0 && waveB.vy < 0) || (waveA.vy < 0 && waveB.vy > 0);
+                  let diagonalCollision =
+                      (waveA.vx !== 0 && waveB.vy !== 0) || (waveA.vy !== 0 && waveB.vx !== 0);
 
-                // **情况2：上下对向波浪（↑ ↓）**
-                let verticalOpposite = (waveA.vy > 0 && waveB.vy < 0) || (waveA.vy < 0 && waveB.vy > 0);
+                  let sameHorizontal = (waveA.vx > 0 && waveB.vx > 0) || (waveA.vx < 0 && waveB.vx < 0);
+                  let sameVertical = (waveA.vy > 0 && waveB.vy > 0) || (waveA.vy < 0 && waveB.vy < 0);
 
-                // **情况3：交叉碰撞（左→ + 下↓） 或 （右← + 上↑）**
-                let diagonalCollision = 
-                    (waveA.vx > 0 && waveB.vy > 0) || (waveA.vy > 0 && waveB.vx > 0) || 
-                    (waveA.vx < 0 && waveB.vy < 0) || (waveA.vy < 0 && waveB.vx < 0);
+                  if (oppositeHorizontal || oppositeVertical || diagonalCollision) {
+                      wavesToRemove.add(i);
+                      wavesToRemove.add(j);
+                  } else if (sameHorizontal || sameVertical) {
+                      let newX = (waveA.xCoordinate + waveB.xCoordinate) / 2;
+                      let newY = (waveA.yCoordinate + waveB.yCoordinate) / 2;
+                      let newVx = waveA.vx + waveB.vx;
+                      let newVy = waveA.vy + waveB.vy;
+                      let newWave = new BigWave(newX, newY, newVx, newVy);
+                      newWaves.push(newWave);
+                      wavesToRemove.add(i);
+                      wavesToRemove.add(j);
+                  }
+              }
+          }
+      }
 
-                // **如果满足任意一种情况，就删除波浪**
-                if (horizontalOpposite || verticalOpposite || diagonalCollision) {
-                    this.waves.splice(i, 1);
-                    this.waves.splice(j, 1);
-                    return;  // 删除一对后立即返回，防止索引错乱
-                }
-            }
-        }
-    }
-}
+      this.waves = this.waves.filter((_, index) => !wavesToRemove.has(index));
+      this.waves.push(...newWaves);
+  }
 }
