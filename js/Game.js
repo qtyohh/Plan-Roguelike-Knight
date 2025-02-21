@@ -319,7 +319,7 @@ class Game {
         }
     }
 
-/*     enemyMove(xMove, yMove, enemy) {
+    enemyMove(xMove, yMove, enemy) {
         if (this.checkCollideEnemy(xMove, yMove, enemy) == false) {
             enemy.move(xMove, yMove);
         }
@@ -331,7 +331,7 @@ class Game {
                 enemy.move(0, yMove);
             }
         }
-    } */
+    }
 
 
 }
