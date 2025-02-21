@@ -2,7 +2,7 @@ class Game {
     #player;
     #enemies;
     #bullets;
-    #waveManager; // 新增：波浪管理器
+    #waveManager;
     #islands;
     #buildings;
     #playerController;
