@@ -62,6 +62,13 @@ class Game {
         this.#buildings.push(building);
     }
 
+    getPlayerStatus() {
+        const playerStatus = {
+            HP : this.#player.HP,
+            
+        };
+    }
+
     getPlayerController() {
         return this.#playerController;
     }

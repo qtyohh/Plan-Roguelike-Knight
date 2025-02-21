@@ -1,4 +1,3 @@
-
 class Main {
     #UI = null;
     #status = null;
@@ -6,12 +5,13 @@ class Main {
     #step = MAIN_STEP_START_UI;
 
     constructor() {
-        this.#UI = new UI(
+        this.#UI = new MainUI(
             (stepChangeType) => this.updateStep(stepChangeType),
             (shipType) => this.setShipBasic(shipType)
         );
         this.#status = new Status();
     }
+
     initNewGame() {
         let playerBasicStatus = this.#status.getShipBasicStatus();
         this.#game = new Game(
@@ -21,6 +21,25 @@ class Main {
         this.#game.initEnemies();
         this.#game.initIslands();
         this.#game.initBuilding();
+    }
+
+    continueGame() {
+        if (this.#game == null) {
+            this.initNewGame();
+        }
+        this.#game.updateObjectStatus();
+        this.updatePlayerStatus();
+
+        // check if game is ended
+        if (this.#game.getGameWin()) {
+            this.updateStep(MAIN_STEP_GAME_REWARD);
+            this.#game = null;
+        }
+        if (this.#game.getGameOver()) {
+            console.log("Game Over!");
+            this.updateStep(MAIN_STEP_GAME_OVER);
+            this.#game = null;
+        }
     }
 
     updateAll() {
@@ -34,11 +53,8 @@ class Main {
                 break;
             }
             case MAIN_STEP_IN_GAME: {
-                if (this.#game == null) {
-                    this.initNewGame();
-                }
-                this.#game.updateObjectStatus();
-                //console.log("update error");
+                this.#UI.showInGameUI();
+                this.continueGame();
                 break;
             }
             case MAIN_STEP_GAME_REWARD: {
@@ -52,10 +68,14 @@ class Main {
         }
     }
 
+    windowResized() {
+        this.#UI.windowResized();
+    }
+
     keyPressed() {
         switch(this.#step) {
             case MAIN_STEP_START_UI: {
-                this.#UI.startUIPressed();
+                // this.#UI.startUIPressed();
                 break;
             }
             case MAIN_STEP_IN_GAME: {
@@ -71,12 +91,12 @@ class Main {
                 break;
             }
             case MAIN_STEP_IN_GAME: {
-                // 确保 game 对象已经初始化后，才调用 keyReleased
                 if (this.#game) {
                     this.#game.getPlayerController().keyReleased();
                 }
                 break;
             }
+        
         }
     }
 
@@ -97,8 +117,30 @@ class Main {
         }
     }
 
+    mouseReleased() {
+        switch(this.#step) {
+            case MAIN_STEP_START_UI: {
+                this.#UI.startUIReleased();
+                break;
+            }
+            case MAIN_STEP_CHOOSE_SHIP_UI: {
+                this.#UI.chooseShipUIMouseReleased();
+                break;
+            }
+        }
+    }
+    
+    updatePlayerStatus() {
+        
+    }
+
     updateStep(stepChangeType) {
+        if (stepChangeType >= MAIN_STEP_MAX || stepChangeType < 0) {
+            console.log("step type error");
+            stepChangeType = MAIN_STEP_MAX;
+        }
         this.#step = stepChangeType;
+        this.#UI.changeCurrentStep(stepChangeType);
     }
 
     setShipBasic(shipType) {
