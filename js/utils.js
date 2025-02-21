@@ -4,6 +4,7 @@ const MAIN_STEP_CHOOSE_MODE_UI = 2;
 const MAIN_STEP_CHOOSE_SEAMAN_UI = 3;
 const MAIN_STEP_IN_GAME = 4;
 const MAIN_STEP_GAME_REWARD = 5;
+const MAIN_TEEM = 6;
 
 /**
  *  attackBit: each bit controls which object could this object attack

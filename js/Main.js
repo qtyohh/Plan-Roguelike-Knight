@@ -1,4 +1,3 @@
-
 class Main {
     #UI = null;
     #status = null;
@@ -6,12 +5,13 @@ class Main {
     #step = MAIN_STEP_START_UI;
 
     constructor() {
-        this.#UI = new UI(
+        this.#UI = new MainUI(
             (stepChangeType) => this.updateStep(stepChangeType),
             (shipType) => this.setShipBasic(shipType)
         );
         this.#status = new Status();
     }
+
     initNewGame() {
         let playerBasicStatus = this.#status.getShipBasicStatus();
         this.#game = new Game(
@@ -52,10 +52,14 @@ class Main {
         }
     }
 
+    windowResized() {
+        this.#UI.windowResized();
+    }
+
     keyPressed() {
         switch(this.#step) {
             case MAIN_STEP_START_UI: {
-                this.#UI.startUIPressed();
+                // this.#UI.startUIPressed();
                 break;
             }
             case MAIN_STEP_IN_GAME: {
@@ -71,12 +75,12 @@ class Main {
                 break;
             }
             case MAIN_STEP_IN_GAME: {
-                // 确保 game 对象已经初始化后，才调用 keyReleased
                 if (this.#game) {
                     this.#game.getPlayerController().keyReleased();
                 }
                 break;
             }
+        
         }
     }
 
@@ -97,8 +101,22 @@ class Main {
         }
     }
 
+    mouseReleased() {
+        switch(this.#step) {
+            case MAIN_STEP_START_UI: {
+                this.#UI.startUIReleased();
+                break;
+            }
+            case MAIN_STEP_CHOOSE_SHIP_UI: {
+                this.#UI.chooseShipUIMouseReleased();
+                break;
+            }
+        }
+    }
+
     updateStep(stepChangeType) {
         this.#step = stepChangeType;
+        this.#UI.changeCurrentStep(stepChangeType);
     }
 
     setShipBasic(shipType) {
