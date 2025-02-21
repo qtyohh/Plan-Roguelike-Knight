@@ -23,7 +23,7 @@ class Status {
         this.#playerStatus.speed = SHIP_MODEL[shipType].speed;
     }
 
-    getShipBasicStatus() {
+    getShipStatus() {
         return this.#playerStatus;
     }
 }
