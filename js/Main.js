@@ -131,7 +131,7 @@ class Main {
     
     updatePlayerStatus() {
         const playerStatus = this.#game.getPlayerStatus();
-        this.#status.HP = playerStatus.HP;
+        this.#status.updateHP(playerStatus.HP);
     }
 
     updateStep(stepChangeType) {
