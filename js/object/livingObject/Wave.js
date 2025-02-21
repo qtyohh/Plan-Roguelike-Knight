@@ -78,7 +78,6 @@ class BigWave {
       this.xCoordinate += this.vx;
       this.yCoordinate += this.vy;
 
-      // **检查是否超出边界**
       if (this.xCoordinate - this.xSize / 2 > width || this.xCoordinate + this.xSize / 2 < 0 ||
           this.yCoordinate - this.ySize / 2 > height || this.yCoordinate + this.ySize / 2 < 0) {
           this.finished = true;
@@ -96,11 +95,11 @@ class WaveManager {
   constructor() {
       this.waves = [];
       this.lastWaveTime = 0;
-      this.interval = 100; // 波浪生成间隔
+      this.interval = 100; //波浪生成间隔
   }
 
   update() {
-      let waveCount = this.waves.length;
+      let waveCount = this.waves.length;//目前屏幕
       if (waveCount < 20) {
           if (waveCount < 15 || (waveCount < 20 && random() < 0.5)) {
               if (millis() - this.lastWaveTime > this.interval) {
