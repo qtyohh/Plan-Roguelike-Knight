@@ -73,29 +73,29 @@ class MainUI {
         }
     }
     
-    // Handle current UI state mouse pressed
-    handleMousePressed() {
-        switch (this.#currentStep) {
-            case MAIN_STEP_START_UI:
-                this.startUIPressed();
-                break;
-            case MAIN_STEP_CHOOSE_SHIP_UI:
-                this.chooseShipUIMousePressed();
-                break;
-        }
-    }
+    // // Handle current UI state mouse pressed
+    // handleMousePressed() {
+    //     switch (this.#currentStep) {
+    //         case MAIN_STEP_START_UI:
+    //             this.startUIPressed();
+    //             break;
+    //         case MAIN_STEP_CHOOSE_SHIP_UI:
+    //             this.chooseShipUIMousePressed();
+    //             break;
+    //     }
+    // }
   
-    // Handle current UI state mouse released
-    handleMouseReleased() {
-        switch (this.#currentStep) {
-            case MAIN_STEP_START_UI:
-                this.startUIReleased();
-                break;
-            case MAIN_STEP_CHOOSE_SHIP_UI:
-                this.chooseShipUIMouseReleased();
-                break;
-        }
-    }
+    // // Handle current UI state mouse released
+    // handleMouseReleased() {
+    //     switch (this.#currentStep) {
+    //         case MAIN_STEP_START_UI:
+    //             this.startUIReleased();
+    //             break;
+    //         case MAIN_STEP_CHOOSE_SHIP_UI:
+    //             this.chooseShipUIMouseReleased();
+    //             break;
+    //     }
+    // }
   
     // private, callback by StartUI
     #handleStartUIButtonClick(buttonType) {
@@ -117,5 +117,9 @@ class MainUI {
         if (this.updateStep) {
             this.updateStep(MAIN_STEP_IN_GAME);
         }
+    }
+
+    changeCurrentStep(step) {
+        this.#currentStep = step;
     }
 }

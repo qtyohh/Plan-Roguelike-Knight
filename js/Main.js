@@ -59,7 +59,7 @@ class Main {
     keyPressed() {
         switch(this.#step) {
             case MAIN_STEP_START_UI: {
-                this.#UI.startUIPressed();
+                // this.#UI.startUIPressed();
                 break;
             }
             case MAIN_STEP_IN_GAME: {
@@ -70,7 +70,18 @@ class Main {
     }
 
     keyReleased() {
-        this.#game.getPlayerController().keyReleased();
+        switch (this.#step) {
+            case MAIN_STEP_START_UI: {
+                break;
+            }
+            case MAIN_STEP_IN_GAME: {
+                if (this.#game) {
+                    this.#game.getPlayerController().keyReleased();
+                }
+                break;
+            }
+        
+        }
     }
 
     mousePressed() {
@@ -105,6 +116,7 @@ class Main {
 
     updateStep(stepChangeType) {
         this.#step = stepChangeType;
+        this.#UI.changeCurrentStep(stepChangeType);
     }
 
     setShipBasic(shipType) {

@@ -33,6 +33,7 @@ class StartUI {
             
             // Button-size change
             const currentScale = lerp(this.scale, 1, 0.2);
+            // console.log("范围:", this.scale)
             translate(this.x + this.w / 2, this.y + this.h / 2);
             scale(currentScale);
             
@@ -68,9 +69,10 @@ class StartUI {
             }
         }
     
-        press() { this.scale = 0.5; }
+        press() { this.scale = 0.98; }
         release() { 
             this.scale = 1; 
+            console.log("点击了按钮:", this.label);
             // ...
             if (this.isHovered) {
                 return true;
@@ -140,7 +142,7 @@ class StartUI {
         let clickedType = null;
         
         this.buttons.forEach(btn => {
-            if (btn.release() && btn.isHovered) {
+            if (btn.isHovered && btn.release()) {
                 buttonClicked = true;
                 clickedType = btn.type;
             }

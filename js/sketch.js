@@ -12,7 +12,7 @@ function draw() {
 
 function keyPressed() {
     main.keyPressed();
-  }
+}
 
 function mousePressed() {
     main.mousePressed();
