@@ -2,6 +2,7 @@ class Game {
     #player;
     #enemies;
     #bullets;
+    #waveManager; // 新增：波浪管理器
     #islands;
     #buildings;
     #playerController;
@@ -15,6 +16,7 @@ class Game {
         this.#islands = [];
         this.#buildings = [];
         this.#playerController = null;
+        this.#waveManager = new WaveManager();
         this.#gameOver = false;
         this.#gameWin = false;
         this.updateStepCallBack = updateStepCallBack;
@@ -136,6 +138,9 @@ class Game {
         /*if (this.#enemies.length == 0) {
             this.updateStepCallBack(MAIN_STEP_GAME_REWARD);
         }*/
+
+        this.#waveManager.update();
+        this.#waveManager.show();
     }   
 
     checkCollideBullet(bullet) {
