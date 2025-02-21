@@ -39,7 +39,12 @@ class Game {
     }
 
     initEnemies() {
-        const enemy = new Enemy(300, 100, EASY_ENEMY_MODEL_1_TYPE);
+        const enemy = new Enemy(
+            300, 
+            200, 
+            EASY_ENEMY_MODEL_1_TYPE,
+            (xSpeed, ySpeed, enemy) => this.addEnemyBullet(xSpeed, ySpeed, enemy)
+        );
         this.#enemies.push(enemy);
     }
 
@@ -131,6 +136,7 @@ class Game {
                 if (!enemy.isAlive) {
                     this.#enemies.splice(i, 1);
                 } else {
+                    enemy.enemyAI(this.#player.xCoordinate, this.#player.yCoordinate);
                     enemy.show();
                 }
             }
@@ -237,6 +243,21 @@ class Game {
         this.#bullets.push(bullet);
     }
 
+    addEnemyBullet(xSpeed, ySpeed, enemy) {
+        const bullet = new Bullet(
+            this.xCoordinate + xSpeed * 10, 
+            this.yCoordinate + ySpeed * 10, 
+            xSpeed, 
+            ySpeed, 
+            ENEMY_BULLET_TYPE, 
+            0, 
+            0,
+            0,
+            0
+        );
+        this.#bullets.push(bullet);
+    }
+    
     addBomb() {
         let xCoor = this.#player.xCoordinate;
         let yCoor = this.#player.yCoordinate;
@@ -269,4 +290,6 @@ class Game {
             }
         }
     }
+
+
 }

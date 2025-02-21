@@ -1,18 +1,22 @@
-class Enemy extends BasicObject {
-    constructor(xCoordinate, yCoordinate, enemyModelType) {
+class Enemy extends LivingObject {
+    constructor(xCoordinate, yCoordinate, enemyModelType, enemyAttackCallBack) {
         const enemyModel = getEnemyModel(enemyModelType);
         super(
             enemyModel.name,
-            ENEMY_TYPE,
             xCoordinate,
             yCoordinate,
             enemyModel.xSize,
             enemyModel.ySize,
-            ENEMY_ATTACK_BIT,
             enemyModel.HP,
-            enemyModel.speed
+            enemyModel.speed,
+            ENEMY_ATTACK_BIT
         );
-        this.modelType = enemyModel.type;
+        this.type = enemyModel.type;
+        this.maxHP = enemyModel.HP;
+
+        this.attackCD = 1;
+        this.lastAttackTime = 0;
+        this.enemyAttackCallBack = enemyAttackCallBack;
     }
 
     show() {
@@ -31,12 +35,34 @@ class Enemy extends BasicObject {
     }
 
     updateHP(change) {
-        super.updateHP(change);
+        if (this.isAlive) {
+            this.HP += change;
+            this.HP = constrain(this.HP, 0, this.maxHP);
+
+            if (this.HP <= 0) {
+                this.isAlive = false;
+            }
+        }
     }
 
     move(xSpeed, ySpeed) {
         super.move(xSpeed, ySpeed);
     }
 
+    enemyAI(playerX, playerY) {
+        if (this.isAlive) {
+            let distance = dist(this.xCoordinate, this.yCoordinate, playerX, playerY);
+            if (distance < 200 && millis() - this.lastAttackTime > this.attackCD * 1000) {
+                this.lastAttackTime = millis();
+                let xSpeed = (playerX - this.xCoordinate) / distance;
+                let ySpeed = (playerY - this.yCoordinate) / distance;
+                this.enemyAttackCallBack(
+                    xSpeed,
+                    ySpeed,
+                    ENEMY_BULLET_TYPE
+                );
+            }
+        }
+    }
 }
 
