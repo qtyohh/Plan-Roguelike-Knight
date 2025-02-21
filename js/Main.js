@@ -23,6 +23,25 @@ class Main {
         this.#game.initBuilding();
     }
 
+    continueGame() {
+        if (this.#game == null) {
+            this.initNewGame();
+        }
+        this.#game.updateObjectStatus();
+        this.updatePlayerStatus();
+
+        // check if game is ended
+        if (this.#game.getGameWin()) {
+            this.updateStep(MAIN_STEP_GAME_REWARD);
+            this.#game = null;
+        }
+        if (this.#game.getGameOver()) {
+            console.log("Game Over!");
+            this.updateStep(MAIN_STEP_GAME_OVER);
+            this.#game = null;
+        }
+    }
+
     updateAll() {
         switch(this.#step) {
             case MAIN_STEP_START_UI: {
@@ -34,11 +53,8 @@ class Main {
                 break;
             }
             case MAIN_STEP_IN_GAME: {
-                if (this.#game == null) {
-                    this.initNewGame();
-                }
-                this.#game.updateObjectStatus();
-                //console.log("update error");
+                this.#UI.showInGameUI();
+                this.continueGame();
                 break;
             }
             case MAIN_STEP_GAME_REWARD: {
@@ -113,8 +129,16 @@ class Main {
             }
         }
     }
+    
+    updatePlayerStatus() {
+        
+    }
 
     updateStep(stepChangeType) {
+        if (stepChangeType >= MAIN_STEP_MAX || stepChangeType < 0) {
+            console.log("step type error");
+            stepChangeType = MAIN_STEP_MAX;
+        }
         this.#step = stepChangeType;
         this.#UI.changeCurrentStep(stepChangeType);
     }
