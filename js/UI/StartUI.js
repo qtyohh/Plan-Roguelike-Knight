@@ -92,7 +92,7 @@ class StartUI {
         const btnY = height / 2 - 100;
         this.buttons.push(
             new this.Button(width / 2 - 225, btnY - 50, 450, 120, 'PLAN ROGUELIKE KNIGHT', MAIN_STEP_START_UI),
-            new this.Button(width / 2 - 125, btnY + 150, 250, 50, 'Team Overview', MAIN_TEEM)
+            new this.Button(width / 2 - 125, btnY + 150, 250, 50, 'Team Overview', MAIN_STEP_START_UI_TEAM)
         );
     }
     
