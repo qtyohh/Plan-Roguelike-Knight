@@ -62,7 +62,9 @@ class Game {
 
     getPlayerStatus() {
         const playerStatus = {
-            HP : this.#player.HP
+            HP : this.#player.HP,
+            maxHP : this.#player.maxHP
+
         };
         return playerStatus;
     }
