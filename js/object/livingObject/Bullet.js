@@ -61,10 +61,10 @@ class Bullet extends BasicObject {
 
     show() {
         fill(0, 255, 0);
-        rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
+        super.show();
     }
 
-    explode() {
+    /*explode() {
         if (!this.exploded) {
             fill(0);
             rect(
@@ -76,5 +76,5 @@ class Bullet extends BasicObject {
             this.exploded = true;
             console.log("---------Bullet exploded---------");
         }
-    }
+    }*/
 }

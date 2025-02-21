@@ -213,7 +213,13 @@ function getExplodeModel(explodeType) {
 
 function myCollide(itemA, itemB) {
     return collideRectRect(
-        itemA.xCoordinate, itemA.yCoordinate, itemA.xSize, itemA.ySize, 
-        itemB.xCoordinate, itemB.yCoordinate, itemB.xSize, itemB.ySize
+        itemA.xCoordinate - itemA.xSize / 2, 
+        itemA.yCoordinate - itemA.ySize / 2, 
+        itemA.xSize, 
+        itemA.ySize, 
+        itemB.xCoordinate - itemB.xSize / 2, 
+        itemB.yCoordinate - itemB.ySize / 2, 
+        itemB.xSize, 
+        itemB.ySize
     );
 }

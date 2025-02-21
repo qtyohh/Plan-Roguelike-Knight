@@ -94,7 +94,6 @@ class Game {
                     EXPLODE_MODEL_BULLET_TYPE
                 );
                 this.#bullets[i].toDelete = true;
-                this.#bullets[i].explode();
             } else {
                 bullet.show();
             }
@@ -140,9 +139,6 @@ class Game {
             this.#gameWin = true;
         }
 
-        /*if (this.#enemies.length == 0) {
-            this.updateStepCallBack(MAIN_STEP_GAME_REWARD);
-        }*/
     }   
 
     checkCollideBullet(bullet) {
@@ -242,8 +238,8 @@ class Game {
     }
 
     addBomb() {
-        let xCoor = this.#player.xCoordinate + this.#player.xSize / 2;
-        let yCoor = this.#player.yCoordinate + this.#player.xSize / 2;
+        let xCoor = this.#player.xCoordinate;
+        let yCoor = this.#player.yCoordinate;
         const bomb = new Building(
             xCoor, 
             yCoor, 

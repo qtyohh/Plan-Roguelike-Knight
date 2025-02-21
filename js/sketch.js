@@ -1,6 +1,7 @@
 let main;
 
 function setup() {
+    rectMode(CENTER);
     createCanvas(windowWidth, windowHeight);
     main = new Main();
 }
