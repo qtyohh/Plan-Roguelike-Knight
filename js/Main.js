@@ -66,7 +66,18 @@ class Main {
     }
 
     keyReleased() {
-        this.#game.getPlayerController().keyReleased();
+        switch (this.#step) {
+            case MAIN_STEP_START_UI: {
+                break;
+            }
+            case MAIN_STEP_IN_GAME: {
+                // 确保 game 对象已经初始化后，才调用 keyReleased
+                if (this.#game) {
+                    this.#game.getPlayerController().keyReleased();
+                }
+                break;
+            }
+        }
     }
 
     mousePressed() {
