@@ -12,9 +12,9 @@ class InGameUI {
     
         fill(255);              
         textSize(16);
-        text(`HP: ${playerStatus.HP} / ${playerStatus.maxHP}`, 20, 40);
+        text(`HP: ${playerStatus.HP} / ${playerStatus.HPmax}`, 110, 50);
     
-        text(`Skill CD: ${0} s`, 20, 65);
+        text(`Skill CD: ${0} s`, 110, 75);
     
         pop();
       }

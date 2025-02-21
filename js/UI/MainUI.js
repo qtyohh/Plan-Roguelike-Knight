@@ -36,6 +36,7 @@ class MainUI {
         if (!this.#inGameUI) {
             this.#inGameUI = new InGameUI();
         }
+        this.#inGameUI.show(playerStatus);
     }
 
     gameFinishGetSeamanUI() {
