@@ -3,6 +3,7 @@ class MainUI {
     #currentStep = MAIN_STEP_START_UI;
     #startUI;
     #chooseShipUI;
+    #inGameUI;
   
     constructor(updateStep, updateShipStatus) {
         this.updateStep = updateStep;
@@ -11,6 +12,7 @@ class MainUI {
         // Init UI
         this.#startUI = new StartUI(this.#handleStartUIButtonClick.bind(this));
         this.#chooseShipUI = new ChooseShipUI(this.#handleShipSelection.bind(this));
+        this.#inGameUI = new InGameUI();
     }
   
     showStartUI() {
@@ -30,6 +32,10 @@ class MainUI {
         this.#chooseShipUI.draw();
     }
   
+    showInGameUI(playerStatus) {
+
+    }
+
     gameFinishGetSeamanUI() {
       // ...
     }
