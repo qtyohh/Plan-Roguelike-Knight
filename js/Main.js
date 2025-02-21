@@ -13,7 +13,7 @@ class Main {
     }
 
     initNewGame() {
-        let playerBasicStatus = this.#status.getShipBasicStatus();
+        let playerBasicStatus = this.#status.getShipStatus();
         this.#game = new Game(
             (stepChangeType) => this.updateStep(stepChangeType)
         );
@@ -53,7 +53,7 @@ class Main {
                 break;
             }
             case MAIN_STEP_IN_GAME: {
-                this.#UI.showInGameUI();
+                this.#UI.showInGameUI(this.#status.getShipStatus());
                 this.continueGame();
                 break;
             }
@@ -131,7 +131,8 @@ class Main {
     }
     
     updatePlayerStatus() {
-        
+        const playerStatus = this.#game.getPlayerStatus();
+        this.#status.HP = playerStatus.HP;
     }
 
     updateStep(stepChangeType) {
