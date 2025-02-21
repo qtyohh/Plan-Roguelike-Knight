@@ -43,7 +43,7 @@ class StartUI {
             fill(bgColor);
             stroke(mainColor);
             strokeWeight(1);
-            rect(-this.w / 2, -this.h / 2, this.w, this.h, 0);
+            rect(0, 0, this.w, this.h, 0);
             
             // Text-
             fill(textColor);

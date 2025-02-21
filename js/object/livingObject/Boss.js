@@ -32,14 +32,7 @@ class Boss extends Enemy {
     }
 
     updateHP(change) {
-        if (this.isAlive) {
-            this.HP += change;
-            this.HP = constrain(this.HP, 0, this.maxHP);
-
-            if (this.HP <= 0) {
-                this.isAlive = false;
-            }
-        }
+        super.updateHP(change);
     }
 
     putOnBuff() {

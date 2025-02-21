@@ -39,7 +39,7 @@ class ChooseShipUI {
             fill(bgColor);
             stroke(mainColor);
             strokeWeight(1);
-            rect(-this.w / 2, -this.h / 2, this.w, this.h, 5);
+            rect(0, 0, this.w, this.h, 5);
             
             fill(textColor);
             noStroke();

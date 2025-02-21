@@ -8,8 +8,8 @@ class Building extends BasicObject {
         super(
             buildingModel.name,
             BUILDING_TYPE,
-            xCoor - buildingModel.xSize / 2, 
-            yCoor - buildingModel.ySize / 2, 
+            xCoor, 
+            yCoor, 
             buildingModel.xSize, 
             buildingModel.ySize, 
             NO_HARM_ATTACK_BIT,

@@ -12,9 +12,9 @@ class Explode {
     }
 
     show() {
-        fill(0);
-        let xCoor = this.xCoordinate - this.xSize / 2;
-        let yCoor = this.yCoordinate - this.ySize / 2;
+        fill(255);
+        let xCoor = this.xCoordinate;
+        let yCoor = this.yCoordinate;
         rect(xCoor, yCoor, this.xSize, this.ySize);
     }
 }
