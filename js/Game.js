@@ -41,7 +41,13 @@ class Game {
     }
 
     initEnemies() {
-        const enemy = new Enemy(300, 100, EASY_ENEMY_MODEL_1_TYPE);
+        const enemy = new Enemy(
+            300, 
+            100, 
+            EASY_ENEMY_MODEL_1_TYPE,
+            (xSpeed, ySpeed, xCoordinate, yCoordinate) => this.addEnemyBullet(xSpeed, ySpeed, xCoordinate, yCoordinate),
+            (xMove, yMove, enemy) => this.enemyMove(xMove, yMove, enemy),
+        );
         this.#enemies.push(enemy);
     }
 
@@ -135,6 +141,7 @@ class Game {
                 if (!enemy.isAlive) {
                     this.#enemies.splice(i, 1);
                 } else {
+                    enemy.enemyAI(this.#player.xCoordinate, this.#player.yCoordinate, enemy);
                     enemy.show();
                 }
             }
@@ -203,7 +210,32 @@ class Game {
         return false;
     }
 
-    checkCollideEnemy(enemy) {
+    checkCollideEnemy(xMove, yMove, enemy) {
+        let location = {
+            xCoordinate : enemy.xCoordinate + xMove * enemy.speed,
+            yCoordinate : enemy.yCoordinate + yMove * enemy.speed,
+            xSize : enemy.xSize,
+            ySize : enemy.ySize
+        };
+
+        for (let island of this.#islands) {
+            if (myCollide(location, island)) {
+                return true;
+            } 
+        }
+        for (let building of this.#buildings) {
+            if (building.modelType == BUILDING_MODEL_BOMB_TYPE) {
+                continue;
+            }
+            if (myCollide(location, building)) {
+                return true;
+            }
+        }
+        if (myCollide(location, this.#player)) {
+            return true;
+        }
+
+        return false;
 
     }
 
@@ -245,6 +277,21 @@ class Game {
         this.#bullets.push(bullet);
     }
 
+    addEnemyBullet(xSpeed, ySpeed, xCoordinate, yCoordinate) {
+        const bullet = new Bullet(
+            xCoordinate + xSpeed * 10, 
+            yCoordinate + ySpeed * 10, 
+            xSpeed, 
+            ySpeed, 
+            ENEMY_BULLET_TYPE, 
+            0, 
+            0,
+            0,
+            0
+        );
+        this.#bullets.push(bullet);
+    }
+    
     addBomb() {
         let xCoor = this.#player.xCoordinate;
         let yCoor = this.#player.yCoordinate;
@@ -277,4 +324,20 @@ class Game {
             }
         }
     }
+
+    enemyMove(xMove, yMove, enemy) {
+        if (this.checkCollideEnemy(xMove, yMove, enemy) == false) {
+            enemy.move(xMove, yMove);
+        }
+        else {
+            if (this.checkCollideEnemy(xMove, 0, enemy) == false) {
+                enemy.move(xMove, 0);
+            }
+            if (this.checkCollideEnemy(0, yMove, enemy) == false) {
+                enemy.move(0, yMove);
+            }
+        }
+    }
+
+
 }
