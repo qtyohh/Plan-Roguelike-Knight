@@ -1,18 +1,18 @@
-class Enemy extends LivingObject {
+class Enemy extends BasicObject {
     constructor(xCoordinate, yCoordinate, enemyModelType, enemyAttackCallBack) {
         const enemyModel = getEnemyModel(enemyModelType);
         super(
             enemyModel.name,
+            ENEMY_TYPE,
             xCoordinate,
             yCoordinate,
             enemyModel.xSize,
             enemyModel.ySize,
+            ENEMY_ATTACK_BIT,
             enemyModel.HP,
             enemyModel.speed,
-            ENEMY_ATTACK_BIT
         );
-        this.type = enemyModel.type;
-        this.maxHP = enemyModel.HP;
+        this.modelType = enemyModel.type;
 
         this.attackCD = 1;
         this.lastAttackTime = 0;
@@ -35,14 +35,7 @@ class Enemy extends LivingObject {
     }
 
     updateHP(change) {
-        if (this.isAlive) {
-            this.HP += change;
-            this.HP = constrain(this.HP, 0, this.maxHP);
-
-            if (this.HP <= 0) {
-                this.isAlive = false;
-            }
-        }
+        super.updateHP(change);
     }
 
     move(xSpeed, ySpeed) {

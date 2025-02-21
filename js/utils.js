@@ -81,14 +81,15 @@ const ENEMY_MODEL = [
         xSize : 0,  
         ySize : 0,
         HP : 0,
-        speed : 0
+        speed : 0,
+        attack : 0
     }, {
         name : "easy_enemy_1",
         type : EASY_ENEMY_MODEL_1_TYPE,
         xSize : 15,  
         ySize : 15,
         HP : 5,
-        speed : 1
+        speed : 1,
     },
 
 ];
