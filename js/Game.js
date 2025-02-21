@@ -2,6 +2,7 @@ class Game {
     #player;
     #enemies;
     #bullets;
+    #waveManager;
     #islands;
     #buildings;
     #playerController;
@@ -15,6 +16,7 @@ class Game {
         this.#islands = [];
         this.#buildings = [];
         this.#playerController = null;
+        this.#waveManager = new WaveManager();
         this.#gameOver = false;
         this.#gameWin = false;
         this.updateStepCallBack = updateStepCallBack;
@@ -141,6 +143,10 @@ class Game {
             this.#gameWin = true;
         }
 
+    if (!this.#gameWin && !this.#gameOver) {
+        this.#waveManager.update();
+        this.#waveManager.show();
+    }
     }   
 
     checkCollideBullet(bullet) {
