@@ -99,7 +99,7 @@ class WaveManager {
   }
 
   update() {
-      let waveCount = this.waves.length;//目前屏幕
+      let waveCount = this.waves.length;//将屏幕上波浪数量控制在20~15
       if (waveCount < 20) {
           if (waveCount < 15 || (waveCount < 20 && random() < 0.5)) {
               if (millis() - this.lastWaveTime > this.interval) {
