@@ -116,7 +116,7 @@ class Game {
         }
 
 
-        if (this.#player.isAlive == false) {
+        if (this.#player.HP <= 0) {
             this.#gameOver = true;
             console.log("Game Over!");
         }

@@ -3,6 +3,7 @@ class Main {
     #status = null;
     #game = null;
     #step = MAIN_STEP_START_UI;
+    #cursorPos = null;
 
     constructor() {
         this.#UI = new MainUI(
@@ -10,6 +11,7 @@ class Main {
             (shipType) => this.setShipBasic(shipType)
         );
         this.#status = new Status();
+        this.#cursorPos = new CursorPos();
     }
 
     initNewGame() {
@@ -34,11 +36,13 @@ class Main {
         if (this.#game.getGameWin()) {
             this.updateStep(MAIN_STEP_GAME_REWARD);
             this.#game = null;
+            return;
         }
-        if (this.#game.getGameOver()) {
+        if (this.#game.gameOver) {
             console.log("Game Over!");
             this.updateStep(MAIN_STEP_GAME_OVER);
             this.#game = null;
+            return;
         }
     }
 
@@ -58,13 +62,13 @@ class Main {
                 break;
             }
             case MAIN_STEP_GAME_REWARD: {
-                //this.gameRewardUI();
-                fill(0);
-                rect(500, 500, 400, 400);
-                fill(255);
-                text("金币:填充填充", 500, 500);
-                text("水手:填充填充", 500, 700);
+                this.#UI.showGameRewardUI();
+                break;
             }   
+        }
+
+        if (this.#step != MAIN_STEP_IN_GAME) {
+            this.#cursorPos.show();
         }
     }
 
