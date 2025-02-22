@@ -8,7 +8,8 @@ class Main {
     constructor() {
         this.#UI = new MainUI(
             (stepChangeType) => this.updateStep(stepChangeType),
-            (shipType) => this.setShipBasic(shipType)
+            (shipType) => this.setShipBasic(shipType),
+            (buffType) => this.chooseBuff(buffType)
         );
         this.#status = new Status();
         this.#cursorPos = new CursorPos();
@@ -62,7 +63,7 @@ class Main {
                 break;
             }
             case MAIN_STEP_GAME_REWARD: {
-                this.#UI.showGameRewardUI();
+                this.gameReward();
                 break;
             }   
         }
@@ -146,6 +147,20 @@ class Main {
         }
         this.#step = stepChangeType;
         this.#UI.changeCurrentStep(stepChangeType);
+    }
+
+    gameReward() {
+        const gold = 10 + round(random(5, 15));
+        const buff = [
+            BUFF_MODEL[round(random(1, 5))],
+            BUFF_MODEL[round(random(1, 5))],
+            BUFF_MODEL[round(random(1, 5))]
+        ]
+        this.#UI.showGameRewardUI(gold, buff);
+    }
+
+    chooseBuff(buffType) {
+        console.log(buffType);
     }
 
     setShipBasic(shipType) {

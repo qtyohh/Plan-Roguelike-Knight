@@ -6,9 +6,10 @@ class MainUI {
     #inGameUI;
     #gameRewardUI;
   
-    constructor(updateStep, updateShipStatus) {
+    constructor(updateStep, updateShipStatus, updateBuffStatus) {
         this.updateStep = updateStep;
         this.updateShipStatus = updateShipStatus;
+        this.updateBuffStatus = updateBuffStatus;
         
         // Init UI
         this.#startUI = new StartUI(this.#handleStartUIButtonClick.bind(this));
@@ -41,12 +42,12 @@ class MainUI {
         this.#inGameUI.show(playerStatus);
     }
 
-    showGameRewardUI() {
+    showGameRewardUI(gold, buff) {
         if (this.#gameRewardUI == null) {
             this.#gameRewardUI = new GameRewardUI();
         }
-
-        this.#gameRewardUI.show();
+        this.#gameRewardUI.init(buff);
+        this.#gameRewardUI.draw(gold);
     }
 
     gameFinishGetSeamanUI() {

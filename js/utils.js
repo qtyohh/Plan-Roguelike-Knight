@@ -211,6 +211,56 @@ function getExplodeModel(explodeType) {
     return EXPLODE_MODEL[explodeType];
 }
 
+/**values of buffs */
+const BUFF_MODEL_ERROR_TYPE = 0;
+const BUFF_MODEL_COMMON_1_TYPE = 1;
+const BUFF_MODEL_COMMON_2_TYPE = 2;
+const BUFF_MODEL_COMMON_3_TYPE = 3;
+const BUFF_MODEL_RARE_1_TYPE = 4;
+const BUFF_MODEL_EPIC_1_TYPE = 5;
+const BUFF_MODEL_MAX_TYPE = 6;
+
+const BUFF_MODEL = [
+    {
+        name : "error",
+        type : BUFF_MODEL_ERROR_TYPE,
+        rarity : 0,
+        value : 0,
+        stillTime : 0
+    }, {
+        name : "Bullet power up!",
+        type : BUFF_MODEL_COMMON_1_TYPE,
+        rarity : 1,
+        value : 1,
+        stillTime : 0
+    }, {
+        name : "Bullet explode up!",
+        type : BUFF_MODEL_COMMON_2_TYPE,
+        rarity : 1,
+        value : 1,
+        stillTime : 0
+    }, {
+        name : "Speed up!",
+        type : BUFF_MODEL_COMMON_3_TYPE,
+        rarity : 1,
+        value : 1,
+        stillTime : 0
+    }, {
+        name : "A fully rest",
+        type : BUFF_MODEL_RARE_1_TYPE,
+        rarity : 2,
+        value : 999,
+        stillTime : 0
+    }, {
+        name : "Stronger with every fight",
+        type : BUFF_MODEL_EPIC_1_TYPE,
+        rarity : 3,
+        value : 0.3,
+        stillTime : 0
+    }
+];
+
+
 function myCollide(itemA, itemB) {
     return collideRectRect(
         itemA.xCoordinate - itemA.xSize / 2, 

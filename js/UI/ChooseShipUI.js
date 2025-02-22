@@ -1,11 +1,9 @@
 class ChooseShipUI {
     constructor(onShipSelect) {
         this.buttons = [];
-        this.cursorSize = 10;
         this.borderSize = 50;
         this.targetBorderSize = 50;
         this.borderColor = null;
-        this.cursorPos = { x: 0, y: 0 };
         this.onShipSelect = onShipSelect; // 回调
     }
   

@@ -1,0 +1,4 @@
+class MapUI {
+    constructor() {
+    }
+}
