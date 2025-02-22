@@ -26,4 +26,8 @@ class Status {
     getShipStatus() {
         return this.#playerStatus;
     }
+
+    updateHP(HP) {
+        this.#playerStatus.HP = HP;
+    }
 }

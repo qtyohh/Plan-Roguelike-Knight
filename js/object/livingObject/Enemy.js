@@ -1,5 +1,5 @@
 class Enemy extends BasicObject {
-    constructor(xCoordinate, yCoordinate, enemyModelType) {
+    constructor(xCoordinate, yCoordinate, enemyModelType, enemyAttackCallBack, enemyMoveCallBack) {
         const enemyModel = getEnemyModel(enemyModelType);
         super(
             enemyModel.name,
@@ -10,9 +10,16 @@ class Enemy extends BasicObject {
             enemyModel.ySize,
             ENEMY_ATTACK_BIT,
             enemyModel.HP,
-            enemyModel.speed
+            enemyModel.speed,
         );
         this.modelType = enemyModel.type;
+
+        this.attackCD = 1;
+        this.lastAttackTime = 0;
+        this.attackRange = 200;
+        this.seeRange = 500;
+        this.enemyAttackCallBack = enemyAttackCallBack;
+        this.enemyMoveCallBack = enemyMoveCallBack;
     }
 
     show() {
@@ -38,5 +45,34 @@ class Enemy extends BasicObject {
         super.move(xSpeed, ySpeed);
     }
 
+    enemyAI(playerX, playerY, enemy) {
+        if (this.isAlive) {
+            let distance = dist(this.xCoordinate, this.yCoordinate, playerX, playerY);
+            if (distance > this.seeRange) {
+            } else if (distance > this.attackRange && distance <= this.seeRange) {
+                let xSpeed = (playerX - this.xCoordinate) / distance * this.speed;
+                let ySpeed = (playerY - this.yCoordinate) / distance * this.speed;
+                this.enemyMove(xSpeed, ySpeed, enemy);
+            } else if (distance <= this.attackRange && millis() - this.lastAttackTime > this.attackCD * 1000) {
+                let xSpeed = (playerX - this.xCoordinate) / distance;
+                let ySpeed = (playerY - this.yCoordinate) / distance;
+                this.enemyAttack(xSpeed, ySpeed);
+            }
+        }
+    }
+
+    enemyMove(xSpeed, ySpeed, enemy) {
+        this.enemyMoveCallBack(xSpeed, ySpeed, enemy);
+    }
+
+    enemyAttack(xSpeed, ySpeed) {
+        this.enemyAttackCallBack(
+            xSpeed,
+            ySpeed,
+            this.xCoordinate,
+            this.yCoordinate,
+        );
+        this.lastAttackTime = millis();
+    }
 }
 
