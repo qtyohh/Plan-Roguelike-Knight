@@ -15,6 +15,7 @@ class MainUI {
         this.#startUI = new StartUI(this.#handleStartUIButtonClick.bind(this));
         this.#chooseShipUI = new ChooseShipUI(this.#handleShipSelection.bind(this));
         this.#inGameUI = new InGameUI();
+        this.#inGameUI.preload();
         this.#gameRewardUI = new GameRewardUI();
     }
   
@@ -39,6 +40,7 @@ class MainUI {
         if (this.#inGameUI == null) {
             this.#inGameUI = new InGameUI();
         }
+        this.#inGameUI.update(playerStatus);
         this.#inGameUI.show(playerStatus);
     }
 

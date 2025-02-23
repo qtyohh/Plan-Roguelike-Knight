@@ -50,7 +50,7 @@ const SHIP_MODEL = [
         type : SHIP_MODEL_1_TYPE,
         xSize : 10,
         ySize : 10,
-        HPmax : 5,
+        HPmax : 50,
         speed : 5
     } , {
         name : "ship2",

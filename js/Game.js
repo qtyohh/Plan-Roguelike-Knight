@@ -73,8 +73,8 @@ class Game {
     initBuilding() {
 
         const building = new Building(
-            100, 
-            100, 
+            300, 
+            300, 
             BUILDING_MODEL_TNT_TYPE,
             (xCoor, yCoor, harm, attackBit, explodeType) => 
                 this.addExplode(xCoor, yCoor, harm, attackBit, explodeType)
