@@ -73,7 +73,7 @@ class Enemy extends BasicObject {
             ySpeed,
             this.xCoordinate,
             this.yCoordinate,
-            this.atttackPower
+            this.attackPower
         );
         this.lastAttackTime = millis();
     }
