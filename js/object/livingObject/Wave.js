@@ -37,15 +37,26 @@ class Wave {
       this.finished = false;
   }
 
-  updateStatus() {
-      this.xCoordinate += this.vx;
-      this.yCoordinate += this.vy;
+  updateStatus(islands = []) {
+    this.xCoordinate += this.vx;
+    this.yCoordinate += this.vy;
 
-      if (this.xCoordinate - this.xSize / 2 > width || this.xCoordinate + this.xSize / 2 < 0 ||
-          this.yCoordinate - this.ySize / 2 > height || this.yCoordinate + this.ySize / 2 < 0) {
-          this.finished = true;
-      }
-  }
+    // 检测波浪是否超出边界
+    if (this.xCoordinate - this.xSize / 2 > width || this.xCoordinate + this.xSize / 2 < 0 ||
+        this.yCoordinate - this.ySize / 2 > height || this.yCoordinate + this.ySize / 2 < 0) {
+        this.finished = true;
+        return;
+    }
+
+    // 检测波浪是否碰到岛屿
+    for (let island of islands) {
+        if (myCollide(this, island)) {
+            console.log("波浪撞到了岛屿:", island.name);
+            this.finished = true; // 让波浪消失
+            break;
+        }
+    }
+}
 
   show() {
       noStroke();
@@ -74,15 +85,26 @@ class BigWave {
       this.finished = false;
   }
 
-  updateStatus() {
-      this.xCoordinate += this.vx;
-      this.yCoordinate += this.vy;
+  updateStatus(islands = []) {
+    this.xCoordinate += this.vx;
+    this.yCoordinate += this.vy;
 
-      if (this.xCoordinate - this.xSize / 2 > width || this.xCoordinate + this.xSize / 2 < 0 ||
-          this.yCoordinate - this.ySize / 2 > height || this.yCoordinate + this.ySize / 2 < 0) {
-          this.finished = true;
-      }
-  }
+    // 检测波浪是否超出边界
+    if (this.xCoordinate - this.xSize / 2 > width || this.xCoordinate + this.xSize / 2 < 0 ||
+        this.yCoordinate - this.ySize / 2 > height || this.yCoordinate + this.ySize / 2 < 0) {
+        this.finished = true;
+        return;
+    }
+
+    // 检测波浪是否碰到岛屿
+    for (let island of islands) {
+        if (myCollide(this, island)) {
+            console.log("波浪撞到了岛屿:", island.name);
+            this.finished = true; // 让波浪消失
+            break;
+        }
+    }
+}
 
   show() {
       noStroke();
@@ -95,30 +117,31 @@ class WaveManager {
   constructor() {
       this.waves = [];
       this.lastWaveTime = 0;
-      this.interval = 100; //波浪生成间隔
+      this.interval = 500; //波浪生成间隔
   }
 
-  update() {
-      let waveCount = this.waves.length;//将屏幕上波浪数量控制在20~15
-      if (waveCount < 20) {
-          if (waveCount < 15 || (waveCount < 20 && random() < 0.5)) {
-              if (millis() - this.lastWaveTime > this.interval) {
-                  this.generateWave();
-                  this.lastWaveTime = millis();
-              }
-          }
-      }
+  update(islands) {
+    let waveCount = this.waves.length;
+    if (waveCount < 20) {
+        if (waveCount < 15 || (waveCount < 20 && random() < 0.5)) {
+            if (millis() - this.lastWaveTime > this.interval) {
+                this.generateWave();
+                this.lastWaveTime = millis();
+            }
+        }
+    }
 
-      for (let i = this.waves.length - 1; i >= 0; i--) {
-          let wave = this.waves[i];
-          wave.updateStatus();
-          if (wave.finished) {
-              this.waves.splice(i, 1);
-          }
-      }
+    for (let i = this.waves.length - 1; i >= 0; i--) {
+        let wave = this.waves[i];
+        wave.updateStatus(islands);
+        if (wave.finished) {
+            console.log("波浪消失！");
+            this.waves.splice(i, 1);
+        }
+    }
 
-      this.checkWaveCollisions();
-  }
+    this.checkWaveCollisions();
+}
 
   show() {
       for (let wave of this.waves) {

@@ -150,10 +150,12 @@ class Game {
             this.#gameWin = true;
         }
 
-    if (!this.#gameWin && !this.#gameOver) {
-        this.#waveManager.update();
-        this.#waveManager.show();
-    }
+        if (!this.#gameWin && !this.#gameOver) {
+            this.#waveManager.update(this.#islands);
+            this.#waveManager.show();
+        }
+        
+        
     }   
 
     checkCollideBullet(bullet) {
