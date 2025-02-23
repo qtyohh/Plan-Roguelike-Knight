@@ -3,13 +3,16 @@ class Main {
     #status = null;
     #game = null;
     #step = MAIN_STEP_START_UI;
+    #cursorPos = null;
 
     constructor() {
         this.#UI = new MainUI(
             (stepChangeType) => this.updateStep(stepChangeType),
-            (shipType) => this.setShipBasic(shipType)
+            (shipType) => this.setShipBasic(shipType),
+            (buffType) => this.chooseBuff(buffType)
         );
         this.#status = new Status();
+        this.#cursorPos = new CursorPos();
     }
 
     initNewGame() {
@@ -38,6 +41,7 @@ class Main {
             console.log("Game Over!");
             this.updateStep(MAIN_STEP_GAME_OVER);
             this.#game = null;
+            return;
         }
     }
 
@@ -57,13 +61,13 @@ class Main {
                 break;
             }
             case MAIN_STEP_GAME_REWARD: {
-                //this.gameRewardUI();
-                fill(0);
-                rect(500, 500, 400, 400);
-                fill(255);
-                text("金币:填充填充", 500, 500);
-                text("水手:填充填充", 500, 700);
+                this.gameReward();
+                break;
             }   
+        }
+
+        if (this.#step != MAIN_STEP_IN_GAME) {
+            this.#cursorPos.show();
         }
     }
 
@@ -141,6 +145,20 @@ class Main {
         }
         this.#step = stepChangeType;
         this.#UI.changeCurrentStep(stepChangeType);
+    }
+
+    gameReward() {
+        const gold = 10 + round(random(5, 15));
+        const buff = [
+            BUFF_MODEL[round(random(1, 9))],
+            BUFF_MODEL[round(random(1, 9))],
+            BUFF_MODEL[round(random(1, 9))]
+        ]
+        this.#UI.showGameRewardUI(gold, buff);
+    }
+
+    chooseBuff(buffType) {
+        console.log(buffType);
     }
 
     setShipBasic(shipType) {

@@ -8,6 +8,8 @@ class Game {
     #playerController;
     #gameOver;
     #gameWin;
+    #playerBuffController;
+    #enemyBuffController;
 
     constructor(updateStepCallBack) {
         this.#player = null;
@@ -20,6 +22,9 @@ class Game {
         this.#gameOver = false;
         this.#gameWin = false;
         this.updateStepCallBack = updateStepCallBack;
+        this.#playerBuffController = null;
+        this.#enemyBuffController = new Map();
+        this.curTime = Date.now();
     }
 
     initPlayer(playerBasicStatus) {
@@ -38,6 +43,7 @@ class Game {
             (xMove, yMove) => this.playerMove(xMove, yMove),
             () => this.addBomb()
         );
+        this.#playerBuffController = new BuffController(this.#player);
     }
 
     initEnemies() {
@@ -124,7 +130,7 @@ class Game {
         }
 
 
-        if (this.#player.isAlive == false) {
+        if (this.#player.HP <= 0) {
             this.#gameOver = true;
             console.log("Game Over!");
         }
@@ -154,6 +160,12 @@ class Game {
         this.#waveManager.update();
         this.#waveManager.show();
     }
+    if (this.#player.HP > 0) {
+        this.checkAllBuffTriggers();
+        this.#playerBuffController.updateFrame(this.curTime);
+        this.updateEnemyBuffs(this.curTime);
+    }
+
     }   
 
     checkCollideBullet(bullet) {
@@ -340,4 +352,64 @@ class Game {
     }
 
 
+    updateEnemyBuffs(curTime) {
+        this.#enemies.forEach(enemy => {
+            const controller = this.#enemyBuffController.get(enemy.uniqueId);
+            if (controller) {
+                controller.updateFrame(curTime);
+                const effects = controller.getAllActiveEffects();
+                enemy.currentSpeed = enemy.baseSpeed * effects.speedRate;
+                enemy.attackPower = enemy.baseAttack * effects.damageRate;
+            }
+        });
+    }
+
+    checkAllBuffTriggers() {
+        this.#bullets.forEach(bullet => {
+            if (myCollide(this.#player, bullet)) {
+                if (bullet.attachBuff) {
+                    this.#playerBuffController.addNewBuff(bullet.attachBuff);
+                }
+                const remainingDamage = this.#playerBuffController.processDamage(bullet.damage);
+                this.#player.currentHp -= remainingDamage;
+            }
+
+            this.#enemies.forEach(enemy => {
+                if (myCollide(enemy, bullet)) {
+                    if (bullet.attachBuff) {
+                        let controller = this.#enemyBuffController.get(enemy.uniqueId);
+                        if (!controller) {
+                                controller = new BuffController(enemy);
+                                this.#enemyBuffController.set(enemy.uniqueId, controller);
+                            }
+                            controller.addNewBuff(bullet.attachBuff);
+                        }
+                        enemy.currentHp -= bullet.damage;
+                    }
+            });
+        });
+
+        this.#buildings.forEach(building => {
+            if (myCollide(this.#player, building)) {
+                if (building.attachBuff) {
+                    this.#playerBuffController.addNewBuff(building.attachBuff);
+                }
+            }
+        });
+
+        // win check
+        if (this.#gameWin) {
+            this.#playerBuffController.addNewBuff(
+                new Buff({
+                    effectDesc: "Well done! You win! And you get 20 health!",
+                    effectType: BuffTypes.HEALTH_CHANGE,
+                    effectValue: 20,
+                    rarity: RarityLevel.RARE,
+                    effectDuration: 0,
+                    canStack: false,
+                    triggerCondition: TriggerConditions.WIN_AND_CLEAR
+                })
+            );
+        }
+    }
 }
