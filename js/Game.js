@@ -51,10 +51,18 @@ class Game {
             300, 
             100, 
             EASY_ENEMY_MODEL_1_TYPE,
-            (xSpeed, ySpeed, xCoordinate, yCoordinate) => this.addEnemyBullet(xSpeed, ySpeed, xCoordinate, yCoordinate),
+            (xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower) => this.addEnemyBullet(xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower),
             (xMove, yMove, enemy) => this.enemyMove(xMove, yMove, enemy),
         );
         this.#enemies.push(enemy);
+        const enemy_1 = new Enemy(
+            400, 
+            100, 
+            EASY_ENEMY_MODEL_2_TYPE,
+            (xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower) => this.addEnemyBullet(xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower),
+            (xMove, yMove, enemy) => this.enemyMove(xMove, yMove, enemy),
+        );
+        this.#enemies.push(enemy_1);
     }
 
     initIslands() {
@@ -216,6 +224,10 @@ class Game {
         }
         for (let enemy of this.#enemies) {
             if (myCollide(location, enemy)) {
+                if (millis() - enemy.lastCollideTime > 1000) {
+                    this.#player.updateHP(enemy.attackPower * -1);
+                    enemy.lastCollideTime = millis();
+                }
                 return true;
             }
         }
@@ -244,6 +256,10 @@ class Game {
             }
         }
         if (myCollide(location, this.#player)) {
+            if (millis() - enemy.lastCollideTime > 1000) {
+                this.#player.updateHP(enemy.attackPower * -1);
+                enemy.lastCollideTime = millis();
+            }
             return true;
         }
 
@@ -289,14 +305,14 @@ class Game {
         this.#bullets.push(bullet);
     }
 
-    addEnemyBullet(xSpeed, ySpeed, xCoordinate, yCoordinate) {
+    addEnemyBullet(xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower) {
         const bullet = new Bullet(
             xCoordinate + xSpeed * 10, 
             yCoordinate + ySpeed * 10, 
             xSpeed, 
             ySpeed, 
             ENEMY_BULLET_TYPE, 
-            0, 
+            attackPower, 
             0,
             0,
             0

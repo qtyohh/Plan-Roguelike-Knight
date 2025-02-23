@@ -73,6 +73,7 @@ const SHIP_MODEL = [
 /* basic values of enemies */
 const ENEMY_MODEL_ERROR_TYPE = 0;
 const EASY_ENEMY_MODEL_1_TYPE = 1;
+const EASY_ENEMY_MODEL_2_TYPE = 2;
 
 const ENEMY_MODEL = [
     {
@@ -82,7 +83,10 @@ const ENEMY_MODEL = [
         ySize : 0,
         HP : 0,
         speed : 0,
-        attack : 0
+        attackPower : 0,
+        attackCD : 0,
+        attackRange : 0,
+        seeRange : 0
     }, {
         name : "easy_enemy_1",
         type : EASY_ENEMY_MODEL_1_TYPE,
@@ -90,6 +94,21 @@ const ENEMY_MODEL = [
         ySize : 15,
         HP : 5,
         speed : 1,
+        attackPower : 0.5,
+        attackCD : 1,
+        attackRange : 200,
+        seeRange : 500
+    }, {
+        name : "easy_enemy_2",
+        type : EASY_ENEMY_MODEL_2_TYPE,
+        xSize : 15,  
+        ySize : 15,
+        HP : 10,
+        speed : 2,
+        attackPower : 1,
+        attackCD : 1,
+        attackRange : -1,
+        seeRange : 500
     },
 
 ];
