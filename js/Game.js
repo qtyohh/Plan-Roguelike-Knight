@@ -151,10 +151,9 @@ class Game {
         }
 
         if (!this.#gameWin && !this.#gameOver) {
-            this.#waveManager.update(this.#islands);
+            this.#waveManager.update(this.#islands, this.#player, this.#enemies);
             this.#waveManager.show();
         }
-        
         
     }   
 

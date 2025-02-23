@@ -37,7 +37,7 @@ class Wave {
       this.finished = false;
   }
 
-  updateStatus(islands = []) {
+  updateStatus(islands = [], player, enemies) {
     this.xCoordinate += this.vx;
     this.yCoordinate += this.vy;
 
@@ -56,6 +56,25 @@ class Wave {
             break;
         }
     }
+
+
+    // 检测波浪是否碰到玩家
+    if (myCollide(this, player)) {
+        console.log("波浪撞到了玩家！");
+        player.updateHP(-1);  // 玩家受到伤害，数值可调整
+        this.finished = true;
+    }
+
+    // 检测波浪是否碰到敌人
+    for (let enemy of enemies) {
+        if (myCollide(this, enemy)) {
+            console.log("波浪撞到了敌人:", enemy.name);
+            enemy.updateHP(-1);  // 敌人受到伤害，数值可调整
+            this.finished = true;
+            break;
+        }
+    }
+    
 }
 
   show() {
@@ -85,7 +104,7 @@ class BigWave {
       this.finished = false;
   }
 
-  updateStatus(islands = []) {
+  updateStatus(islands = [], player, enemies) {
     this.xCoordinate += this.vx;
     this.yCoordinate += this.vy;
 
@@ -104,7 +123,25 @@ class BigWave {
             break;
         }
     }
+
+    // 检测波浪是否碰到玩家
+    if (myCollide(this, player)) {
+        console.log("波浪撞到了玩家！");
+        player.updateHP(-1);  // 玩家受到伤害，数值可调整
+        this.finished = true;
+    }
+
+    // 检测波浪是否碰到敌人
+    for (let enemy of enemies) {
+        if (myCollide(this, enemy)) {
+            console.log("波浪撞到了敌人:", enemy.name);
+            enemy.updateHP(-1);  // 敌人受到伤害，数值可调整
+            this.finished = true;
+            break;
+        }
+    }
 }
+
 
   show() {
       noStroke();
@@ -120,7 +157,7 @@ class WaveManager {
       this.interval = 500; //波浪生成间隔
   }
 
-  update(islands) {
+  update(islands, player, enemies) {
     let waveCount = this.waves.length;
     if (waveCount < 20) {
         if (waveCount < 15 || (waveCount < 20 && random() < 0.5)) {
@@ -133,7 +170,7 @@ class WaveManager {
 
     for (let i = this.waves.length - 1; i >= 0; i--) {
         let wave = this.waves[i];
-        wave.updateStatus(islands);
+        wave.updateStatus(islands, player, enemies);
         if (wave.finished) {
             console.log("波浪消失！");
             this.waves.splice(i, 1);
