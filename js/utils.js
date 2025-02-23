@@ -212,51 +212,137 @@ function getExplodeModel(explodeType) {
 }
 
 /**values of buffs */
-const BUFF_MODEL_ERROR_TYPE = 0;
-const BUFF_MODEL_COMMON_1_TYPE = 1;
-const BUFF_MODEL_COMMON_2_TYPE = 2;
-const BUFF_MODEL_COMMON_3_TYPE = 3;
-const BUFF_MODEL_RARE_1_TYPE = 4;
-const BUFF_MODEL_EPIC_1_TYPE = 5;
-const BUFF_MODEL_MAX_TYPE = 6;
+// const BUFF_MODEL_ERROR_TYPE = 0;
+// const BUFF_MODEL_COMMON_1_TYPE = 1;
+// const BUFF_MODEL_COMMON_2_TYPE = 2;
+// const BUFF_MODEL_COMMON_3_TYPE = 3;
+// const BUFF_MODEL_RARE_1_TYPE = 4;
+// const BUFF_MODEL_EPIC_1_TYPE = 5;
+const BUFF_MODEL_MAX_TYPE = 10;
+
+const BuffTypes = {
+    ERROR_TYPE: 0,           // Error
+    DAMAGE_CHANGE: 1,        // Damage change
+    EXPLODE_CHANGE: 2,       // Explode change
+    SPEED_CHANGE: 3,         // Speed change
+    HEALTH_FULL_RECOVER: 4,  // HP recover
+    FIGHT_STRONG_CHANGE: 5,  // Stronger
+    HEALTH_CHANGE: 6,        // HP change
+    SHIELD_ADD: 7,           // Shield add
+    POLLUTION_EFFECT: 8,     // Pollution effect
+    GOLD_BONUS: 9            // Gold add
+};
+
+const TriggerConditions = {
+    NONE: 0,
+    HIT_BY_BULLET: 1,
+    TOUCH_WAVE: 2,
+    TOUCH_BUILDING: 3,
+    TOUCH_ISLAND: 4,
+    GET_ITEM: 5,
+    POLLUTION_HIGH: 6,
+    WIN_AND_CLEAR: 7, 
+    KILL_FIVE_ENEMY: 8
+};
+
+const RarityLevel = {
+    COMMON: 0,
+    RARE: 1,
+    EPIC: 2,
+    LEGENDARY: 3
+};
 
 const BUFF_MODEL = [
     {
         name : "error",
-        type : BUFF_MODEL_ERROR_TYPE,
-        rarity : 0,
+        type : BuffTypes.ERROR_TYPE,
+        rarity : RarityLevel.COMMON,
         value : 0,
-        stillTime : 0
+        stillTime : 0,
+        canStack: false,
+        maxStackCount: 1,
+        triggerCondition: TriggerConditions.NONE
     }, {
         name : "Bullet power up!",
-        type : BUFF_MODEL_COMMON_1_TYPE,
-        rarity : 1,
+        type : BuffTypes.DAMAGE_CHANGE,
+        rarity : RarityLevel.RARE,
         value : 1,
-        stillTime : 0
+        stillTime : 0, 
+        canStack: true,
+        maxStackCount: 3,
+        triggerCondition: TriggerConditions.GET_ITEM
     }, {
         name : "Bullet explode up!",
-        type : BUFF_MODEL_COMMON_2_TYPE,
-        rarity : 1,
+        type : BuffTypes.EXPLODE_CHANGE,
+        rarity : RarityLevel.RARE,
         value : 1,
-        stillTime : 0
+        stillTime : 0, 
+        canStack: true,
+        maxStackCount: 3,
+        triggerCondition: TriggerConditions.GET_ITEM
     }, {
         name : "Speed up!",
-        type : BUFF_MODEL_COMMON_3_TYPE,
-        rarity : 1,
+        type : BuffTypes.SPEED_CHANGE,
+        rarity : RarityLevel.COMMON,
         value : 1,
-        stillTime : 0
+        stillTime : 0, 
+        canStack: false,
+        maxStackCount: 1,
+        triggerCondition: TriggerConditions.GET_ITEM
     }, {
         name : "A fully rest",
-        type : BUFF_MODEL_RARE_1_TYPE,
-        rarity : 2,
+        type : BuffTypes.HEALTH_FULL_RECOVER,
+        rarity : RarityLevel.RARE,
         value : 999,
-        stillTime : 0
+        stillTime : 0, 
+        canStack: false,
+        maxStackCount: 1,
+        triggerCondition: TriggerConditions.WIN_AND_CLEAR
     }, {
         name : "Stronger with every fight",
-        type : BUFF_MODEL_EPIC_1_TYPE,
-        rarity : 3,
+        type : BuffTypes.FIGHT_STRONG_CHANGE,
+        rarity : RarityLevel.EPIC,
         value : 0.3,
-        stillTime : 0
+        stillTime : 0, 
+        canStack: true,
+        maxStackCount: 5,
+        triggerCondition: TriggerConditions.KILL_FIVE_ENEMY
+    }, {
+        name : "Health change",
+        type : BuffTypes.HEALTH_CHANGE,
+        rarity : RarityLevel.RARE,
+        value : 1,
+        stillTime : 0, 
+        canStack: true, 
+        maxStackCount: 5,
+        triggerCondition: TriggerConditions.GET_ITEM
+    }, {
+        name : "Shield add",
+        type : BuffTypes.SHIELD_ADD,
+        rarity : RarityLevel.RARE,
+        value : 10,
+        stillTime : 10, 
+        canStack: true,
+        maxStackCount: 3,
+        triggerCondition: TriggerConditions.GET_ITEM
+    }, {
+        name : "Pollution effect",
+        type : BuffTypes.POLLUTION_EFFECT,
+        rarity : RarityLevel.COMMON,
+        value : 3,
+        stillTime : 20, 
+        canStack: false,
+        maxStackCount: 1,
+        triggerCondition: TriggerConditions.POLLUTION_HIGH
+    }, {
+        name : "Gold bonus",
+        type : BuffTypes.GOLD_BONUS,
+        rarity : RarityLevel.RARE,
+        value : 30,
+        stillTime : 0, 
+        canStack: true,
+        maxStackCount: 10,
+        triggerCondition: TriggerConditions.GET_ITEM
     }
 ];
 

@@ -152,9 +152,9 @@ class Main {
     gameReward() {
         const gold = 10 + round(random(5, 15));
         const buff = [
-            BUFF_MODEL[round(random(1, 5))],
-            BUFF_MODEL[round(random(1, 5))],
-            BUFF_MODEL[round(random(1, 5))]
+            BUFF_MODEL[round(random(1, 9))],
+            BUFF_MODEL[round(random(1, 9))],
+            BUFF_MODEL[round(random(1, 9))]
         ]
         this.#UI.showGameRewardUI(gold, buff);
     }
