@@ -13,6 +13,8 @@ class Player extends BasicObject {
         );
         this.abilityCD = 0;
         this.equipment = new Equipment(name, 0, 0, 0, 0, 0, {});
+        this.wavePushX = 0;
+        this.wavePushY = 0;
     }
     
     show() {
@@ -25,8 +27,28 @@ class Player extends BasicObject {
     }
 
     move(xSpeed, ySpeed) {
-        super.move(xSpeed, ySpeed);
+        // 计算新位置
+        let newX = this.xCoordinate + xSpeed * this.speed + this.wavePushX;
+        let newY = this.yCoordinate + ySpeed * this.speed + this.wavePushY;
+
+        // **确保玩家不会移动到边界外**
+        newX = constrain(newX, this.xSize / 2, width - this.xSize / 2);
+        newY = constrain(newY, this.ySize / 2, height - this.ySize / 2);
+
+        // 更新位置
+        this.xCoordinate = newX;
+        this.yCoordinate = newY;
+
+        // **波浪推力缓慢减少，模拟水的阻力**
+        this.wavePushX *= 0.95;
+        this.wavePushY *= 0.95;
     }
+
+    applyWaveForce(forceX, forceY) {
+        this.wavePushX = this.wavePushX * 0.9 + forceX;
+        this.wavePushY = this.wavePushY * 0.9 + forceY;
+    }
+
 
     putOnBuff() {
         

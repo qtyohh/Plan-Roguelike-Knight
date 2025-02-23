@@ -2,6 +2,7 @@ class Wave {
   constructor(edge) {
       this.speed = random(1, 5); //波浪速度
       this.edge = edge;
+      this.hasDamaged = new Set();
 
       //波浪大小
       if (edge === "left" || edge === "right") {
@@ -41,6 +42,10 @@ class Wave {
     this.xCoordinate += this.vx;
     this.yCoordinate += this.vy;
 
+    if (!this.hasDamaged) {
+        this.hasDamaged = new Set(); // 避免 undefined 错误
+    }
+
     // 检测波浪是否超出边界
     if (this.xCoordinate - this.xSize / 2 > width || this.xCoordinate + this.xSize / 2 < 0 ||
         this.yCoordinate - this.ySize / 2 > height || this.yCoordinate + this.ySize / 2 < 0) {
@@ -52,29 +57,20 @@ class Wave {
     for (let island of islands) {
         if (myCollide(this, island)) {
             console.log("波浪撞到了岛屿:", island.name);
-            this.finished = true; // 让波浪消失
-            break;
-        }
-    }
-
-
-    // 检测波浪是否碰到玩家
-    if (myCollide(this, player)) {
-        console.log("波浪撞到了玩家！");
-        player.updateHP(-1);  // 玩家受到伤害，数值可调整
-        this.finished = true;
-    }
-
-    // 检测波浪是否碰到敌人
-    for (let enemy of enemies) {
-        if (myCollide(this, enemy)) {
-            console.log("波浪撞到了敌人:", enemy.name);
-            enemy.updateHP(-1);  // 敌人受到伤害，数值可调整
             this.finished = true;
-            break;
+            return;
         }
     }
-    
+
+    // 计算波浪的推动力度（可以调节）
+    let pushForce = this.speed * 0.1; // 让波浪推力较小，使得推力持续
+
+    // **持续施加推力到玩家**
+    if (myCollide(this, player)) {  
+        console.log("波浪影响玩家！");
+        player.applyWaveForce(this.vx * pushForce, this.vy * pushForce);
+    }
+
 }
 
   show() {
@@ -91,6 +87,7 @@ class BigWave {
       this.vx = vx;
       this.vy = vy;
       this.speed = Math.sqrt(vx * vx + vy * vy);
+      this.hasDamaged = new Set();
 
       //巨浪大小
       if (Math.abs(vx) > Math.abs(vy)) {
@@ -108,6 +105,10 @@ class BigWave {
     this.xCoordinate += this.vx;
     this.yCoordinate += this.vy;
 
+    if (!this.hasDamaged) {
+        this.hasDamaged = new Set(); // 避免 undefined 错误
+    }
+
     // 检测波浪是否超出边界
     if (this.xCoordinate - this.xSize / 2 > width || this.xCoordinate + this.xSize / 2 < 0 ||
         this.yCoordinate - this.ySize / 2 > height || this.yCoordinate + this.ySize / 2 < 0) {
@@ -119,27 +120,20 @@ class BigWave {
     for (let island of islands) {
         if (myCollide(this, island)) {
             console.log("波浪撞到了岛屿:", island.name);
-            this.finished = true; // 让波浪消失
-            break;
-        }
-    }
-
-    // 检测波浪是否碰到玩家
-    if (myCollide(this, player)) {
-        console.log("波浪撞到了玩家！");
-        player.updateHP(-1);  // 玩家受到伤害，数值可调整
-        this.finished = true;
-    }
-
-    // 检测波浪是否碰到敌人
-    for (let enemy of enemies) {
-        if (myCollide(this, enemy)) {
-            console.log("波浪撞到了敌人:", enemy.name);
-            enemy.updateHP(-1);  // 敌人受到伤害，数值可调整
             this.finished = true;
-            break;
+            return;
         }
     }
+
+    // 计算波浪的推动力度（可以调节）
+    let pushForce = this.speed * 0.1; // 让波浪推力较小，使得推力持续
+
+    // **持续施加推力到玩家**
+    if (myCollide(this, player)) {  
+        console.log("波浪影响玩家！");
+        player.applyWaveForce(this.vx * pushForce, this.vy * pushForce);
+    }
+
 }
 
 
