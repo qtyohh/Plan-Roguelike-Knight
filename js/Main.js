@@ -42,9 +42,7 @@ class Main {
         if (this.#game.getGameWin()) {
             this.updateStep(MAIN_STEP_GAME_REWARD);
             this.#game = null;
-            return;
-        }
-        if (this.#game.gameOver) {
+        } else if (this.#game.getGameOver()) {
             console.log("Game Over!");
             this.updateStep(MAIN_STEP_GAME_OVER);
             this.#game = null;

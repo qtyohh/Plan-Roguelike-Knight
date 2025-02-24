@@ -2,11 +2,14 @@ class Game {
     #player;
     #enemies;
     #bullets;
+    #waveManager;
     #islands;
     #buildings;
     #playerController;
     #gameOver;
     #gameWin;
+    #playerBuffController;
+    #enemyBuffController;
 
     constructor(updateStepCallBack) {
         this.#player = null;
@@ -15,9 +18,13 @@ class Game {
         this.#islands = [];
         this.#buildings = [];
         this.#playerController = null;
+        this.#waveManager = new WaveManager();
         this.#gameOver = false;
         this.#gameWin = false;
         this.updateStepCallBack = updateStepCallBack;
+        this.#playerBuffController = null;
+        this.#enemyBuffController = new Map();
+        this.curTime = Date.now();
     }
 
     initPlayer(playerBasicStatus) {
@@ -36,11 +43,26 @@ class Game {
             (xMove, yMove) => this.playerMove(xMove, yMove),
             () => this.addBomb()
         );
+        this.#playerBuffController = new BuffController(this.#player);
     }
 
     initEnemies() {
-        const enemy = new Enemy(300, 100, EASY_ENEMY_MODEL_1_TYPE);
+        const enemy = new Enemy(
+            300, 
+            100, 
+            EASY_ENEMY_MODEL_1_TYPE,
+            (xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower) => this.addEnemyBullet(xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower),
+            (xMove, yMove, enemy) => this.enemyMove(xMove, yMove, enemy),
+        );
         this.#enemies.push(enemy);
+        const enemy_1 = new Enemy(
+            400, 
+            100, 
+            EASY_ENEMY_MODEL_2_TYPE,
+            (xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower) => this.addEnemyBullet(xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower),
+            (xMove, yMove, enemy) => this.enemyMove(xMove, yMove, enemy),
+        );
+        this.#enemies.push(enemy_1);
     }
 
     initIslands() {
@@ -133,6 +155,7 @@ class Game {
                 if (!enemy.isAlive) {
                     this.#enemies.splice(i, 1);
                 } else {
+                    enemy.enemyAI(this.#player.xCoordinate, this.#player.yCoordinate, enemy);
                     enemy.show();
                 }
             }
@@ -140,6 +163,16 @@ class Game {
         if (this.#enemies.length == 0) {
             this.#gameWin = true;
         }
+
+    if (!this.#gameWin && !this.#gameOver) {
+        this.#waveManager.update();
+        this.#waveManager.show();
+    }
+    if (this.#player.HP > 0) {
+        this.checkAllBuffTriggers();
+        this.#playerBuffController.updateFrame(this.curTime);
+        this.updateEnemyBuffs(this.curTime);
+    }
 
     }   
 
@@ -191,13 +224,46 @@ class Game {
         }
         for (let enemy of this.#enemies) {
             if (myCollide(location, enemy)) {
+                if (millis() - enemy.lastCollideTime > 1000) {
+                    this.#player.updateHP(enemy.attackPower * -1);
+                    enemy.lastCollideTime = millis();
+                }
                 return true;
             }
         }
         return false;
     }
 
-    checkCollideEnemy(enemy) {
+    checkCollideEnemy(xMove, yMove, enemy) {
+        let location = {
+            xCoordinate : enemy.xCoordinate + xMove * enemy.speed,
+            yCoordinate : enemy.yCoordinate + yMove * enemy.speed,
+            xSize : enemy.xSize,
+            ySize : enemy.ySize
+        };
+
+        for (let island of this.#islands) {
+            if (myCollide(location, island)) {
+                return true;
+            } 
+        }
+        for (let building of this.#buildings) {
+            if (building.modelType == BUILDING_MODEL_BOMB_TYPE) {
+                continue;
+            }
+            if (myCollide(location, building)) {
+                return true;
+            }
+        }
+        if (myCollide(location, this.#player)) {
+            if (millis() - enemy.lastCollideTime > 1000) {
+                this.#player.updateHP(enemy.attackPower * -1);
+                enemy.lastCollideTime = millis();
+            }
+            return true;
+        }
+
+        return false;
 
     }
 
@@ -239,6 +305,21 @@ class Game {
         this.#bullets.push(bullet);
     }
 
+    addEnemyBullet(xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower) {
+        const bullet = new Bullet(
+            xCoordinate + xSpeed * 10, 
+            yCoordinate + ySpeed * 10, 
+            xSpeed, 
+            ySpeed, 
+            ENEMY_BULLET_TYPE, 
+            attackPower, 
+            0,
+            0,
+            0
+        );
+        this.#bullets.push(bullet);
+    }
+    
     addBomb() {
         let xCoor = this.#player.xCoordinate;
         let yCoor = this.#player.yCoordinate;
@@ -269,6 +350,82 @@ class Game {
             if (this.checkCollidePlayer(0, yMove) == false) {
                 this.#player.move(0, yMove);
             }
+        }
+    }
+
+    enemyMove(xMove, yMove, enemy) {
+        if (this.checkCollideEnemy(xMove, yMove, enemy) == false) {
+            enemy.move(xMove, yMove);
+        }
+        else {
+            if (this.checkCollideEnemy(xMove, 0, enemy) == false) {
+                enemy.move(xMove, 0);
+            }
+            if (this.checkCollideEnemy(0, yMove, enemy) == false) {
+                enemy.move(0, yMove);
+            }
+        }
+    }
+
+
+    updateEnemyBuffs(curTime) {
+        this.#enemies.forEach(enemy => {
+            const controller = this.#enemyBuffController.get(enemy.uniqueId);
+            if (controller) {
+                controller.updateFrame(curTime);
+                const effects = controller.getAllActiveEffects();
+                enemy.currentSpeed = enemy.baseSpeed * effects.speedRate;
+                enemy.attackPower = enemy.baseAttack * effects.damageRate;
+            }
+        });
+    }
+
+    checkAllBuffTriggers() {
+        this.#bullets.forEach(bullet => {
+            if (myCollide(this.#player, bullet)) {
+                if (bullet.attachBuff) {
+                    this.#playerBuffController.addNewBuff(bullet.attachBuff);
+                }
+                const remainingDamage = this.#playerBuffController.processDamage(bullet.damage);
+                this.#player.currentHp -= remainingDamage;
+            }
+
+            this.#enemies.forEach(enemy => {
+                if (myCollide(enemy, bullet)) {
+                    if (bullet.attachBuff) {
+                        let controller = this.#enemyBuffController.get(enemy.uniqueId);
+                        if (!controller) {
+                                controller = new BuffController(enemy);
+                                this.#enemyBuffController.set(enemy.uniqueId, controller);
+                            }
+                            controller.addNewBuff(bullet.attachBuff);
+                        }
+                        enemy.currentHp -= bullet.damage;
+                    }
+            });
+        });
+
+        this.#buildings.forEach(building => {
+            if (myCollide(this.#player, building)) {
+                if (building.attachBuff) {
+                    this.#playerBuffController.addNewBuff(building.attachBuff);
+                }
+            }
+        });
+
+        // win check
+        if (this.#gameWin) {
+            this.#playerBuffController.addNewBuff(
+                new Buff({
+                    effectDesc: "Well done! You win! And you get 20 health!",
+                    effectType: BuffTypes.HEALTH_CHANGE,
+                    effectValue: 20,
+                    rarity: RarityLevel.RARE,
+                    effectDuration: 0,
+                    canStack: false,
+                    triggerCondition: TriggerConditions.WIN_AND_CLEAR
+                })
+            );
         }
     }
 }

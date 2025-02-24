@@ -31,7 +31,7 @@ class Bullet extends BasicObject {
                 1, 
                 3
             );
-            this.harm = 0.5;
+            this.harm = attackPower;
             this.explosionSize = 1;
         } else if (bulletType == BOSS_BULLET_TYPE) {
             super(
