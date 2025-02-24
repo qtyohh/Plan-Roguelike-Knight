@@ -38,7 +38,7 @@ class MapUI {
             const bgColor = this.isHovered ? hoverColor : color(0, 0);
             
             const currentScale = lerp(this.scale, 1, 0.2);
-            translate(this.x + this.w / 2, this.y + this.h / 2);
+            //translate(this.x + this.w / 2, this.y + this.h / 2);
             scale(currentScale);
             
             drawingContext.shadowColor = mainColor;
@@ -46,7 +46,7 @@ class MapUI {
             fill(bgColor);
             stroke(mainColor);
             strokeWeight(1);
-            rect(0, 0, this.w, this.h, 5);
+            rect(this.x, this.y, this.w, this.h, 5);
             
             fill(textColor);
             noStroke();
@@ -98,15 +98,28 @@ class MapUI {
 
         for (let col = colMin; col <= colMax; col++) {
             if (this.mapArray[rowNum][col] != 0) {
-                let button = new this.MapButton(
-                    (0.2 + rowNum / this.row * 0.6) * width,
-                    (0.2 + col / this.col * 0.6) * height,
-                    this.buttonSize, 
-                    rowNum, 
-                    col,
-                    0
-                );
+                let x = (0.2 + rowNum / this.row * 0.6) * width;
+                let y = (0.2 + col / this.col * 0.6) * height;
+
+                let button = new this.MapButton(x, y, this.buttonSize, rowNum, col, 0);
                 this.buttons.push(button);
+
+                if (location.row >= 0) {
+                    this.roads.push (
+                        {
+                            x1 : (0.2 + location.row / this.row * 0.6) * width,
+                            y1 : (0.2 + location.col / this.col * 0.6) * height,
+                            x2 : x,
+                            y2 : y,
+                            color : 0,
+                            weight : 2,
+                            row1 : location.row,
+                            col1 : location.col,
+                            row2 : rowNum,
+                            col2 : col
+                        }
+                    )
+                }
             }
         }
     }
@@ -117,7 +130,9 @@ class MapUI {
   
     handleMouseReleased() {
         let selectedGame = null;
-        
+        let rowNow = this.playerLocation.row;
+        let colNow = this.playerLocation.col;
+
         this.buttons.forEach(btn => {
             if(btn.release() && btn.isHovered) {
                 selectedGame = btn.gameType;
@@ -128,6 +143,14 @@ class MapUI {
         
         if(selectedGame != null && this.inGameCallBack) {
             this.inGameCallBack(selectedGame);
+            for (let road of this.roads) {
+                if (road.row1 == rowNow && road.col1 == colNow 
+                    && road.row2 == this.playerLocation.row
+                    && road.col2 == this.playerLocation.col
+                ) {
+                    road.weight = 4;
+                }
+            }
         }
     }
   
@@ -145,6 +168,7 @@ class MapUI {
             [0, 0, 1, 0, 0]
         ];
         this.buttons = [];
+        this.roads = [];
     }
 
     update() {
@@ -155,11 +179,17 @@ class MapUI {
         background(0);
         fill(120);
         rect(this.xCoor, this.yCoor, this.xSize, this.ySize);
+        
+        for (let road of this.roads) {
+            stroke(road.color);
+            strokeWeight(road.weight);
+            line(road.x1, road.y1, road.x2, road.y2);
+        }
+
         this.buttons.forEach(btn => {
             btn.checkHover(this);
             btn.draw();
         });
-        
     }
     
 }
