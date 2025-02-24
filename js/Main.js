@@ -9,7 +9,8 @@ class Main {
         this.#UI = new MainUI(
             (stepChangeType) => this.updateStep(stepChangeType),
             (shipType) => this.setShipBasic(shipType),
-            (buffType) => this.chooseBuff(buffType)
+            (buffType) => this.chooseBuff(buffType),
+            (gameType) => this.chooseGameMap(gameType)
         );
         this.#status = new Status();
         this.#cursorPos = new CursorPos();
@@ -57,8 +58,9 @@ class Main {
                 this.#UI.showChooseShipUI();
                 break;
             }
-            case MAIN_STEP_MAP: {
+            case MAIN_STEP_MAP_UI: {
                 this.#UI.showMapUI();
+                break;
             }
             case MAIN_STEP_IN_GAME: {
                 this.#UI.showInGameUI(this.#status.getShipStatus());
@@ -118,8 +120,16 @@ class Main {
                 this.#UI.chooseShipUIMousePressed();
                 break;
             }
+            case MAIN_STEP_MAP_UI: {
+                this.#UI.chooseGameUIMousePressed();
+                break;
+            }
             case MAIN_STEP_IN_GAME: {
                 this.#game.getPlayerController().mousePressed();
+                break;
+            }
+            case MAIN_STEP_GAME_REWARD: {
+                this.#UI.chooseGameRewardUIMousePressed();
                 break;
             }
         }
@@ -133,6 +143,14 @@ class Main {
             }
             case MAIN_STEP_CHOOSE_SHIP_UI: {
                 this.#UI.chooseShipUIMouseReleased();
+                break;
+            }
+            case MAIN_STEP_MAP_UI: {
+                this.#UI.chooseGameUIMouseReleased();
+                break;
+            }
+            case MAIN_STEP_GAME_REWARD: {
+                this.#UI.chooseGameRewardUIMouseReleased();
                 break;
             }
         }
@@ -164,6 +182,11 @@ class Main {
 
     chooseBuff(buffType) {
         console.log(buffType);
+    }
+
+    chooseGameMap(gameType) {
+        console.log(gameType);
+
     }
 
     setShipBasic(shipType) {

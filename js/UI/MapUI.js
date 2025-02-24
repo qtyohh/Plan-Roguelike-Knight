@@ -1,5 +1,5 @@
 class MapUI {
-    constructor() {
+    constructor(inGameCallBack) {
         this.xCoor = width / 2;
         this.yCoor = height / 2;
         this.xSize = width * 0.8;
@@ -7,6 +7,12 @@ class MapUI {
         this.buttonSize = 20;
         this.row = 5;
         this.col = 5;
+        this.drawnRol = -1;
+        this.inGameCallBack = inGameCallBack;
+        this.playerLocation = {
+            row : -1,
+            col : 2
+        };
     }
 
     MapButton = class {
@@ -46,7 +52,7 @@ class MapUI {
             noStroke();
             textSize(24);
             textAlign(CENTER, CENTER);
-            text(this.label, 0, 0);
+            //text(this.label, 0, 0);
     
             drawingContext.restore();
         }
@@ -75,35 +81,34 @@ class MapUI {
     }
     
     createButtons(location) {
-        let colMin = location.y - 1;
-        let colMax = location.y + 1;
+        let rowNum = location.row + 1;
+        let colMin = location.col - 1;
+        let colMax = location.col + 1;
         if (colMin < 0) {
             colMin = 0;
         }
         if (colMax >= this.col) {
             colMax = this.col - 1;
         }
+
+        if (this.drawnRol >= rowNum) {
+            return;
+        }
+        this.drawnRol = rowNum;
+
         for (let col = colMin; col <= colMax; col++) {
-            if (this.mapArray[location.x][col] != 0) {
-                let button = new MapButton(
-                    (0.2 + location.x / this.row) * width,
-                    (0.2 + col / this.col) * height,
+            if (this.mapArray[rowNum][col] != 0) {
+                let button = new this.MapButton(
+                    (0.2 + rowNum / this.row * 0.6) * width,
+                    (0.2 + col / this.col * 0.6) * height,
                     this.buttonSize, 
-                    location.x, 
-                    col
+                    rowNum, 
+                    col,
+                    0
                 );
+                this.buttons.push(button);
             }
         }
-    }
-  
-    draw() {
-        background(0);
-        
-        this.buttons.forEach(btn => {
-            btn.checkHover(this);
-            btn.draw();
-        });
-        
     }
   
     handleMousePressed() {
@@ -111,29 +116,27 @@ class MapUI {
     }
   
     handleMouseReleased() {
-        let selectedShip = null;
+        let selectedGame = null;
         
         this.buttons.forEach(btn => {
             if(btn.release() && btn.isHovered) {
-                selectedShip = btn.shipType;
+                selectedGame = btn.gameType;
+                this.playerLocation.row = btn.row;
+                this.playerLocation.col = btn.col;
             }
         });
         
-        if(selectedShip != null && this.onShipSelect) {
-            this.onShipSelect(selectedShip);
+        if(selectedGame != null && this.inGameCallBack) {
+            this.inGameCallBack(selectedGame);
         }
     }
   
-    handleWindowResized() {
+    /*handleWindowResized() {
         this.createButtons();
-    }
+    }*/
 
     init() {
         noStroke();
-        this.playerLocation = {
-            x : 0,
-            y : 2
-        };
         this.mapArray = [
             [0, 0, 1, 0, 0],
             [0, 1, 1, 0, 0],
@@ -142,15 +145,21 @@ class MapUI {
             [0, 0, 1, 0, 0]
         ];
         this.buttons = [];
-        this.createButtons(this.playerLocation);
     }
 
     update() {
-
+        this.createButtons(this.playerLocation);
     }
 
     draw() {
-
+        background(0);
+        fill(120);
+        rect(this.xCoor, this.yCoor, this.xSize, this.ySize);
+        this.buttons.forEach(btn => {
+            btn.checkHover(this);
+            btn.draw();
+        });
+        
     }
     
 }
