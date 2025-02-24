@@ -17,5 +17,5 @@ class InGameUI {
         text(`Skill CD: ${0} s`, 110, 75);
     
         pop();
-      }
+    }
 }

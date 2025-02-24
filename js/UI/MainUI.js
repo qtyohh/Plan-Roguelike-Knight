@@ -5,6 +5,7 @@ class MainUI {
     #chooseShipUI;
     #inGameUI;
     #gameRewardUI;
+    #MapUI;
   
     constructor(updateStep, updateShipStatus, updateBuffStatus) {
         this.updateStep = updateStep;
@@ -16,6 +17,7 @@ class MainUI {
         this.#chooseShipUI = new ChooseShipUI(this.#handleShipSelection.bind(this));
         this.#inGameUI = new InGameUI();
         this.#gameRewardUI = new GameRewardUI();
+        this.#MapUI = new MapUI();
     }
   
     showStartUI() {
@@ -34,7 +36,16 @@ class MainUI {
         this.#chooseShipUI.init();
         this.#chooseShipUI.draw();
     }
-  
+    
+    showMapUI() {
+        if (!this.#MapUI) {
+            this.#MapUI = new MapUI();
+            this.#MapUI.init();
+        }
+        this.#MapUI.update();
+        this.#MapUI.draw();
+    }
+
     showInGameUI(playerStatus) {
         if (this.#inGameUI == null) {
             this.#inGameUI = new InGameUI();

@@ -57,6 +57,9 @@ class Main {
                 this.#UI.showChooseShipUI();
                 break;
             }
+            case MAIN_STEP_MAP: {
+                this.#UI.showMapUI();
+            }
             case MAIN_STEP_IN_GAME: {
                 this.#UI.showInGameUI(this.#status.getShipStatus());
                 this.continueGame();
