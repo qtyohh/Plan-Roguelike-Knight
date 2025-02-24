@@ -76,7 +76,7 @@ class Wave {
   show() {
       noStroke();
       fill(0, 0, 255, 127);//蓝色-小波浪
-      rect(this.xCoordinate - this.xSize / 2, this.yCoordinate - this.ySize / 2, this.xSize, this.ySize);
+      rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
   }
 }
 
@@ -140,7 +140,7 @@ class BigWave {
   show() {
       noStroke();
       fill(255, 0, 0, 127);//红色-巨浪
-      rect(this.xCoordinate - this.xSize / 2, this.yCoordinate - this.ySize / 2, this.xSize, this.ySize);
+      rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
   }
 }
 
