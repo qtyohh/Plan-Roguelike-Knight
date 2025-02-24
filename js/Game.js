@@ -155,6 +155,7 @@ class Game {
                 if (!enemy.isAlive) {
                     this.#enemies.splice(i, 1);
                 } else {
+                    enemy.updateWavePush(); 
                     enemy.enemyAI(this.#player.xCoordinate, this.#player.yCoordinate, enemy);
                     enemy.show();
                 }
@@ -164,16 +165,14 @@ class Game {
             this.#gameWin = true;
         }
 
-        if (!this.#gameWin && !this.#gameOver) {
-            this.#waveManager.update(this.#islands, this.#player, this.#enemies);
-            this.#waveManager.show();
-        }
-        
     if (this.#player.HP > 0) {
         this.checkAllBuffTriggers();
         this.#playerBuffController.updateFrame(this.curTime);
         this.updateEnemyBuffs(this.curTime);
     }
+
+    this.#waveManager.update(this.#islands, this.#player, this.#enemies);
+    this.#waveManager.show();
 
     }   
 

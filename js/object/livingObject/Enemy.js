@@ -75,12 +75,6 @@ class Enemy extends BasicObject {
         }
     }
 
-      // 添加供波浪调用的推力方法
-  applyWaveForce(forceX, forceY) {
-    this.wavePushX = this.wavePushX * 0.9 + forceX;
-    this.wavePushY = this.wavePushY * 0.9 + forceY;
-  }
-
     enemyMove(xSpeed, ySpeed, enemy) {
         this.enemyMoveCallBack(xSpeed, ySpeed, enemy);
     }
@@ -95,5 +89,27 @@ class Enemy extends BasicObject {
         );
         this.lastAttackTime = millis();
     }
+
+      // ★ 新增：专门更新波浪推力
+  updateWavePush() {
+    // 将波浪推力加到敌人当前位置
+    this.xCoordinate += this.wavePushX;
+    this.yCoordinate += this.wavePushY;
+
+    // 限制边界
+    this.xCoordinate = constrain(this.xCoordinate, this.xSize / 2, width - this.xSize / 2);
+    this.yCoordinate = constrain(this.yCoordinate, this.ySize / 2, height - this.ySize / 2);
+
+    // 每帧衰减推力
+    this.wavePushX *= 0.95;
+    this.wavePushY *= 0.95;
+  }
+
+      // 添加供波浪调用的推力方法
+      applyWaveForce(forceX, forceY) {
+        this.wavePushX = this.wavePushX * 0.9 + forceX;
+        this.wavePushY = this.wavePushY * 0.9 + forceY;
+      }
+
 }
 
