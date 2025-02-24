@@ -39,47 +39,107 @@ class Wave {
   }
 
   updateStatus(islands = [], player, enemies) {
+    // 移动波浪
     this.xCoordinate += this.vx;
     this.yCoordinate += this.vy;
 
-    if (!this.hasDamaged) {
-        this.hasDamaged = new Set(); // 避免 undefined 错误
+    // 超出屏幕则结束
+    if (
+      this.xCoordinate - this.xSize / 2 > width ||
+      this.xCoordinate + this.xSize / 2 < 0 ||
+      this.yCoordinate - this.ySize / 2 > height ||
+      this.yCoordinate + this.ySize / 2 < 0
+    ) {
+      this.finished = true;
+      return;
     }
 
-    // 检测波浪是否超出边界
-    if (this.xCoordinate - this.xSize / 2 > width || this.xCoordinate + this.xSize / 2 < 0 ||
-        this.yCoordinate - this.ySize / 2 > height || this.yCoordinate + this.ySize / 2 < 0) {
+    // 波浪碰到岛屿时消失
+    for (let island of islands) {
+      if (myCollide(this, island)) {
         this.finished = true;
         return;
+      }
     }
 
-    // 检测波浪是否碰到岛屿
-    for (let island of islands) {
-        if (myCollide(this, island)) {
-            console.log("波浪撞到了岛屿:", island.name);
-            this.finished = true;
-            return;
+    // 计算推力（可根据需要调整）
+    let pushForce = this.speed * 0.1;
+    let pushX = this.vx * pushForce;
+    let pushY = this.vy * pushForce;
+
+    // 对玩家进行推力处理（先模拟新位置，再检测与岛和敌人碰撞）
+    if (myCollide(this, player)) {
+      let newPlayerPos = {
+        xCoordinate: player.xCoordinate + pushX,
+        yCoordinate: player.yCoordinate + pushY,
+        xSize: player.xSize,
+        ySize: player.ySize
+      };
+      let collisionDetected = false;
+      // 检查与岛碰撞
+      for (let island of islands) {
+        if (myCollide(newPlayerPos, island)) {
+          collisionDetected = true;
+          break;
         }
-    }
-
-    // 计算波浪的推动力度（可以调节）
-    let pushForce = this.speed * 0.1; // 让波浪推力较小，使得推力持续
-
-    // **持续施加推力到玩家**
-    if (myCollide(this, player)) {  
-        console.log("波浪影响玩家！");
-        player.applyWaveForce(this.vx * pushForce, this.vy * pushForce);
-    }
-
-        // 新增：对所有敌人施加推力
+      }
+      // 检查与敌人碰撞
+      if (!collisionDetected) {
         for (let enemy of enemies) {
-            if (myCollide(this, enemy)) {
-              console.log("波浪影响敌人！");
-              enemy.applyWaveForce(this.vx * pushForce, this.vy * pushForce);
+          if (myCollide(newPlayerPos, enemy)) {
+            collisionDetected = true;
+            break;
+          }
+        }
+      }
+      if (collisionDetected) {
+        // 新位置碰撞，取消这次波浪推力
+        player.wavePushX = 0;
+        player.wavePushY = 0;
+      } else {
+        player.applyWaveForce(pushX, pushY);
+      }
+    }
+
+    // 对每个敌人进行推力处理（同样模拟新位置，检测与岛和玩家以及其他敌人的碰撞）
+    for (let enemy of enemies) {
+      if (myCollide(this, enemy)) {
+        let newEnemyPos = {
+          xCoordinate: enemy.xCoordinate + pushX,
+          yCoordinate: enemy.yCoordinate + pushY,
+          xSize: enemy.xSize,
+          ySize: enemy.ySize
+        };
+        let collisionDetected = false;
+        // 检查与岛碰撞
+        for (let island of islands) {
+          if (myCollide(newEnemyPos, island)) {
+            collisionDetected = true;
+            break;
+          }
+        }
+        // 检查与玩家碰撞
+        if (!collisionDetected && myCollide(newEnemyPos, player)) {
+          collisionDetected = true;
+        }
+        // 检查与其他敌人碰撞（可选，根据需求决定是否需要避免敌人之间的重叠）
+        if (!collisionDetected) {
+          for (let otherEnemy of enemies) {
+            if (otherEnemy !== enemy && myCollide(newEnemyPos, otherEnemy)) {
+              collisionDetected = true;
+              break;
             }
           }
-
-}
+        }
+        if (collisionDetected) {
+          enemy.wavePushX = 0;
+          enemy.wavePushY = 0;
+        } else {
+          enemy.applyWaveForce(pushX, pushY);
+        }
+      }
+    }
+  }
 
   show() {
       noStroke();
@@ -110,47 +170,107 @@ class BigWave {
   }
 
   updateStatus(islands = [], player, enemies) {
+    // 移动波浪
     this.xCoordinate += this.vx;
     this.yCoordinate += this.vy;
 
-    if (!this.hasDamaged) {
-        this.hasDamaged = new Set(); // 避免 undefined 错误
+    // 超出屏幕则结束
+    if (
+      this.xCoordinate - this.xSize / 2 > width ||
+      this.xCoordinate + this.xSize / 2 < 0 ||
+      this.yCoordinate - this.ySize / 2 > height ||
+      this.yCoordinate + this.ySize / 2 < 0
+    ) {
+      this.finished = true;
+      return;
     }
 
-    // 检测波浪是否超出边界
-    if (this.xCoordinate - this.xSize / 2 > width || this.xCoordinate + this.xSize / 2 < 0 ||
-        this.yCoordinate - this.ySize / 2 > height || this.yCoordinate + this.ySize / 2 < 0) {
+    // 波浪碰到岛屿时消失
+    for (let island of islands) {
+      if (myCollide(this, island)) {
         this.finished = true;
         return;
+      }
     }
 
-    // 检测波浪是否碰到岛屿
-    for (let island of islands) {
-        if (myCollide(this, island)) {
-            console.log("波浪撞到了岛屿:", island.name);
-            this.finished = true;
-            return;
+    // 计算推力（可根据需要调整）
+    let pushForce = this.speed * 0.1;
+    let pushX = this.vx * pushForce;
+    let pushY = this.vy * pushForce;
+
+    // 对玩家进行推力处理（先模拟新位置，再检测与岛和敌人碰撞）
+    if (myCollide(this, player)) {
+      let newPlayerPos = {
+        xCoordinate: player.xCoordinate + pushX,
+        yCoordinate: player.yCoordinate + pushY,
+        xSize: player.xSize,
+        ySize: player.ySize
+      };
+      let collisionDetected = false;
+      // 检查与岛碰撞
+      for (let island of islands) {
+        if (myCollide(newPlayerPos, island)) {
+          collisionDetected = true;
+          break;
         }
-    }
-
-    // 计算波浪的推动力度（可以调节）
-    let pushForce = this.speed * 0.1; // 让波浪推力较小，使得推力持续
-
-    // **持续施加推力到玩家**
-    if (myCollide(this, player)) {  
-        console.log("波浪影响玩家！");
-        player.applyWaveForce(this.vx * pushForce, this.vy * pushForce);
-    }
-
-        // 新增：对所有敌人施加推力
+      }
+      // 检查与敌人碰撞
+      if (!collisionDetected) {
         for (let enemy of enemies) {
-            if (myCollide(this, enemy)) {
-              console.log("波浪影响敌人！");
-              enemy.applyWaveForce(this.vx * pushForce, this.vy * pushForce);
+          if (myCollide(newPlayerPos, enemy)) {
+            collisionDetected = true;
+            break;
+          }
+        }
+      }
+      if (collisionDetected) {
+        // 新位置碰撞，取消这次波浪推力
+        player.wavePushX = 0;
+        player.wavePushY = 0;
+      } else {
+        player.applyWaveForce(pushX, pushY);
+      }
+    }
+
+    // 对每个敌人进行推力处理（同样模拟新位置，检测与岛和玩家以及其他敌人的碰撞）
+    for (let enemy of enemies) {
+      if (myCollide(this, enemy)) {
+        let newEnemyPos = {
+          xCoordinate: enemy.xCoordinate + pushX,
+          yCoordinate: enemy.yCoordinate + pushY,
+          xSize: enemy.xSize,
+          ySize: enemy.ySize
+        };
+        let collisionDetected = false;
+        // 检查与岛碰撞
+        for (let island of islands) {
+          if (myCollide(newEnemyPos, island)) {
+            collisionDetected = true;
+            break;
+          }
+        }
+        // 检查与玩家碰撞
+        if (!collisionDetected && myCollide(newEnemyPos, player)) {
+          collisionDetected = true;
+        }
+        // 检查与其他敌人碰撞（可选，根据需求决定是否需要避免敌人之间的重叠）
+        if (!collisionDetected) {
+          for (let otherEnemy of enemies) {
+            if (otherEnemy !== enemy && myCollide(newEnemyPos, otherEnemy)) {
+              collisionDetected = true;
+              break;
             }
           }
-
-}
+        }
+        if (collisionDetected) {
+          enemy.wavePushX = 0;
+          enemy.wavePushY = 0;
+        } else {
+          enemy.applyWaveForce(pushX, pushY);
+        }
+      }
+    }
+  }
 
 
   show() {
