@@ -22,18 +22,20 @@ class Enemy extends BasicObject {
         this.enemyAttackCallBack = enemyAttackCallBack;
         this.enemyMoveCallBack = enemyMoveCallBack;
         this.lastCollideTime = 0;
+        this.wavePushX = 0;
+        this.wavePushY = 0;
     }
 
     show() {
         if (this.isAlive) {
             fill(100);
             rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
-            
+
             let hpBar = this.xSize * (this.HP / this.maxHP);
 
             fill(220);
             rect(this.xCoordinate, this.yCoordinate - 10, this.xSize, 5);
-            
+
             fill(255, 0, 0);
             rect(this.xCoordinate, this.yCoordinate - 10, hpBar, 5);
         }
@@ -44,7 +46,15 @@ class Enemy extends BasicObject {
     }
 
     move(xSpeed, ySpeed) {
-        super.move(xSpeed, ySpeed);
+        let newX = this.xCoordinate + xSpeed * this.speed + this.wavePushX;
+        let newY = this.yCoordinate + ySpeed * this.speed + this.wavePushY;
+
+        newX = constrain(newX, this.xSize / 2, width - this.xSize / 2);
+        newY = constrain(newY, this.ySize / 2, height - this.ySize / 2);
+        this.xCoordinate = newX;
+        this.yCoordinate = newY;
+        this.wavePushX *= 0.95;
+        this.wavePushY *= 0.95;
     }
 
     enemyAI(playerX, playerY, enemy) {
@@ -77,5 +87,22 @@ class Enemy extends BasicObject {
         );
         this.lastAttackTime = millis();
     }
+
+    updateWavePush() {
+        this.xCoordinate += this.wavePushX;
+        this.yCoordinate += this.wavePushY;
+
+        this.xCoordinate = constrain(this.xCoordinate, this.xSize / 2, width - this.xSize / 2);
+        this.yCoordinate = constrain(this.yCoordinate, this.ySize / 2, height - this.ySize / 2);
+
+        this.wavePushX *= 0.95;
+        this.wavePushY *= 0.95;
+    }
+
+    applyWaveForce(forceX, forceY) {
+        this.wavePushX = this.wavePushX * 0.9 + forceX;
+        this.wavePushY = this.wavePushY * 0.9 + forceY;
+    }
+
 }
 

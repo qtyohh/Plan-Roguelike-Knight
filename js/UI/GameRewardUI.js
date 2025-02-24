@@ -1,20 +1,20 @@
 class GameRewardUI {
-    constructor(rogueData, buffChooseCallBack) {
+    constructor(buffChooseCallBack) {
       this.buttons = [];
       this.borderSize = 50;
       this.targetBorderSize = 50;
       this.borderColor = null;
-      this.rogueData = rogueData;
+      //this.rogueData = rogueData;
       this.buffChooseCallBack = buffChooseCallBack;
     }
     ChooseBuffButton = class {
-        constructor(x, y, w, h, label, shipType) {
+        constructor(x, y, w, h, label, buffType) {
             this.x = x;
             this.y = y;
             this.w = w;
             this.h = h;
             this.label = label;
-            this.shipType = shipType;
+            this.buffType = buffType;
             this.isHovered = false;
             this.isPressed = false;
             this.scale = 1;
@@ -104,13 +104,35 @@ class GameRewardUI {
     }
 
     draw(gold) {
-      background(0);
-      text("Arrr, I've found me some fine loot!", width / 2, height / 4);
-      text(`Gold + ${gold}`, width / 2, height * 0.3);
-      this.buttons.forEach(btn => {
-          btn.checkHover(this);
-          btn.draw();
-      });
-      
+        background(0);
+        text("Arrr, I've found me some fine loot!", width / 2, height / 4);
+        text(`Gold + ${gold}`, width / 2, height * 0.3);
+        this.buttons.forEach(btn => {
+            btn.checkHover(this);
+            btn.draw();
+        });
+        
+    }
+
+    handleMousePressed() {
+        this.buttons.forEach(btn => btn.isHovered && btn.press());
+    }
+  
+    handleMouseReleased() {
+        let selectedBuff = null;
+        this.buttons.forEach(btn => {
+            if(btn.release() && btn.isHovered) {
+                selectedBuff = btn.buffType;
+            }
+        });
+        console.log(selectedBuff);
+        console.log(this.buffChooseCallBack);
+        if(selectedBuff != null && this.buffChooseCallBack) {
+            this.buffChooseCallBack(selectedBuff);
+        }
+    }
+  
+    handleWindowResized() {
+        this.createButtons();
     }
 }

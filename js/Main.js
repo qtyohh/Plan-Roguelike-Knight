@@ -5,13 +5,18 @@ class Main {
     #step = MAIN_STEP_START_UI;
     #cursorPos = null;
     #player = SHIP_MODEL[SHIP_MODEL_ERROR_TYPE];
+    #gameReward = {
+        gold : 0,
+        buff : []
+    };
 
     constructor() {
         this.#UI = new MainUI(
             this.#player,
             (stepChangeType) => this.updateStep(stepChangeType),
             (shipType) => this.setShipBasic(shipType),
-            (buffType) => this.chooseBuff(buffType)
+            (buffType) => this.chooseBuff(buffType),
+            (gameType) => this.chooseGameMap(gameType)
         );
         this.#status = new Status();
         this.#cursorPos = new CursorPos();
@@ -61,6 +66,10 @@ class Main {
             }
             case MAIN_STEP_CHOOSE_SHIP_UI: {
                 this.#UI.showChooseShipUI();
+                break;
+            }
+            case MAIN_STEP_MAP_UI: {
+                this.#UI.showMapUI();
                 break;
             }
             case MAIN_STEP_IN_GAME: {
@@ -121,8 +130,16 @@ class Main {
                 this.#UI.chooseShipUIMousePressed();
                 break;
             }
+            case MAIN_STEP_MAP_UI: {
+                this.#UI.chooseGameUIMousePressed();
+                break;
+            }
             case MAIN_STEP_IN_GAME: {
                 this.#game.getPlayerController().mousePressed();
+                break;
+            }
+            case MAIN_STEP_GAME_REWARD: {
+                this.#UI.chooseGameRewardUIMousePressed();
                 break;
             }
         }
@@ -136,6 +153,14 @@ class Main {
             }
             case MAIN_STEP_CHOOSE_SHIP_UI: {
                 this.#UI.chooseShipUIMouseReleased();
+                break;
+            }
+            case MAIN_STEP_MAP_UI: {
+                this.#UI.chooseGameUIMouseReleased();
+                break;
+            }
+            case MAIN_STEP_GAME_REWARD: {
+                this.#UI.chooseGameRewardUIMouseReleased();
                 break;
             }
         }
@@ -153,20 +178,28 @@ class Main {
         }
         this.#step = stepChangeType;
         this.#UI.changeCurrentStep(stepChangeType);
+
+        if (stepChangeType == MAIN_STEP_GAME_REWARD) {
+            this.#gameReward.gold = 10 + round(random(5, 15));
+            this.#gameReward.buff = [
+                BUFF_MODEL[round(random(1, 5))],
+                BUFF_MODEL[round(random(1, 5))],
+                BUFF_MODEL[round(random(1, 5))]
+            ];
+        }
     }
 
     gameReward() {
-        const gold = 10 + round(random(5, 15));
-        const buff = [
-            BUFF_MODEL[round(random(1, 9))],
-            BUFF_MODEL[round(random(1, 9))],
-            BUFF_MODEL[round(random(1, 9))]
-        ]
-        this.#UI.showGameRewardUI(gold, buff);
+        this.#UI.showGameRewardUI(this.#gameReward.gold, this.#gameReward.buff);
     }
 
     chooseBuff(buffType) {
         console.log(buffType);
+    }
+
+    chooseGameMap(gameType) {
+        console.log(gameType);
+
     }
 
     setShipBasic(shipType) {
