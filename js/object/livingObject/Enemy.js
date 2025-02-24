@@ -48,6 +48,10 @@ class Enemy extends BasicObject {
     move(xSpeed, ySpeed) {
         let newX = this.xCoordinate + xSpeed * this.speed + this.wavePushX;
         let newY = this.yCoordinate + ySpeed * this.speed + this.wavePushY;
+
+        // 限制敌人不会超出画布范围（假设画布大小为 width 和 height）
+    newX = constrain(newX, this.xSize / 2, width - this.xSize / 2);
+    newY = constrain(newY, this.ySize / 2, height - this.ySize / 2);
         this.xCoordinate = newX;
         this.yCoordinate = newY;
         // 推力逐渐衰减
