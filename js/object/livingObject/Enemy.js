@@ -30,12 +30,12 @@ class Enemy extends BasicObject {
         if (this.isAlive) {
             fill(100);
             rect(this.xCoordinate, this.yCoordinate, this.xSize, this.ySize);
-            
+
             let hpBar = this.xSize * (this.HP / this.maxHP);
 
             fill(220);
             rect(this.xCoordinate, this.yCoordinate - 10, this.xSize, 5);
-            
+
             fill(255, 0, 0);
             rect(this.xCoordinate, this.yCoordinate - 10, hpBar, 5);
         }
@@ -49,15 +49,13 @@ class Enemy extends BasicObject {
         let newX = this.xCoordinate + xSpeed * this.speed + this.wavePushX;
         let newY = this.yCoordinate + ySpeed * this.speed + this.wavePushY;
 
-        // 限制敌人不会超出画布范围（假设画布大小为 width 和 height）
-    newX = constrain(newX, this.xSize / 2, width - this.xSize / 2);
-    newY = constrain(newY, this.ySize / 2, height - this.ySize / 2);
+        newX = constrain(newX, this.xSize / 2, width - this.xSize / 2);
+        newY = constrain(newY, this.ySize / 2, height - this.ySize / 2);
         this.xCoordinate = newX;
         this.yCoordinate = newY;
-        // 推力逐渐衰减
         this.wavePushX *= 0.95;
         this.wavePushY *= 0.95;
-      }
+    }
 
     enemyAI(playerX, playerY, enemy) {
         if (this.isAlive) {
@@ -90,26 +88,21 @@ class Enemy extends BasicObject {
         this.lastAttackTime = millis();
     }
 
-      // ★ 新增：专门更新波浪推力
-  updateWavePush() {
-    // 将波浪推力加到敌人当前位置
-    this.xCoordinate += this.wavePushX;
-    this.yCoordinate += this.wavePushY;
+    updateWavePush() {
+        this.xCoordinate += this.wavePushX;
+        this.yCoordinate += this.wavePushY;
 
-    // 限制边界
-    this.xCoordinate = constrain(this.xCoordinate, this.xSize / 2, width - this.xSize / 2);
-    this.yCoordinate = constrain(this.yCoordinate, this.ySize / 2, height - this.ySize / 2);
+        this.xCoordinate = constrain(this.xCoordinate, this.xSize / 2, width - this.xSize / 2);
+        this.yCoordinate = constrain(this.yCoordinate, this.ySize / 2, height - this.ySize / 2);
 
-    // 每帧衰减推力
-    this.wavePushX *= 0.95;
-    this.wavePushY *= 0.95;
-  }
+        this.wavePushX *= 0.95;
+        this.wavePushY *= 0.95;
+    }
 
-      // 添加供波浪调用的推力方法
-      applyWaveForce(forceX, forceY) {
+    applyWaveForce(forceX, forceY) {
         this.wavePushX = this.wavePushX * 0.9 + forceX;
         this.wavePushY = this.wavePushY * 0.9 + forceY;
-      }
+    }
 
 }
 
