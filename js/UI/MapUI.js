@@ -7,7 +7,7 @@ class MapUI {
         this.buttonSize = 20;
         this.row = 5;
         this.col = 5;
-        this.drawnRol = -1;
+        this.drawnRow = -1;
         this.inGameCallBack = inGameCallBack;
         this.playerLocation = {
             row : -1,
@@ -57,6 +57,10 @@ class MapUI {
             drawingContext.restore();
         }
   
+        checkRoad(drawnRow) {
+            return this.row == drawnRow;
+        }
+
         checkHover(chooseShipUI) {
             this.isHovered = (
                 mouseX > this.x && 
@@ -91,10 +95,10 @@ class MapUI {
             colMax = this.col - 1;
         }
 
-        if (this.drawnRol >= rowNum) {
+        if (this.drawnRow >= rowNum) {
             return;
         }
-        this.drawnRol = rowNum;
+        this.drawnRow = rowNum;
 
         for (let col = colMin; col <= colMax; col++) {
             if (this.mapArray[rowNum][col] != 0) {
@@ -134,7 +138,7 @@ class MapUI {
         let colNow = this.playerLocation.col;
 
         this.buttons.forEach(btn => {
-            if(btn.release() && btn.isHovered) {
+            if(btn.release() && btn.isHovered && btn.checkRoad(this.drawnRow)) {
                 selectedGame = btn.gameType;
                 this.playerLocation.row = btn.row;
                 this.playerLocation.col = btn.col;
