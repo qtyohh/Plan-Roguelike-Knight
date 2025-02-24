@@ -5,18 +5,25 @@ class MainUI {
     #chooseShipUI;
     #inGameUI;
     #gameRewardUI;
+    #mapUI;
   
-    constructor(updateStep, updateShipStatus, updateBuffStatus) {
+    constructor(updateStep, 
+                updateShipStatus, 
+                updateBuffStatus, 
+                updateChooseGame) {
         this.updateStep = updateStep;
         this.updateShipStatus = updateShipStatus;
         this.updateBuffStatus = updateBuffStatus;
+        this.updateChooseGame = updateChooseGame;
         
         // Init UI
         this.#startUI = new StartUI(this.#handleStartUIButtonClick.bind(this));
         this.#chooseShipUI = new ChooseShipUI(this.#handleShipSelection.bind(this));
         this.#inGameUI = new InGameUI();
         this.#inGameUI.preload();
-        this.#gameRewardUI = new GameRewardUI();
+        //this.#gameRewardUI = new GameRewardUI(0, this.#handleGameRewardSelection.bind(this));
+        this.#mapUI = new MapUI(this.#handleGameMapSelection.bind(this));
+        this.#mapUI.init();
     }
   
     showStartUI() {
@@ -35,7 +42,16 @@ class MainUI {
         this.#chooseShipUI.init();
         this.#chooseShipUI.draw();
     }
-  
+    
+    showMapUI() {
+        if (!this.#mapUI) {
+            this.#mapUI = new MapUI(this.#handleGameMapSelection.bind(this));
+            this.#mapUI.init();
+        }
+        this.#mapUI.update();
+        this.#mapUI.draw();
+    }
+
     showInGameUI(playerStatus) {
         if (this.#inGameUI == null) {
             this.#inGameUI = new InGameUI();
@@ -46,7 +62,7 @@ class MainUI {
 
     showGameRewardUI(gold, buff) {
         if (this.#gameRewardUI == null) {
-            this.#gameRewardUI = new GameRewardUI();
+            this.#gameRewardUI = new GameRewardUI(this.#handleGameRewardSelection.bind(this));
         }
         this.#gameRewardUI.init(buff);
         this.#gameRewardUI.draw(gold);
@@ -77,6 +93,30 @@ class MainUI {
     chooseShipUIMouseReleased() {
         if (this.#currentStep == MAIN_STEP_CHOOSE_SHIP_UI && this.#chooseShipUI) {
             this.#chooseShipUI.handleMouseReleased();
+        }
+    }
+
+    chooseGameUIMousePressed() {
+        if (this.#currentStep == MAIN_STEP_MAP_UI && this.#mapUI) {
+            this.#mapUI.handleMousePressed();
+        }
+    }
+
+    chooseGameUIMouseReleased() {
+        if (this.#currentStep == MAIN_STEP_MAP_UI && this.#mapUI) {
+            this.#mapUI.handleMouseReleased();
+        }
+    }
+
+    chooseGameRewardUIMousePressed() {
+        if (this.#currentStep == MAIN_STEP_GAME_REWARD && this.#gameRewardUI) {
+            this.#gameRewardUI.handleMousePressed();
+        }
+    }
+
+    chooseGameRewardUIMouseReleased() {
+        if (this.#currentStep == MAIN_STEP_GAME_REWARD && this.#gameRewardUI) {
+            this.#gameRewardUI.handleMouseReleased();
         }
     }
     
@@ -137,7 +177,29 @@ class MainUI {
         }
         
         if (this.updateStep) {
+            this.updateStep(MAIN_STEP_MAP_UI);
+        }
+    }
+
+    #handleGameMapSelection(gameType) {
+        if (this.updateChooseGame) {
+            this.updateChooseGame(gameType);
+        }
+
+        if (this.updateStep) {
             this.updateStep(MAIN_STEP_IN_GAME);
+        }
+    }
+
+    #handleGameRewardSelection(buffType) {
+        console.log(this.updateBuffStatus);
+        console.log(buffType);
+        if (this.updateBuffStatus) {
+            this.updateBuffStatus(buffType);
+        }
+
+        if (this.updateStep) {
+            this.updateStep(MAIN_STEP_MAP_UI);
         }
     }
 
