@@ -22,6 +22,8 @@ class Enemy extends BasicObject {
         this.enemyAttackCallBack = enemyAttackCallBack;
         this.enemyMoveCallBack = enemyMoveCallBack;
         this.lastCollideTime = 0;
+        this.wavePushX = 0;
+        this.wavePushY = 0;
     }
 
     show() {
@@ -44,8 +46,14 @@ class Enemy extends BasicObject {
     }
 
     move(xSpeed, ySpeed) {
-        super.move(xSpeed, ySpeed);
-    }
+        let newX = this.xCoordinate + xSpeed * this.speed + this.wavePushX;
+        let newY = this.yCoordinate + ySpeed * this.speed + this.wavePushY;
+        this.xCoordinate = newX;
+        this.yCoordinate = newY;
+        // 推力逐渐衰减
+        this.wavePushX *= 0.95;
+        this.wavePushY *= 0.95;
+      }
 
     enemyAI(playerX, playerY, enemy) {
         if (this.isAlive) {
@@ -62,6 +70,12 @@ class Enemy extends BasicObject {
             }
         }
     }
+
+      // 添加供波浪调用的推力方法
+  applyWaveForce(forceX, forceY) {
+    this.wavePushX = this.wavePushX * 0.9 + forceX;
+    this.wavePushY = this.wavePushY * 0.9 + forceY;
+  }
 
     enemyMove(xSpeed, ySpeed, enemy) {
         this.enemyMoveCallBack(xSpeed, ySpeed, enemy);

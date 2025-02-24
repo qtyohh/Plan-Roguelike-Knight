@@ -71,6 +71,14 @@ class Wave {
         player.applyWaveForce(this.vx * pushForce, this.vy * pushForce);
     }
 
+        // 新增：对所有敌人施加推力
+        for (let enemy of enemies) {
+            if (myCollide(this, enemy)) {
+              console.log("波浪影响敌人！");
+              enemy.applyWaveForce(this.vx * pushForce, this.vy * pushForce);
+            }
+          }
+
 }
 
   show() {
@@ -133,6 +141,14 @@ class BigWave {
         console.log("波浪影响玩家！");
         player.applyWaveForce(this.vx * pushForce, this.vy * pushForce);
     }
+
+        // 新增：对所有敌人施加推力
+        for (let enemy of enemies) {
+            if (myCollide(this, enemy)) {
+              console.log("波浪影响敌人！");
+              enemy.applyWaveForce(this.vx * pushForce, this.vy * pushForce);
+            }
+          }
 
 }
 
