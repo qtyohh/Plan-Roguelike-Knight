@@ -1,10 +1,10 @@
 class InGameUI {
     constructor() {
         this.currentHP = 0;
-        this.targetHP = 0;
+        this.targetHP = 1;
         this.currentHPmax = 1;
         this.targetHPmax = 1;
-        this.currentSkillCD = 0;
+        this.currentSkillCD = 10;
         this.uiScale = 1;
         this.hpFlash = 0;
         this.cdFlash = 0;
@@ -29,8 +29,11 @@ class InGameUI {
         this.currentHPmax = this.targetHPmax > 0 ? 
             lerp(this.currentHPmax, this.targetHPmax, 0.1) : 1;
         this.currentHP = Math.max(0, Math.min(this.currentHP, this.targetHP));
-
-        this.currentSkillCD = lerp(this.currentSkillCD, playerStatus.skillCD, 0.1);
+        // console.log(this.currentSkillCD, playerStatus.skillCD);
+        // this.currentSkillCD = lerp(this.currentSkillCD, playerStatus.skillCD, 0.1);
+        // console.log(frameRate());
+        this.currentSkillCD -= (playerStatus.skillCD / 10000) * deltaTime;
+        this.currentSkillCD = Math.max(0, this.currentSkillCD);
 
         // dynamic scaling
         this.pulse = sin(frameCount * 0.01) * 0.01;
@@ -125,7 +128,7 @@ class InGameUI {
         fill(255, 255, 255, 220 + 35 * this.hpFlash);
         noStroke();
         textAlign(LEFT, CENTER);
-        text(`HP bar ${Math.round(this.currentHP)}/${Math.round(this.currentHPmax)}`, 0, 0);
+        text(`HP : ${Math.round(this.currentHP)}/${Math.round(this.currentHPmax)}`, 0, 0);
         pop();
         pop();
     }
@@ -146,14 +149,15 @@ class InGameUI {
         
         drawingContext.shadowColor = color(100, 255, 218, 150);
         drawingContext.shadowBlur = 5 + flash/10;
-        
-        fill(220 + flash, 220 + flash, 255);
-        textAlign(LEFT, CENTER);
-        text(`SKILL CD ${cd}s`, 0, 0);
 
-        if (this.currentSkillCD <= 0) {
+        if (cd == 0) {
             fill(100, 255, 218);
-            text(">> READY <<", 120, 0);
+            textAlign(LEFT);
+            text(">> SKILL READY <<", 0, 0);
+        } else {
+            fill(220 + flash, 220 + flash, 255);
+            textAlign(LEFT);
+            text(`SKILL CD: ${cd}s`, 0, 0);
         }
         pop();
         pop();
