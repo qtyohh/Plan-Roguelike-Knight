@@ -8,7 +8,7 @@ class Wave {
             this.speed = random(1, 5);
             this.edge = edgeOrX;
 
-            if (edgeOrX == "left" || edgeOrX === "right") {
+            if (edgeOrX == "left" || edgeOrX == "right") {
                 this.xSize = 70;
                 this.ySize = 200;
             } else {
