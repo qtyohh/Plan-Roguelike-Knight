@@ -6,7 +6,8 @@ class Status {
         HP : 0,
         speed : 0,
         shipType : 0,
-        gold : 0
+        gold : 0, 
+        skillCD : 10 // may be a constant
     };
     #pollution;
     #equipments = [];
