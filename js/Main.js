@@ -4,6 +4,10 @@ class Main {
     #game = null;
     #step = MAIN_STEP_START_UI;
     #cursorPos = null;
+    #gameReward = {
+        gold : 0,
+        buff : []
+    };
 
     constructor() {
         this.#UI = new MainUI(
@@ -168,16 +172,19 @@ class Main {
         }
         this.#step = stepChangeType;
         this.#UI.changeCurrentStep(stepChangeType);
+
+        if (stepChangeType == MAIN_STEP_GAME_REWARD) {
+            this.#gameReward.gold = 10 + round(random(5, 15));
+            this.#gameReward.buff = [
+                BUFF_MODEL[round(random(1, 5))],
+                BUFF_MODEL[round(random(1, 5))],
+                BUFF_MODEL[round(random(1, 5))]
+            ];
+        }
     }
 
     gameReward() {
-        const gold = 10 + round(random(5, 15));
-        const buff = [
-            BUFF_MODEL[round(random(1, 5))],
-            BUFF_MODEL[round(random(1, 5))],
-            BUFF_MODEL[round(random(1, 5))]
-        ]
-        this.#UI.showGameRewardUI(gold, buff);
+        this.#UI.showGameRewardUI(this.#gameReward.gold, this.#gameReward.buff);
     }
 
     chooseBuff(buffType) {
