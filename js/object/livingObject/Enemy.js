@@ -14,12 +14,14 @@ class Enemy extends BasicObject {
         );
         this.modelType = enemyModel.type;
 
-        this.attackCD = 1;
+        this.attackPower = enemyModel.attackPower;
+        this.attackCD = enemyModel.attackCD;
         this.lastAttackTime = 0;
-        this.attackRange = 200;
-        this.seeRange = 500;
+        this.attackRange = enemyModel.attackRange;
+        this.seeRange = enemyModel.seeRange;
         this.enemyAttackCallBack = enemyAttackCallBack;
         this.enemyMoveCallBack = enemyMoveCallBack;
+        this.lastCollideTime = 0;
     }
 
     show() {
@@ -71,6 +73,7 @@ class Enemy extends BasicObject {
             ySpeed,
             this.xCoordinate,
             this.yCoordinate,
+            this.attackPower
         );
         this.lastAttackTime = millis();
     }

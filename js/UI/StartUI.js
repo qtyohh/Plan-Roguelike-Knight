@@ -106,7 +106,7 @@ class StartUI {
         });
         
         // Update cursor
-        this.updateCursor();
+        //this.updateCursor();
     }
     
     updateCursor() {

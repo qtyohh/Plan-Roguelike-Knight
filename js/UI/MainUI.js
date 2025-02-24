@@ -4,15 +4,19 @@ class MainUI {
     #startUI;
     #chooseShipUI;
     #inGameUI;
+    #gameRewardUI;
   
-    constructor(updateStep, updateShipStatus) {
+    constructor(updateStep, updateShipStatus, updateBuffStatus) {
         this.updateStep = updateStep;
         this.updateShipStatus = updateShipStatus;
+        this.updateBuffStatus = updateBuffStatus;
         
         // Init UI
         this.#startUI = new StartUI(this.#handleStartUIButtonClick.bind(this));
         this.#chooseShipUI = new ChooseShipUI(this.#handleShipSelection.bind(this));
         this.#inGameUI = new InGameUI();
+        this.#inGameUI.preload();
+        this.#gameRewardUI = new GameRewardUI();
     }
   
     showStartUI() {
@@ -33,10 +37,19 @@ class MainUI {
     }
   
     showInGameUI(playerStatus) {
-        if (!this.#inGameUI) {
+        if (this.#inGameUI == null) {
             this.#inGameUI = new InGameUI();
         }
+        this.#inGameUI.update(playerStatus);
         this.#inGameUI.show(playerStatus);
+    }
+
+    showGameRewardUI(gold, buff) {
+        if (this.#gameRewardUI == null) {
+            this.#gameRewardUI = new GameRewardUI();
+        }
+        this.#gameRewardUI.init(buff);
+        this.#gameRewardUI.draw(gold);
     }
 
     gameFinishGetSeamanUI() {
