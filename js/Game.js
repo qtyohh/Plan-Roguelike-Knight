@@ -29,12 +29,12 @@ class Game {
 
     initPlayer(playerBasicStatus) {
         this.#player = new Player(
-            "Player", 
-            300, 
-            200, 
-            playerBasicStatus.xSize, 
-            playerBasicStatus.ySize, 
-            playerBasicStatus.HP, 
+            "Player",
+            300,
+            200,
+            playerBasicStatus.xSize,
+            playerBasicStatus.ySize,
+            playerBasicStatus.HP,
             playerBasicStatus.speed
         );
         this.#playerController = new PlayerControl(
@@ -48,16 +48,16 @@ class Game {
 
     initEnemies() {
         const enemy = new Enemy(
-            300, 
-            100, 
+            300,
+            100,
             EASY_ENEMY_MODEL_1_TYPE,
             (xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower) => this.addEnemyBullet(xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower),
             (xMove, yMove, enemy) => this.enemyMove(xMove, yMove, enemy),
         );
         this.#enemies.push(enemy);
         const enemy_1 = new Enemy(
-            400, 
-            100, 
+            400,
+            100,
             EASY_ENEMY_MODEL_2_TYPE,
             (xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower) => this.addEnemyBullet(xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower),
             (xMove, yMove, enemy) => this.enemyMove(xMove, yMove, enemy),
@@ -73,10 +73,10 @@ class Game {
     initBuilding() {
 
         const building = new Building(
-            300, 
-            300, 
+            300,
+            300,
             BUILDING_MODEL_TNT_TYPE,
-            (xCoor, yCoor, harm, attackBit, explodeType) => 
+            (xCoor, yCoor, harm, attackBit, explodeType) =>
                 this.addExplode(xCoor, yCoor, harm, attackBit, explodeType)
         );
         this.#buildings.push(building);
@@ -84,8 +84,8 @@ class Game {
 
     getPlayerStatus() {
         const playerStatus = {
-            HP : this.#player.HP,
-            HPmax : this.#player.HPmax
+            HP: this.#player.HP,
+            HPmax: this.#player.HPmax
 
         };
         return playerStatus;
@@ -124,7 +124,7 @@ class Game {
         }
         this.#bullets = this.#bullets.filter(bullet => !bullet.toDelete);
 
-        
+
         if (this.#buildings.length != 0) {
             for (let i = this.#buildings.length - 1; i >= 0; --i) {
                 let building = this.#buildings[i];
@@ -143,7 +143,7 @@ class Game {
             console.log("Game Over!");
         }
         this.#playerController.updateStatus();
-        this.#player.show();    
+        this.#player.show();
 
         for (let island of this.#islands) {
             island.show();
@@ -155,7 +155,7 @@ class Game {
                 if (!enemy.isAlive) {
                     this.#enemies.splice(i, 1);
                 } else {
-                    enemy.updateWavePush(); 
+                    enemy.updateWavePush();
                     enemy.enemyAI(this.#player.xCoordinate, this.#player.yCoordinate, enemy);
                     enemy.show();
                 }
@@ -165,16 +165,16 @@ class Game {
             this.#gameWin = true;
         }
 
-    if (this.#player.HP > 0) {
-        this.checkAllBuffTriggers();
-        this.#playerBuffController.updateFrame(this.curTime);
-        this.updateEnemyBuffs(this.curTime);
+        if (this.#player.HP > 0) {
+            this.checkAllBuffTriggers();
+            this.#playerBuffController.updateFrame(this.curTime);
+            this.updateEnemyBuffs(this.curTime);
+        }
+
+        this.#waveManager.update(this.#islands, this.#player, this.#enemies);
+        this.#waveManager.show();
+
     }
-
-    this.#waveManager.update(this.#islands, this.#player, this.#enemies);
-    this.#waveManager.show();
-
-    }   
 
     checkCollideBullet(bullet) {
         for (let island of this.#islands) {
@@ -182,7 +182,7 @@ class Game {
                 return true;
             }
         }
-        
+
         for (let enemy of this.#enemies) {
             if (myCollide(enemy, bullet)) {
                 return true;
@@ -203,15 +203,15 @@ class Game {
 
     checkCollidePlayer(xMove, yMove) {
         let location = {
-            xCoordinate : this.#player.xCoordinate + xMove * this.#player.speed,
-            yCoordinate : this.#player.yCoordinate + yMove * this.#player.speed,
-            xSize : this.#player.xSize,
-            ySize : this.#player.ySize
+            xCoordinate: this.#player.xCoordinate + xMove * this.#player.speed,
+            yCoordinate: this.#player.yCoordinate + yMove * this.#player.speed,
+            xSize: this.#player.xSize,
+            ySize: this.#player.ySize
         };
         for (let island of this.#islands) {
             if (myCollide(location, island)) {
                 return true;
-            } 
+            }
         }
 
         for (let building of this.#buildings) {
@@ -236,16 +236,16 @@ class Game {
 
     checkCollideEnemy(xMove, yMove, enemy) {
         let location = {
-            xCoordinate : enemy.xCoordinate + xMove * enemy.speed,
-            yCoordinate : enemy.yCoordinate + yMove * enemy.speed,
-            xSize : enemy.xSize,
-            ySize : enemy.ySize
+            xCoordinate: enemy.xCoordinate + xMove * enemy.speed,
+            yCoordinate: enemy.yCoordinate + yMove * enemy.speed,
+            xSize: enemy.xSize,
+            ySize: enemy.ySize
         };
 
         for (let island of this.#islands) {
             if (myCollide(location, island)) {
                 return true;
-            } 
+            }
         }
         for (let building of this.#buildings) {
             if (building.modelType == BUILDING_MODEL_BOMB_TYPE) {
@@ -292,12 +292,12 @@ class Game {
     addBullet(xSpeed, ySpeed, bulletType) {
         const currentWeapon = this.#player.equipment.getCurrentWeapon();
         const bullet = new Bullet(
-            this.#player.xCoordinate + xSpeed * 10, 
-            this.#player.yCoordinate + ySpeed * 10, 
-            xSpeed, 
-            ySpeed, 
-            bulletType, 
-            currentWeapon.attackPower, 
+            this.#player.xCoordinate + xSpeed * 10,
+            this.#player.yCoordinate + ySpeed * 10,
+            xSpeed,
+            ySpeed,
+            bulletType,
+            currentWeapon.attackPower,
             currentWeapon.explosionSize,
             currentWeapon.bulletSize,
             currentWeapon.bulletSpeed
@@ -307,27 +307,27 @@ class Game {
 
     addEnemyBullet(xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower) {
         const bullet = new Bullet(
-            xCoordinate + xSpeed * 10, 
-            yCoordinate + ySpeed * 10, 
-            xSpeed, 
-            ySpeed, 
-            ENEMY_BULLET_TYPE, 
-            attackPower, 
+            xCoordinate + xSpeed * 10,
+            yCoordinate + ySpeed * 10,
+            xSpeed,
+            ySpeed,
+            ENEMY_BULLET_TYPE,
+            attackPower,
             0,
             0,
             0
         );
         this.#bullets.push(bullet);
     }
-    
+
     addBomb() {
         let xCoor = this.#player.xCoordinate;
         let yCoor = this.#player.yCoordinate;
         const bomb = new Building(
-            xCoor, 
-            yCoor, 
+            xCoor,
+            yCoor,
             BUILDING_MODEL_BOMB_TYPE,
-            (x, y, harm, attackBit, explodeType) => 
+            (x, y, harm, attackBit, explodeType) =>
                 this.addExplode(x, y, harm, attackBit, explodeType)
         );
         this.#buildings.push(bomb);
@@ -395,13 +395,13 @@ class Game {
                     if (bullet.attachBuff) {
                         let controller = this.#enemyBuffController.get(enemy.uniqueId);
                         if (!controller) {
-                                controller = new BuffController(enemy);
-                                this.#enemyBuffController.set(enemy.uniqueId, controller);
-                            }
-                            controller.addNewBuff(bullet.attachBuff);
+                            controller = new BuffController(enemy);
+                            this.#enemyBuffController.set(enemy.uniqueId, controller);
                         }
-                        enemy.currentHp -= bullet.damage;
+                        controller.addNewBuff(bullet.attachBuff);
                     }
+                    enemy.currentHp -= bullet.damage;
+                }
             });
         });
 
