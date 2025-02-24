@@ -16,7 +16,7 @@ class BuffController {
         this.activeBuffList.set(newBuff.effectType, newBuff);
         
         // shield add
-        if (newBuff.effectType === BuffTypes.SHIELD_ADD) {
+        if (newBuff.effectType == BuffTypes.SHIELD_ADD) {
             this.temporaryShield += newBuff.currentEffectValue;
         }
 
@@ -41,7 +41,7 @@ class BuffController {
         if (!buff) return;
 
         // when shield is removed, compare the value
-        if (buff.effectType === BuffTypes.SHIELD_ADD) {
+        if (buff.effectType == BuffTypes.SHIELD_ADD) {
             this.temporaryShield = Math.max(0, this.temporaryShield - buff.currentEffectValue);
         }
 
@@ -96,7 +96,7 @@ class BuffController {
     calcSpeedChange() {
         let rate = 1.0;
         this.activeBuffList.forEach(buff => {
-            if (buff.effectType === BuffTypes.SPEED_CHANGE) {
+            if (buff.effectType == BuffTypes.SPEED_CHANGE) {
                 rate *= 1 + buff.currentEffectValue;
             }
         });
@@ -106,7 +106,7 @@ class BuffController {
     calcDamageChange() {
         let rate = 1.0;
         this.activeBuffList.forEach(buff => {
-            if (buff.effectType === BuffTypes.DAMAGE_CHANGE) {
+            if (buff.effectType == BuffTypes.DAMAGE_CHANGE) {
                 rate *= 1 + buff.currentEffectValue;
             }
         });
@@ -116,7 +116,7 @@ class BuffController {
     calcShield() {
         let total = 0;
         this.activeBuffList.forEach(buff => {
-            if (buff.effectType === BuffTypes.SHIELD_ADD) {
+            if (buff.effectType == BuffTypes.SHIELD_ADD) {
                 total += buff.currentEffectValue;
             }
         });

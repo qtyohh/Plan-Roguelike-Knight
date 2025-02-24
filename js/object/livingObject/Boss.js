@@ -13,7 +13,7 @@ class Boss extends Enemy {
         );
         this.type = enemyModel.type;
         this.maxHP = enemyModel.HP;
-        this.abilityCD = 0;
+        this.skillCD = 0;
     }
 
     show() {

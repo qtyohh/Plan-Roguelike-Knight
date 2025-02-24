@@ -1,5 +1,5 @@
 class Player extends BasicObject {
-    constructor(name, xCoordinate, yCoordinate, xSize, ySize, HP, speed) {
+    constructor(name, xCoordinate, yCoordinate, xSize, ySize, HP, speed, skillCD, maxSkillCD) {
         super(
             name, 
             PLAYER_TYPE,
@@ -11,7 +11,9 @@ class Player extends BasicObject {
             HP, 
             speed, 
         );
-        this.abilityCD = 0;
+        this.HPmax = HP;
+        this.skillCD = skillCD;
+        this.maxSkillCD = maxSkillCD;
         this.equipment = new Equipment(name, 0, 0, 0, 0, 0, {});
     }
     
