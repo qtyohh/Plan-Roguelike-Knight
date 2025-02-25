@@ -10,6 +10,7 @@ class Game {
     #gameWin;
     #playerBuffController;
     #enemyBuffController;
+    #bulletExplode;
 
     constructor(updateStepCallBack) {
         this.#player = null;
@@ -25,6 +26,8 @@ class Game {
         this.#playerBuffController = null;
         this.#enemyBuffController = new Map();
         this.curTime = Date.now();
+        this.#bulletExplode = [];
+        
     }
 
     initPlayer(playerBasicStatus) {
@@ -46,6 +49,7 @@ class Game {
             () => this.addBomb()
         );
         this.#playerBuffController = new BuffController(this.#player);
+        this.#player.preload();
     }
 
     initEnemies() {
@@ -65,11 +69,14 @@ class Game {
             (xMove, yMove, enemy) => this.enemyMove(xMove, yMove, enemy),
         );
         this.#enemies.push(enemy_1);
+        
     }
 
     initIslands() {
         const island = new Island(200, 300, ISLAND_MODEL_1_TYPE);
         this.#islands.push(island);
+        island.preload();
+        
     }
 
     initBuilding() {
@@ -82,6 +89,7 @@ class Game {
                 this.addExplode(xCoor, yCoor, harm, attackBit, explodeType)
         );
         this.#buildings.push(building);
+        building.preload();
     }
 
     getPlayer() {
@@ -140,6 +148,20 @@ class Game {
                 } else {
                     building.show();
                 }
+            }
+        }
+
+        if (this.#bulletExplode.length != 0) {
+            for (let i = this.#bulletExplode.length - 1; i >= 0; --i) {
+                let explode = this.#bulletExplode[i];
+                if (explode.frameCount <10) {
+                    
+                    explode.show();
+                    
+                } else{
+                    this.#bulletExplode.splice(i, 1);
+
+                    }
             }
         }
 
@@ -345,8 +367,10 @@ class Game {
 
     addExplode(xCoor, yCoor, harm, attackBit, explodeType) {
         const explode = new Explode(xCoor, yCoor, harm, attackBit, explodeType);
+        explode.preload();
         explode.show();
         this.checkCollideExplode(explode);
+        this.#bulletExplode.push(explode);
     }
 
     playerMove(xMove, yMove) {

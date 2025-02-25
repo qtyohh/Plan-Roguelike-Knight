@@ -141,8 +141,8 @@ const ISLAND_MODEL = [
     }, {
         name : "island_1",
         type : ISLAND_MODEL_1_TYPE,
-        xSize : 50,
-        ySize : 50
+        xSize : 130,
+        ySize : 130
     },
 ]
 
@@ -171,8 +171,8 @@ const BUILDING_MODEL = [
     }, {
         name : "TNT",
         type : BUILDING_MODEL_TNT_TYPE,
-        xSize : 10,
-        ySize : 10,
+        xSize : 64,
+        ySize : 74,
         HP : 1
     }, {
         name : "chest",

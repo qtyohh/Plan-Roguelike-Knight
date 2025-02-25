@@ -26,6 +26,8 @@ class Enemy extends BasicObject {
         this.wavePushY = 0;
     }
 
+    
+
     show() {
         if (this.isAlive) {
             fill(100);
