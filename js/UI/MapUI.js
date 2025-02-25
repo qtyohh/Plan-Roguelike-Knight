@@ -4,7 +4,7 @@ class MapUI {
         this.yCoor = height / 2;
         this.xSize = width * 0.8;
         this.ySize = height * 0.8;
-        this.buttonSize = 20;
+        this.buttonSize = 40;
         this.row = 5;
         this.col = 5;
         this.drawnRow = -1;
@@ -26,6 +26,7 @@ class MapUI {
             this.gameType = gameType;
             this.isHovered = false;
             this.isPressed = false;
+            this.isVisited = false;
             this.scale = 1;
         }
   
@@ -158,9 +159,9 @@ class MapUI {
         }
     }
   
-    /*handleWindowResized() {
-        this.createButtons();
-    }*/
+    handleWindowResized() {
+        this.draw();
+    }
 
     init() {
         noStroke();
