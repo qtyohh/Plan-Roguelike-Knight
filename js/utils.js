@@ -30,6 +30,13 @@ const BUILDING_TYPE = 0b0010;
 const ISLAND_TYPE = 0b0001;
 const BULLET_TYPE = 0b10000;
 
+/** game type  */
+const GAME_TYPE_ERROR = 0;
+const GAME_TYPE_NORMAL_ENEMY = 1;
+const GAME_TYPE_BOSS_ENEMY = 2;
+const GAME_TYPE_SHOP = 3;
+const GAME_TYPE_RANDOM_EVENT = 4;
+
 
 /** basic values of ships */
 const SHIP_MODEL_ERROR_TYPE = 0;
@@ -95,8 +102,8 @@ const ENEMY_MODEL = [
     }, {
         name : "easy_enemy_1",
         type : EASY_ENEMY_MODEL_1_TYPE,
-        xSize : 15,  
-        ySize : 15,
+        xSize : 30,  
+        ySize : 30,
         HP : 5,
         speed : 1,
         attackPower : 0.5,
@@ -106,8 +113,8 @@ const ENEMY_MODEL = [
     }, {
         name : "easy_enemy_2",
         type : EASY_ENEMY_MODEL_2_TYPE,
-        xSize : 15,  
-        ySize : 15,
+        xSize : 30,  
+        ySize : 30,
         HP : 10,
         speed : 2,
         attackPower : 1,
