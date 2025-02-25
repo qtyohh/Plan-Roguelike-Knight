@@ -89,6 +89,8 @@ class Enemy extends BasicObject {
     }
 
     updateWavePush() {
+        this.enemyMove(this.wavePushX, this.wavePushY, this);
+
         this.xCoordinate += this.wavePushX;
         this.yCoordinate += this.wavePushY;
 
