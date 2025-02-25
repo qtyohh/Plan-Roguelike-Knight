@@ -105,8 +105,6 @@ class PlayerControl {
         if (this.keyMap.right) {
             xMove++;
         }
-        xMove += this.#player.wavePushX;
-        yMove += this.#player.wavePushY;
         this.playerMoveCallBack(xMove, yMove);
     }
 
