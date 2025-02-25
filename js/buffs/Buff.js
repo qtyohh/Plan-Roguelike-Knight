@@ -40,7 +40,7 @@ class Buff {
 
     // if the buff is expired
     get isExpired() {
-        if (this.totalDuration === 0) return false;
+        if (this.totalDuration == 0) return false;
         return Date.now() - this.startTime > this.totalDuration;
     }
 

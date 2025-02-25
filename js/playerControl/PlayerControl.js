@@ -1,6 +1,7 @@
 class PlayerControl {
+    #player;
     constructor(player, shootCallBack, playerMoveCallBack, skillUseCallBack) {
-        this.player = player;
+        this.#player = player;
         this.shootCallBack = shootCallBack;
         this.playerMoveCallBack = playerMoveCallBack; 
         this.skillUseCallBack = skillUseCallBack;
@@ -43,12 +44,12 @@ class PlayerControl {
 
         // switch weapon
         if (key == 'q' || key == 'Q') {
-            this.player.equipment.switchWeaponByKey();
+            this.#player.equipment.switchWeaponByKey();
         }
 
         //skill
         if (key == " ") {
-            this.skillUseCallBack();
+            this.useSkill();
         }
     }
 
@@ -73,7 +74,7 @@ class PlayerControl {
 
     shoot(xSpeed, ySpeed) {
         console.log("Shooting!");
-        const currentWeapon = this.player.equipment.getCurrentWeapon();
+        const currentWeapon = this.#player.equipment.getCurrentWeapon();
         if (currentWeapon) {
             this.shootCallBack(
                 xSpeed, 
@@ -113,6 +114,13 @@ class PlayerControl {
 
 
     useSkill() {
+        if (this.#player.skillCD > 0) {
+            console.log("playerControl() Skill is not ready");
+            return;
+        }
 
+        console.log("playerControl() Using skill");
+        this.skillUseCallBack();
+        this.#player.skillCD = this.#player.maxSkillCD;
     }
 }

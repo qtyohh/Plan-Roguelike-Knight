@@ -35,7 +35,9 @@ class Game {
             playerBasicStatus.xSize, 
             playerBasicStatus.ySize, 
             playerBasicStatus.HP, 
-            playerBasicStatus.speed
+            playerBasicStatus.speed, 
+            playerBasicStatus.skillCD, 
+            playerBasicStatus.maxSkillCD
         );
         this.#playerController = new PlayerControl(
             this.#player,
@@ -80,6 +82,10 @@ class Game {
                 this.addExplode(xCoor, yCoor, harm, attackBit, explodeType)
         );
         this.#buildings.push(building);
+    }
+
+    getPlayer() {
+        return this.#player;
     }
 
     getPlayerStatus() {
@@ -165,14 +171,14 @@ class Game {
             this.#gameWin = true;
         }
 
-    if (this.#player.HP > 0) {
-        this.checkAllBuffTriggers();
-        this.#playerBuffController.updateFrame(this.curTime);
-        this.updateEnemyBuffs(this.curTime);
-    }
+        if (this.#player.HP > 0) {
+            this.checkAllBuffTriggers();
+            this.#playerBuffController.updateFrame(this.curTime);
+            this.updateEnemyBuffs(this.curTime);
+        }
 
-    this.#waveManager.update(this.#islands, this.#player, this.#enemies);
-    this.#waveManager.show();
+        this.#waveManager.update(this.#islands, this.#player, this.#enemies);
+        this.#waveManager.show();
 
     }   
 
@@ -321,6 +327,10 @@ class Game {
     }
     
     addBomb() {
+        if (this.#player.skillCD > 0) {
+            console.log("addBomb() Skill is not ready");
+            return;
+        }
         let xCoor = this.#player.xCoordinate;
         let yCoor = this.#player.yCoordinate;
         const bomb = new Building(

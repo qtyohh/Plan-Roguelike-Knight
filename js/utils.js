@@ -45,28 +45,32 @@ const SHIP_MODEL = [
         xSize : 0,
         ySize : 0,
         HPmax : 0,
-        speed : 0
+        speed : 0, 
+        skillCD : 0
     } , {
         name : "ship1",
         type : SHIP_MODEL_1_TYPE,
         xSize : 10,
         ySize : 10,
         HPmax : 50,
-        speed : 5
+        speed : 5,
+        skillCD : 10
     } , {
         name : "ship2",
         type : SHIP_MODEL_2_TYPE,
         xSize : 10,
         ySize : 10,
         HPmax : 7,
-        speed : 1
+        speed : 1, 
+        skillCD : 10
     } , {
         name : "ship3",
         type : SHIP_MODEL_3_TYPE,
         xSize : 8,
         ySize : 8,
         HPmax : 4,
-        speed : 10
+        speed : 10, 
+        skillCD : 10
     }
 ];
 

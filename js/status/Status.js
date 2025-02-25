@@ -7,7 +7,8 @@ class Status {
         speed : 0,
         shipType : 0,
         gold : 0, 
-        skillCD : 10 // may be a constant
+        skillCD : 0, 
+        maxSkillCD : 0
     };
     #pollution;
     #equipments = [];
@@ -22,6 +23,8 @@ class Status {
         this.#playerStatus.HPmax = SHIP_MODEL[shipType].HPmax;
         this.#playerStatus.HP = this.#playerStatus.HPmax;
         this.#playerStatus.speed = SHIP_MODEL[shipType].speed;
+        this.#playerStatus.skillCD = SHIP_MODEL[shipType].skillCD;
+        this.#playerStatus.maxSkillCD = SHIP_MODEL[shipType].skillCD;
     }
 
     getShipStatus() {

@@ -5,12 +5,15 @@ class MainUI {
     #chooseShipUI;
     #inGameUI;
     #gameRewardUI;
+    #player;
     #mapUI;
   
-    constructor(updateStep, 
+    constructor(player,
+                updateStep, 
                 updateShipStatus, 
                 updateBuffStatus, 
                 updateChooseGame) {
+        this.#player = player;
         this.updateStep = updateStep;
         this.updateShipStatus = updateShipStatus;
         this.updateBuffStatus = updateBuffStatus;
@@ -19,11 +22,16 @@ class MainUI {
         // Init UI
         this.#startUI = new StartUI(this.#handleStartUIButtonClick.bind(this));
         this.#chooseShipUI = new ChooseShipUI(this.#handleShipSelection.bind(this));
-        this.#inGameUI = new InGameUI();
+        this.#inGameUI = new InGameUI(this.#player);
         this.#inGameUI.preload();
         //this.#gameRewardUI = new GameRewardUI(0, this.#handleGameRewardSelection.bind(this));
         this.#mapUI = new MapUI(this.#handleGameMapSelection.bind(this));
         this.#mapUI.init();
+    }
+
+    setPlayer(player) {
+        this.#player = player;
+        this.#inGameUI.setPlayer(this.#player);
     }
   
     showStartUI() {

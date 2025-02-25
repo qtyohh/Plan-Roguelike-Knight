@@ -1,15 +1,26 @@
 class InGameUI {
-    constructor() {
-        this.currentHP = 0;
-        this.targetHP = 1;
-        this.currentHPmax = 1;
-        this.targetHPmax = 1;
-        this.currentSkillCD = 10;
+
+    #player;
+
+    constructor(player) {
+        this.currentHP = player.HP;
+        this.targetHP = player.HP;
+        this.currentHPmax = player.HPmax;
+        this.targetHPmax = player.HPmax;
         this.uiScale = 1;
         this.hpFlash = 0;
         this.cdFlash = 0;
         this.pulse = 0;
         this.font = null;
+        this.#player = player;
+    }
+
+    setPlayer(player) {
+        this.#player = player;
+        this.currentHP = player.HP;
+        this.targetHP = player.HP;
+        this.currentHPmax = player.HPmax;
+        this.targetHPmax = player.HPmax;
     }
 
     preload() {
@@ -21,20 +32,27 @@ class InGameUI {
     }
 
     update(playerStatus) {
+        if (this.#player == SHIP_MODEL[SHIP_MODEL_ERROR_TYPE] || this.#player == null) {
+            return;
+        }
 
-        this.targetHP = playerStatus.HP;
-        this.targetHPmax = playerStatus.HPmax;
+        this.targetHP = this.#player.HP;
+        this.targetHPmax = this.#player.HPmax;
+
+        // this.#player.skillCD = this.#player.maxSkillCD;
 
         this.currentHP = lerp(this.currentHP, this.targetHP, 0.1);
         this.currentHPmax = this.targetHPmax > 0 ? 
             lerp(this.currentHPmax, this.targetHPmax, 0.1) : 1;
         this.currentHP = Math.max(0, Math.min(this.currentHP, this.targetHP));
-        // console.log(this.currentSkillCD, playerStatus.skillCD);
-        // this.currentSkillCD = lerp(this.currentSkillCD, playerStatus.skillCD, 0.1);
+        // console.log(this.#player.skillCD, playerStatus.skillCD);
+        // this.#player.skillCD = lerp(this.#player.skillCD, playerStatus.skillCD, 0.1);
         // console.log(frameRate());
-        this.currentSkillCD -= (playerStatus.skillCD / 10000) * deltaTime;
-        this.currentSkillCD = Math.max(0, this.currentSkillCD);
-
+        if (this.#player.skillCD > 0) {
+            this.#player.skillCD -= (this.#player.maxSkillCD / 10000) * deltaTime;
+            // this.#player.skillCD = this.#player.skillCD;
+            this.#player.skillCD = Math.max(0, this.#player.skillCD);
+        }
         // dynamic scaling
         this.pulse = sin(frameCount * 0.01) * 0.01;
         this.uiScale = 1 + this.pulse;
@@ -84,6 +102,8 @@ class InGameUI {
         translate(-120, -50);
         // limit HP max to avoid division by zero
         const validMax = this.currentHPmax > 0 ? this.currentHPmax : 1;
+        // console.log(this.currentHPmax);
+        // console.log(validMax);
         const hpPercent = Math.min(this.currentHP / validMax, 1);
         const barWidth = 200 * hpPercent;
 
@@ -139,7 +159,7 @@ class InGameUI {
         rectMode(CORNER);
         translate(-120, -50);
 
-        const cd = Math.max(0, this.currentSkillCD).toFixed(1);
+        const cd = Math.max(0, this.#player.skillCD).toFixed(1);
         const flash = this.cdFlash * 255;
         
         push();
