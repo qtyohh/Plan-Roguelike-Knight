@@ -46,8 +46,8 @@ class Enemy extends BasicObject {
     }
 
     move(xSpeed, ySpeed) {
-        let newX = this.xCoordinate + xSpeed * this.speed + this.wavePushX;
-        let newY = this.yCoordinate + ySpeed * this.speed + this.wavePushY;
+        let newX = this.xCoordinate + xSpeed * this.speed/*  + this.wavePushX */;
+        let newY = this.yCoordinate + ySpeed * this.speed/*  + this.wavePushY */;
 
         newX = constrain(newX, this.xSize / 2, width - this.xSize / 2);
         newY = constrain(newY, this.ySize / 2, height - this.ySize / 2);
@@ -61,6 +61,7 @@ class Enemy extends BasicObject {
         if (this.isAlive) {
             let distance = dist(this.xCoordinate, this.yCoordinate, playerX, playerY);
             if (distance > this.seeRange) {
+                
             } else if (distance > this.attackRange && distance <= this.seeRange) {
                 let xSpeed = (playerX - this.xCoordinate) / distance * this.speed;
                 let ySpeed = (playerY - this.yCoordinate) / distance * this.speed;
@@ -91,7 +92,6 @@ class Enemy extends BasicObject {
     updateWavePush() {
         this.enemyMove(this.wavePushX, this.wavePushY, this);
 
-
         this.xCoordinate = constrain(this.xCoordinate, this.xSize / 2, width - this.xSize / 2);
         this.yCoordinate = constrain(this.yCoordinate, this.ySize / 2, height - this.ySize / 2);
 
@@ -100,8 +100,8 @@ class Enemy extends BasicObject {
     }
 
     applyWaveForce(forceX, forceY) {
-        this.wavePushX = this.wavePushX * 0.9 + forceX;
-        this.wavePushY = this.wavePushY * 0.9 + forceY;
+        this.wavePushX = /* this.wavePushX * 0.9 */ + forceX;
+        this.wavePushY =/*  this.wavePushY * 0.9  */+ forceY;
     }
 
 }

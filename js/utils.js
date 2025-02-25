@@ -112,7 +112,7 @@ const ENEMY_MODEL = [
         speed : 2,
         attackPower : 1,
         attackCD : 1,
-        attackRange : -1,
+        attackRange : 10,
         seeRange : 500
     },
 

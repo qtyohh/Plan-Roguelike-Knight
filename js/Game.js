@@ -234,7 +234,7 @@ class Game {
                     this.#player.updateHP(enemy.attackPower * -1);
                     enemy.lastCollideTime = millis();
                 }
-                return true;
+                // return true;
             }
         }
         return false;
@@ -266,7 +266,7 @@ class Game {
                 this.#player.updateHP(enemy.attackPower * -1);
                 enemy.lastCollideTime = millis();
             }
-            return true;
+            // return true;
         }
 
         return false;

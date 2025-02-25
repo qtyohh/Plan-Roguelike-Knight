@@ -29,8 +29,8 @@ class Player extends BasicObject {
     }
 
     move(xSpeed, ySpeed) {
-        let newX = this.xCoordinate + xSpeed * this.speed + this.wavePushX;
-        let newY = this.yCoordinate + ySpeed * this.speed + this.wavePushY;
+        let newX = this.xCoordinate + xSpeed * this.speed/*  + this.wavePushX */;
+        let newY = this.yCoordinate + ySpeed * this.speed/*  + this.wavePushY */;
 
         newX = constrain(newX, this.xSize / 2, width - this.xSize / 2);
         newY = constrain(newY, this.ySize / 2, height - this.ySize / 2);
@@ -38,8 +38,8 @@ class Player extends BasicObject {
         this.xCoordinate = newX;
         this.yCoordinate = newY;
 
-        this.wavePushX *= 0.95;
-        this.wavePushY *= 0.95;
+/*         this.wavePushX *= 0.95;
+        this.wavePushY *= 0.95; */
     }
 
     applyWaveForce(forceX, forceY) {

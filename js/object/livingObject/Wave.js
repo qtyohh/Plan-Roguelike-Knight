@@ -144,6 +144,8 @@ class WaveManager {
 
                     if (newSpeed > 1.5) {
                         let newWave = new Wave(newX, newY, newVx, newVy, "big");
+                        
+        /* this.waves.push(newWave); */
                         newWaves.push(newWave);
                     }
                     wavesToRemove.add(i);
