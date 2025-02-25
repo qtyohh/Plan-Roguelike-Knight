@@ -135,10 +135,6 @@ class WaveManager {
                 let waveA = this.waves[i];
                 let waveB = this.waves[j];
 
-                if (waveA.isNewlyCreated() || waveB.isNewlyCreated()) {
-                    continue;
-                }
-
                 if (myCollide(waveA, waveB)) {
                     let newX = (waveA.xCoordinate + waveB.xCoordinate) / 2;
                     let newY = (waveA.yCoordinate + waveB.yCoordinate) / 2;
