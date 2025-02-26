@@ -48,6 +48,10 @@ class Player extends BasicObject {
         this.frameIndex = 0;
         this.lastFrameTime = 0;
         this.frameInterval = 100;
+
+        
+
+        
     }
 
     preload(){
@@ -180,12 +184,7 @@ class Player extends BasicObject {
     }
     
 
-    drawmainboat(){ 
-
-        
-        imageMode(CENTER);
-        image(this.currentFrames[this.frameIndex], this.xCoordinate , this.yCoordinate , this.currentFrames[this.frameIndex].width/7, this.currentFrames[this.frameIndex].height/7 );
-    }
+    
 
     
     
@@ -199,7 +198,12 @@ class Player extends BasicObject {
         super.updateHP(change);
     }
 
+
     move(xSpeed, ySpeed) {
+
+        
+
+        
         let newX = this.xCoordinate + xSpeed * this.speed + this.wavePushX;
         let newY = this.yCoordinate + ySpeed * this.speed + this.wavePushY;
 
@@ -211,6 +215,95 @@ class Player extends BasicObject {
 
         this.wavePushX *= 0.95;
         this.wavePushY *= 0.95;
+
+       
+
+        if(xSpeed > 0){
+
+            this. setAnimation('D');//调用向右移动帧
+        }
+
+        if(xSpeed < 0){
+
+            this. setAnimation('A');//调用向右移动帧
+        }
+
+        if(ySpeed > 0){
+
+            this. setAnimation('W');//调用向右移动帧
+        }
+
+        if(ySpeed < 0){
+
+            this. setAnimation('W');//调用向右移动帧
+        }
+
+        if(xSpeed > 0  && ySpeed > 0){
+
+            this. setAnimation('DS');//调用向右移动帧
+        }
+
+        if(xSpeed > 0  && ySpeed < 0){
+
+            this. setAnimation('DW');//调用向右移动帧
+        }
+
+        if(xSpeed < 0  && ySpeed < 0){
+
+            this. setAnimation('AW');//调用向右移动帧
+        }
+
+        if(xSpeed < 0  && ySpeed > 0){
+
+            this. setAnimation('AS');//调用向右移动帧
+        }
+
+        if(xSpeed ==0  && ySpeed == 0 && keyReleased && key == 87){
+
+            this. setAnimation('idleW');//调用向右移动帧
+        }
+        if(xSpeed == 0 && ySpeed == 0 ){
+
+            this. setAnimation('idleA');//调用向右移动帧
+        }
+        if(xSpeed ==0  && ySpeed == 0 > 0 && this.key === 83){
+
+            this. setAnimation('idleS');//调用向右移动帧
+        }
+        if(xSpeed ==0  && ySpeed == 0 > 0 && this.key ===68){
+
+            this. setAnimation('idleD');//调用向右移动帧
+        }
+
+        // if(xSpeed == 0  && ySpeed == 0 && this. playerControl.keyReleased.keyMap.up  ){
+
+        //     this. setAnimation('idleW');//调用向右移动帧
+        // }
+
+        // if(xSpeed == 0  && ySpeed == 0 && this. playerControl.keyReleased.keyMap.down == false ){
+
+        //     this. setAnimation('idleS');//调用向右移动帧
+        // }
+
+        // if(xSpeed == 0  && ySpeed == 0 && this. playerControl.keyReleased.keyMap.right== false ){
+
+        //     this. setAnimation('idleD');//调用向右移动帧
+        // }
+
+        if(xSpeed == 0  && ySpeed == 0  ){
+
+            this. setAnimation('idleD');//调用向右移动帧
+        }
+        
+
+
+    }
+
+    drawmainboat(){ 
+
+        
+        imageMode(CENTER);
+        image(this.currentFrames[this.frameIndex], this.xCoordinate , this.yCoordinate , this.currentFrames[this.frameIndex].width/7, this.currentFrames[this.frameIndex].height/7 );
     }
 
     applyWaveForce(forceX, forceY) {
