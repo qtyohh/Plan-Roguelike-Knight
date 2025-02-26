@@ -111,8 +111,8 @@ class PlayerControl {
     updateStatus() {
         this.updateCoordinate();
         
-        this.wavePushX *= 0.95;
-        this.wavePushY *= 0.95;
+        this.#player.wavePushX *= 0.95;
+        this.#player.wavePushY *= 0.95;
     }
 
 

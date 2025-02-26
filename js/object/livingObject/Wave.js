@@ -1,5 +1,5 @@
 class Wave {
-    constructor(x, y, vx, vy, type = "normal") {
+    constructor(x, y, vx, vy, type = "normal", direction = "horizontal") {
         this.xCoordinate = x;
         this.yCoordinate = y;
         this.vx = vx;
@@ -7,14 +7,26 @@ class Wave {
         this.type = type;
 
 
-        if (this.type === "big") {
-            this.xSize = 200;
-            this.ySize = 150;
-            this.pushForce = 0.3;
-        } else {
-            this.xSize = 150;
-            this.ySize = 100;
-            this.pushForce = 0.2;
+        if (direction === "vertical") {  
+            if (this.type === "big") {
+                this.xSize = 100;
+                this.ySize = 300;
+                this.pushForce = 0.36;
+            } else {
+                this.xSize = 66;
+                this.ySize = 200;
+                this.pushForce = 0.27;
+            }
+        } else {  
+            if (this.type === "big") {
+                this.xSize = 300;
+                this.ySize = 100;
+                this.pushForce = 0.36;
+            } else {
+                this.xSize = 200;
+                this.ySize = 66;
+                this.pushForce = 0.27;
+            }
         }
 
         this.speed = Math.sqrt(vx * vx + vy * vy);
@@ -51,7 +63,7 @@ class Wave {
 
         for (let enemy of enemies) {
             if (myCollide(this, enemy)) {
-                enemy.applyWaveForce(pushX, pushY);
+                enemy.applyWaveForce(pushX * 1.2, pushY * 1.2);
             }
         }
     }
@@ -71,7 +83,7 @@ class WaveManager {
     }
 
     update(islands, player, enemies) {
-        if (this.waves.length < 1000 && millis() - this.lastWaveTime > this.interval) {
+        if (this.waves.length < 30 && millis() - this.lastWaveTime > this.interval) {
             this.generateWave();
             this.lastWaveTime = millis();
         }
@@ -97,33 +109,36 @@ class WaveManager {
         const edges = ["left", "right", "up", "down"];
         let randomEdge = random(edges);
         let x, y, vx, vy, speed = random(1.5, 4);
-
-
+        let direction = "horizontal";
 
         if (randomEdge === "left") {
             x = -50;
             y = random(height);
             vx = speed;
             vy = 0;
+            direction = "vertical"; 
         } else if (randomEdge === "right") {
             x = width + 50;
             y = random(height);
             vx = -speed;
             vy = 0;
+            direction = "vertical"; 
         } else if (randomEdge === "up") {
             x = random(width);
             y = -50;
             vx = 0;
             vy = speed;
+            direction = "horizontal"; 
         } else {
             x = random(width);
             y = height + 50;
             vx = 0;
             vy = -speed;
+            direction = "horizontal";
         }
 
         let type = random() < 0.2 ? "big" : "normal";
-        this.waves.push(new Wave(x, y, vx, vy, type));
+        this.waves.push(new Wave(x, y, vx, vy, type, direction));
     }
 
     checkWaveCollisions() {
@@ -144,17 +159,14 @@ class WaveManager {
 
                     if (newSpeed > 1.5) {
                         let newWave = new Wave(newX, newY, newVx, newVy, "big");
-                        
-        /* this.waves.push(newWave); */
                         newWaves.push(newWave);
                     }
                     wavesToRemove.add(i);
                     wavesToRemove.add(j);
+                    this.waves = this.waves.filter((Wave, index) => !wavesToRemove.has(index));
                 }
             }
         }
-
-        this.waves = this.waves.filter((Wave, index) => !wavesToRemove.has(index));
         this.waves.push(...newWaves);
     }
 }
