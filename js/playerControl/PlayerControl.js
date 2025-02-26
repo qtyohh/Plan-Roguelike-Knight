@@ -110,11 +110,19 @@ class PlayerControl {
 
     updateStatus() {
         this.updateCoordinate();
+        this.updateSkillCD();
         
         this.wavePushX *= 0.95;
         this.wavePushY *= 0.95;
     }
 
+    updateSkillCD() {
+        if (this.#player.skillCD > 0) {
+            this.#player.skillCD -= (this.#player.maxSkillCD / 10000) * deltaTime;
+            // this.#player.skillCD = this.#player.skillCD;
+            this.#player.skillCD = Math.max(0, this.#player.skillCD);
+        }
+    }
 
     useSkill() {
         if (this.#player.skillCD > 0) {

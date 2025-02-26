@@ -4,7 +4,6 @@ class Main {
     #game = null;
     #step = MAIN_STEP_START_UI;
     #cursorPos = null;
-    #player = SHIP_MODEL[SHIP_MODEL_ERROR_TYPE];
     #gameReward = {
         gold : 0,
         buff : []
@@ -12,7 +11,6 @@ class Main {
 
     constructor() {
         this.#UI = new MainUI(
-            this.#player,
             (stepChangeType) => this.updateStep(stepChangeType),
             (shipType) => this.setShipBasic(shipType),
             (buffType) => this.chooseBuff(buffType),
@@ -28,15 +26,9 @@ class Main {
             (stepChangeType) => this.updateStep(stepChangeType)
         );
         this.#game.initPlayer(playerBasicStatus);
-        this.#player = this.#game.getPlayer();
-        this.#UI.setPlayer(this.#player);
         this.#game.initEnemies();
         this.#game.initIslands();
         this.#game.initBuilding();
-    }
-
-    getPlayer() {
-        return this.#player;
     }
 
     continueGame() {
@@ -169,6 +161,7 @@ class Main {
     updatePlayerStatus() {
         const playerStatus = this.#game.getPlayerStatus();
         this.#status.updateHP(playerStatus.HP);
+        this.#status.updateSkillCD(playerStatus.skillCD);
     }
 
     updateStep(stepChangeType) {

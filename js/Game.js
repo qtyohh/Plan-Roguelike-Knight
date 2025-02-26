@@ -84,15 +84,12 @@ class Game {
         this.#buildings.push(building);
     }
 
-    getPlayer() {
-        return this.#player;
-    }
-
     getPlayerStatus() {
         const playerStatus = {
             HP : this.#player.HP,
-            HPmax : this.#player.HPmax
-
+            HPmax : this.#player.HPmax, 
+            skillCD : this.#player.skillCD, 
+            maxSkillCD : this.#player.maxSkillCD
         };
         return playerStatus;
     }

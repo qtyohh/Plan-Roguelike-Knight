@@ -1,26 +1,15 @@
 class InGameUI {
 
-    #player;
-
-    constructor(player) {
-        this.currentHP = player.HP;
-        this.targetHP = player.HP;
-        this.currentHPmax = player.HPmax;
-        this.targetHPmax = player.HPmax;
+    constructor() {
+        this.currentHP = 1;
+        this.targetHP = 1;
+        this.currentHPmax = 1;
+        this.targetHPmax = 1;
         this.uiScale = 1;
         this.hpFlash = 0;
         this.cdFlash = 0;
         this.pulse = 0;
         this.font = null;
-        this.#player = player;
-    }
-
-    setPlayer(player) {
-        this.#player = player;
-        this.currentHP = player.HP;
-        this.targetHP = player.HP;
-        this.currentHPmax = player.HPmax;
-        this.targetHPmax = player.HPmax;
     }
 
     preload() {
@@ -32,27 +21,15 @@ class InGameUI {
     }
 
     update(playerStatus) {
-        if (this.#player == SHIP_MODEL[SHIP_MODEL_ERROR_TYPE] || this.#player == null) {
-            return;
-        }
 
-        this.targetHP = this.#player.HP;
-        this.targetHPmax = this.#player.HPmax;
-
-        // this.#player.skillCD = this.#player.maxSkillCD;
+        this.targetHP = playerStatus.HP;
+        this.targetHPmax = playerStatus.HPmax;
 
         this.currentHP = lerp(this.currentHP, this.targetHP, 0.1);
         this.currentHPmax = this.targetHPmax > 0 ? 
             lerp(this.currentHPmax, this.targetHPmax, 0.1) : 1;
         this.currentHP = Math.max(0, Math.min(this.currentHP, this.targetHP));
-        // console.log(this.#player.skillCD, playerStatus.skillCD);
-        // this.#player.skillCD = lerp(this.#player.skillCD, playerStatus.skillCD, 0.1);
-        // console.log(frameRate());
-        if (this.#player.skillCD > 0) {
-            this.#player.skillCD -= (this.#player.maxSkillCD / 10000) * deltaTime;
-            // this.#player.skillCD = this.#player.skillCD;
-            this.#player.skillCD = Math.max(0, this.#player.skillCD);
-        }
+
         // dynamic scaling
         this.pulse = sin(frameCount * 0.01) * 0.01;
         this.uiScale = 1 + this.pulse;
@@ -62,12 +39,12 @@ class InGameUI {
         this.cdFlash *= 0.95;
     }
 
-    show() {
+    show(playerStatus) {
         push();
         this.applyDynamicScaling();
         this.drawHolographicFrame();
         this.drawHealthBar();
-        this.drawSkillStatus();
+        this.drawSkillStatus(playerStatus);
         pop();
     }
 
@@ -153,13 +130,13 @@ class InGameUI {
         pop();
     }
 
-    drawSkillStatus() {
+    drawSkillStatus(playerStatus) {
 
         push();
         rectMode(CORNER);
         translate(-120, -50);
 
-        const cd = Math.max(0, this.#player.skillCD).toFixed(1);
+        const cd = Math.max(0, playerStatus.skillCD).toFixed(1);
         const flash = this.cdFlash * 255;
         
         push();
