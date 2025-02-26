@@ -59,7 +59,7 @@ class Bullet extends BasicObject {
 
         this.b_frames = [];   // 存储两帧图片
         this.b_currentFrame = 0;  // 当前显示的帧
-        this.b_frameRate = 20;  // 每10帧切换一次
+        this.b_frameRate = 5;  // 每10帧切换一次
         this.b_frameCount = 0;  // 用于计时
     }
     
