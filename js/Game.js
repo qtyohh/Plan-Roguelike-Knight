@@ -69,13 +69,24 @@ class Game {
             (xMove, yMove, enemy) => this.enemyMove(xMove, yMove, enemy),
         );
         this.#enemies.push(enemy_1);
-        
+    }
+
+    initBoss() {
+        const boss = new Boss (
+            width * 0.5,
+            height * 0.3,
+            BOSS_MODEL_OCTOPUS_TYPE,
+            (xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower) => this.addEnemyBullet(xSpeed, ySpeed, xCoordinate, yCoordinate, attackPower),
+            (xMove, yMove, enemy) => this.enemyMove(xMove, yMove, enemy)
+        );
+        this.#enemies.push(boss);
     }
 
     initIslands() {
         const island = new Island(200, 300, ISLAND_MODEL_1_TYPE);
         this.#islands.push(island);
-        island.preload();
+        const island1 = new Island(width * 0.5, height * 0.3, ISLAND_MODEL_1_TYPE);
+        this.#islands.push(island1);
         
     }
 

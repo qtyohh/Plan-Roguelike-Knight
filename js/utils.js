@@ -7,7 +7,11 @@ const MAIN_STEP_GAME_REWARD = 5;
 const MAIN_STEP_START_UI_TEAM = 6;
 const MAIN_STEP_GAME_OVER = 7;
 const MAIN_STEP_MAP_UI = 8
-const MAIN_STEP_MAX = 9;
+const MAIN_STEP_WIN_BOSS = 9;
+const MAIN_STEP_SHOP = 10;
+const MAIN_STEP_RANDOM_EVENT = 11;
+const MAIN_STEP_LOSE = 12;
+const MAIN_STEP_MAX = 13;
 
 /**
  *  attackBit: each bit controls which object could this object attack
@@ -29,6 +33,13 @@ const ENEMY_TYPE = 0b0100;
 const BUILDING_TYPE = 0b0010;
 const ISLAND_TYPE = 0b0001;
 const BULLET_TYPE = 0b10000;
+
+/** game type  */
+const GAME_TYPE_ERROR = 0;
+const GAME_TYPE_NORMAL_ENEMY = 1;
+const GAME_TYPE_BOSS_ENEMY = 2;
+const GAME_TYPE_SHOP = 3;
+const GAME_TYPE_RANDOM_EVENT = 4;
 
 
 /** basic values of ships */
@@ -95,8 +106,8 @@ const ENEMY_MODEL = [
     }, {
         name : "easy_enemy_1",
         type : EASY_ENEMY_MODEL_1_TYPE,
-        xSize : 15,  
-        ySize : 15,
+        xSize : 30,  
+        ySize : 30,
         HP : 5,
         speed : 1,
         attackPower : 0.5,
@@ -106,8 +117,8 @@ const ENEMY_MODEL = [
     }, {
         name : "easy_enemy_2",
         type : EASY_ENEMY_MODEL_2_TYPE,
-        xSize : 15,  
-        ySize : 15,
+        xSize : 30,  
+        ySize : 30,
         HP : 10,
         speed : 2,
         attackPower : 1,
@@ -119,14 +130,50 @@ const ENEMY_MODEL = [
 ];
 
 function getEnemyModel(enemyType) {
-    if (enemyType >= ENEMY_MODEL.length || enemyType < 0) {
+    if (enemyType > ENEMY_MODEL.length || enemyType < 0) {
         console.log("getEnemyModel : enemyType error.");
         return ENEMY_MODEL[ENEMY_MODEL_ERROR_TYPE];
     }
     return ENEMY_MODEL[enemyType];
 }
 
+/** boss model */
+const BOSS_MODEL_ERROR_TYPE = 0;
+const BOSS_MODEL_OCTOPUS_TYPE = 1;
 
+const BOSS_MODEL = [
+    {
+        name : "error",
+        type : BOSS_MODEL_ERROR_TYPE,
+        xSize : 0,  
+        ySize : 0,
+        HP : 0,
+        speed : 0,
+        attackPower : 0,
+        attackCD : 0,
+        attackRange : 0,
+        seeRange : 0
+    }, {
+        name : "boss_octopus",
+        type : BOSS_MODEL_OCTOPUS_TYPE,
+        xSize : 200,  
+        ySize : 200,
+        HP : 50,
+        speed : 0,
+        attackPower : 1.5,
+        attackCD : 1,
+        attackRange : 2000,
+        seeRange : 2000
+    }
+];
+
+function getBossModel(bossType) {
+    if (bossType > BOSS_MODEL.length || bossType < 0) {
+        console.log("getBossModel : bossType error.");
+        return BOSS_MODEL[BOSS_MODEL_ERROR_TYPE];
+    }
+    return BOSS_MODEL[bossType];
+}
 
 /* basic values of islands */
 const ISLAND_MODEL_ERROR_TYPE = 0;

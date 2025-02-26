@@ -230,7 +230,7 @@ class Player extends BasicObject {
 
         if(ySpeed > 0){
 
-            this. setAnimation('W');//调用向右移动帧
+            this. setAnimation('S');//调用向右移动帧
         }
 
         if(ySpeed < 0){

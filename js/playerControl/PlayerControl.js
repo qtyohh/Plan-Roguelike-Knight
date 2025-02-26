@@ -77,19 +77,19 @@ class PlayerControl {
     keyReleased() {
         if (key == 'w' || key == 'W') {
             this.keyMap.up = false;
-            // this.#player.setAnimation('idleW');//调用向上静止帧
+          
         }
         if (key == 'a' || key == 'A') {
             this.keyMap.left = false;
-            // this.#player.setAnimation('idleA');//调用向左静止帧
+            
         }
         if (key == 's' || key == 'S') {
             this.keyMap.down = false;
-            // this.#player.setAnimation('idleS');//调用向下静止帧
+           
         }
         if (key == 'd' || key == 'D') {
             this.keyMap.right = false;
-            // this.#player.setAnimation('idleD');//调用向右静止帧
+            
         }
     }
     
