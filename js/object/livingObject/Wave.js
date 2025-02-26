@@ -1,42 +1,28 @@
 class Wave {
-    constructor(x, y, vx, vy, type = "normal", direction = "horizontal") {
+    constructor(x, y, vx, vy, type = "normal") {
         this.xCoordinate = x;
         this.yCoordinate = y;
         this.vx = vx;
         this.vy = vy;
         this.type = type;
 
+        this.speed = Math.sqrt(vx * vx + vy * vy);
+        this.pushForce = (this.type === "big") ? 0.35 : 0.25;
 
-        if (direction === "vertical") {  
-            if (this.type === "big") {
-                this.xSize = 100;
-                this.ySize = 300;
-                this.pushForce = 0.36;
-            } else {
-                this.xSize = 66;
-                this.ySize = 200;
-                this.pushForce = 0.27;
-            }
-        } else {  
-            if (this.type === "big") {
-                this.xSize = 300;
-                this.ySize = 100;
-                this.pushForce = 0.36;
-            } else {
-                this.xSize = 200;
-                this.ySize = 66;
-                this.pushForce = 0.27;
-            }
+        if (Math.abs(vx) > Math.abs(vy)) {
+            this.xSize = (this.type === "big") ? 100 : 66;
+            this.ySize = (this.type === "big") ? 300 : 200;
+        } else {
+            this.xSize = (this.type === "big") ? 300 : 200;
+            this.ySize = (this.type === "big") ? 100 : 66;
         }
 
-        this.speed = Math.sqrt(vx * vx + vy * vy);
         this.finished = false;
     }
 
     updateStatus(islands = [], player, enemies) {
         this.xCoordinate += this.vx;
         this.yCoordinate += this.vy;
-
         if (
             this.xCoordinate - this.xSize / 2 > width ||
             this.xCoordinate + this.xSize / 2 < 0 ||
@@ -63,7 +49,7 @@ class Wave {
 
         for (let enemy of enemies) {
             if (myCollide(this, enemy)) {
-                enemy.applyWaveForce(pushX * 1.2, pushY * 1.2);
+                enemy.applyWaveForce(pushX, pushY);
             }
         }
     }
@@ -79,7 +65,7 @@ class WaveManager {
     constructor() {
         this.waves = [];
         this.lastWaveTime = 0;
-        this.interval = 100;
+        this.interval = 150;
     }
 
     update(islands, player, enemies) {
@@ -109,65 +95,61 @@ class WaveManager {
         const edges = ["left", "right", "up", "down"];
         let randomEdge = random(edges);
         let x, y, vx, vy, speed = random(1.5, 4);
-        let direction = "horizontal";
 
         if (randomEdge === "left") {
-            x = -50;
+            x = 10;
             y = random(height);
             vx = speed;
             vy = 0;
-            direction = "vertical"; 
         } else if (randomEdge === "right") {
-            x = width + 50;
+            x = width - 10;
             y = random(height);
             vx = -speed;
             vy = 0;
-            direction = "vertical"; 
         } else if (randomEdge === "up") {
             x = random(width);
-            y = -50;
+            y = 10;
             vx = 0;
             vy = speed;
-            direction = "horizontal"; 
         } else {
             x = random(width);
-            y = height + 50;
+            y = height - 10;
             vx = 0;
             vy = -speed;
-            direction = "horizontal";
         }
 
         let type = random() < 0.2 ? "big" : "normal";
-        this.waves.push(new Wave(x, y, vx, vy, type, direction));
+        this.waves.push(new Wave(x, y, vx, vy, type));
     }
 
-    checkWaveCollisions() {
-        let wavesToRemove = new Set();
-        let newWaves = [];
+checkWaveCollisions() {
+    let wavesToRemove = new Set();
+    let newWaves = [];
 
-        for (let i = 0; i < this.waves.length; i++) {
-            for (let j = i + 1; j < this.waves.length; j++) {
-                let waveA = this.waves[i];
-                let waveB = this.waves[j];
+    for (let i = 0; i < this.waves.length; i++) {
+        for (let j = i + 1; j < this.waves.length; j++) {
+            let waveA = this.waves[i];
+            let waveB = this.waves[j];
 
-                if (myCollide(waveA, waveB)) {
-                    let newX = (waveA.xCoordinate + waveB.xCoordinate) / 2;
-                    let newY = (waveA.yCoordinate + waveB.yCoordinate) / 2;
-                    let newVx = constrain((waveA.vx + waveB.vx) / 2, -6, 6);
-                    let newVy = constrain((waveA.vy + waveB.vy) / 2, -6, 6);
-                    let newSpeed = Math.sqrt(newVx * newVx + newVy * newVy);
+            if (myCollide(waveA, waveB)) {
+                let newX = (waveA.xCoordinate + waveB.xCoordinate) / 2;
+                let newY = (waveA.yCoordinate + waveB.yCoordinate) / 2;
+                let newVx = constrain((waveA.vx + waveB.vx) / 2, -6, 6);
+                let newVy = constrain((waveA.vy + waveB.vy) / 2, -6, 6);
+                let newSpeed = Math.sqrt(newVx * newVx + newVy * newVy);
 
-                    if (newSpeed > 1.5) {
-                        let newWave = new Wave(newX, newY, newVx, newVy, "big");
-                        newWaves.push(newWave);
-                    }
-                    wavesToRemove.add(i);
-                    wavesToRemove.add(j);
-                    this.waves = this.waves.filter((Wave, index) => !wavesToRemove.has(index));
+                wavesToRemove.add(i);
+                wavesToRemove.add(j);
+
+                if (newSpeed >= 1.8) {
+                    let newType = newSpeed > 2.5 ? "big" : "normal";
+                    newWaves.push(new Wave(newX, newY, newVx, newVy, newType));
                 }
+
+                this.waves = this.waves.filter((Wave, index) => !wavesToRemove.has(index));
             }
         }
-        this.waves.push(...newWaves);
     }
+    this.waves.push(...newWaves);
 }
-
+}
