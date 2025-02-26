@@ -7,14 +7,14 @@ class Wave {
         this.type = type;
 
         this.speed = Math.sqrt(vx * vx + vy * vy);
-        this.pushForce = (this.type === "big") ? 0.35 : 0.25;
+        this.pushForce = (this.type == "big") ? 0.35 : 0.25;
 
         if (Math.abs(vx) > Math.abs(vy)) {
-            this.xSize = (this.type === "big") ? 100 : 66;
-            this.ySize = (this.type === "big") ? 300 : 200;
+            this.xSize = (this.type == "big") ? 100 : 66;
+            this.ySize = (this.type == "big") ? 300 : 200;
         } else {
-            this.xSize = (this.type === "big") ? 300 : 200;
-            this.ySize = (this.type === "big") ? 100 : 66;
+            this.xSize = (this.type == "big") ? 300 : 200;
+            this.ySize = (this.type == "big") ? 100 : 66;
         }
 
         this.finished = false;
@@ -101,12 +101,12 @@ class WaveManager {
             y = random(height);
             vx = speed;
             vy = 0;
-        } else if (randomEdge === "right") {
+        } else if (randomEdge == "right") {
             x = width - 10;
             y = random(height);
             vx = -speed;
             vy = 0;
-        } else if (randomEdge === "up") {
+        } else if (randomEdge == "up") {
             x = random(width);
             y = 10;
             vx = 0;
@@ -122,34 +122,34 @@ class WaveManager {
         this.waves.push(new Wave(x, y, vx, vy, type));
     }
 
-checkWaveCollisions() {
-    let wavesToRemove = new Set();
-    let newWaves = [];
+    checkWaveCollisions() {
+        let wavesToRemove = new Set();
+        let newWaves = [];
 
-    for (let i = 0; i < this.waves.length; i++) {
-        for (let j = i + 1; j < this.waves.length; j++) {
-            let waveA = this.waves[i];
-            let waveB = this.waves[j];
+        for (let i = 0; i < this.waves.length; i++) {
+            for (let j = i + 1; j < this.waves.length; j++) {
+                let waveA = this.waves[i];
+                let waveB = this.waves[j];
 
-            if (myCollide(waveA, waveB)) {
-                let newX = (waveA.xCoordinate + waveB.xCoordinate) / 2;
-                let newY = (waveA.yCoordinate + waveB.yCoordinate) / 2;
-                let newVx = constrain((waveA.vx + waveB.vx) / 2, -6, 6);
-                let newVy = constrain((waveA.vy + waveB.vy) / 2, -6, 6);
-                let newSpeed = Math.sqrt(newVx * newVx + newVy * newVy);
+                if (myCollide(waveA, waveB)) {
+                    let newX = (waveA.xCoordinate + waveB.xCoordinate) / 2;
+                    let newY = (waveA.yCoordinate + waveB.yCoordinate) / 2;
+                    let newVx = constrain((waveA.vx + waveB.vx) / 2, -6, 6);
+                    let newVy = constrain((waveA.vy + waveB.vy) / 2, -6, 6);
+                    let newSpeed = Math.sqrt(newVx * newVx + newVy * newVy);
 
-                wavesToRemove.add(i);
-                wavesToRemove.add(j);
+                    wavesToRemove.add(i);
+                    wavesToRemove.add(j);
 
-                if (newSpeed >= 1.8) {
-                    let newType = newSpeed > 2.5 ? "big" : "normal";
-                    newWaves.push(new Wave(newX, newY, newVx, newVy, newType));
+                    if (newSpeed >= 1.8) {
+                        let newType = newSpeed > 2.5 ? "big" : "normal";
+                        newWaves.push(new Wave(newX, newY, newVx, newVy, newType));
+                    }
+
+                    this.waves = this.waves.filter((Wave, index) => !wavesToRemove.has(index));
                 }
-
-                this.waves = this.waves.filter((Wave, index) => !wavesToRemove.has(index));
             }
         }
+        this.waves.push(...newWaves);
     }
-    this.waves.push(...newWaves);
-}
 }
