@@ -1,5 +1,5 @@
 class MapUI {
-    constructor(inGameCallBack, gameTypeCallBack) {
+    constructor(inGameCallBack) {
         this.xCoor = width / 2;
         this.yCoor = height / 2;
         this.xSize = width * 0.8;
@@ -9,7 +9,6 @@ class MapUI {
         this.col = 5;
         this.drawnRow = -1;
         this.inGameCallBack = inGameCallBack;
-        this.gameTypeCallBack = gameTypeCallBack;
         this.playerLocation = {
             row : -1,
             col : 2
@@ -103,7 +102,7 @@ class MapUI {
 
         /**set game type */
         let gameType = GAME_TYPE_NORMAL_ENEMY;
-        if (rowNum == this.row - 1) {
+        if (rowNum == 0/*this.row - 1*/) {
             gameType = GAME_TYPE_BOSS_ENEMY;
         }
 
