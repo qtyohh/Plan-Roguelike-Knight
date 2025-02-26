@@ -49,7 +49,13 @@ class Wave {
 
         for (let enemy of enemies) {
             if (myCollide(this, enemy)) {
-                enemy.applyWaveForce(pushX, pushY);
+                if (enemy instanceof Boss) {
+                    this.finished = true;
+                    return;
+                }
+                if (typeof enemy.applyWaveForce === "function") {
+                    enemy.applyWaveForce(pushX, pushY);
+                }
             }
         }
     }
