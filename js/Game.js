@@ -161,8 +161,8 @@ class Game {
                 if (!enemy.isAlive) {
                     this.#enemies.splice(i, 1);
                 } else {
-                    enemy.updateWavePush(); 
                     enemy.enemyAI(this.#player.xCoordinate, this.#player.yCoordinate, enemy);
+                    enemy.updateWavePush(); 
                     enemy.show();
                 }
             }
