@@ -34,4 +34,8 @@ class Status {
     updateHP(HP) {
         this.#playerStatus.HP = HP;
     }
+
+    updateSkillCD(skillCD) {
+        this.#playerStatus.skillCD = skillCD;
+    }
 }
