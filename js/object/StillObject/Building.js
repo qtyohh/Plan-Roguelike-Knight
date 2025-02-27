@@ -20,20 +20,6 @@ class Building extends BasicObject {
         this.explodeCallBack = explodeCallBack;
         this.img;
     }
-
-
-
-    // preload(){
-
-    //     this.img = loadImage('./img/png/building/4.png');
-
-    // }
-
-    // drawBuilding(){
-
-
-    //     image(this.img, this.xCoordinate, this. yCoordinate, 64, 74)
-    // }
     
     show() {
 
@@ -44,7 +30,6 @@ class Building extends BasicObject {
             this.updateHP(-1);
         }
 
-        // this.drawBuilding();
     }
     
     updateHP(change) {

@@ -82,7 +82,9 @@ class Bullet extends BasicObject {
     drawBullet() {
         // 使用 frames 数组中的当前帧来绘制子弹
         imageMode(CENTER);
-        image(this.frames[this.currentFrame], this.xCoordinate, this.yCoordinate, this.frames[this.currentFrame].width/7, this.frames[this.currentFrame].height/7 );
+        image(this.frames[this.currentFrame], 
+              this.xCoordinate, this.yCoordinate, 
+              this.frames[this.currentFrame].width/7, this.frames[this.currentFrame].height/7 );
     }
     
     show() {

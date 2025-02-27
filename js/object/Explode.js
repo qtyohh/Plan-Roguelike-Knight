@@ -23,42 +23,28 @@ class Explode {
         this.frames[1] = loadImage('./img/png/bullet/2.png');
         this.frames[1] = loadImage('./img/png/explode/3.png');
         this.frames[1] = loadImage('./img/png/explode/4.png');
-        
     }
 
     updateStatus() {
-        
-    
-        // 每次调用时增加帧计数
         this.frameCount++;
-    
-        // 每隔一段时间切换帧
         if (this.frameCount % this.frameRate === 0) {
             this.currentFrame = (this.currentFrame + 1) % this.frames.length;
         }
-
-        
     }
 
     drawExplode() {
         
         // 使用 frames 数组中的当前帧来绘制子弹
         imageMode(CENTER);
-        image(this.frames[this.currentFrame], this.xCoordinate, this.yCoordinate, this.frames[this.currentFrame].width/7, this.frames[this.currentFrame].height/7 );
+        image(this.frames[this.currentFrame], 
+              this.xCoordinate, this.yCoordinate, 
+              this.frames[this.currentFrame].width/7, this.frames[this.currentFrame].height/7 );
     }
-
-
-
-
-
-
-
 
     show() {
         this.drawExplode();
         this.updateStatus();
         // fill(255);
-        
         // let xCoor = this.xCoordinate;
         // let yCoor = this.yCoordinate;
         // rect(xCoor, yCoor, this.xSize, this.ySize);
