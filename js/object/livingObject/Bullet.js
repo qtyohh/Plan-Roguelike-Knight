@@ -14,7 +14,7 @@ class Bullet extends BasicObject {
                 size, // bullet size
                 size, 
                 PLAYER_BULLET_ATTACK_BIT,
-                1, 
+                10, 
                 speed, 
             );
             this.harm = attackPower;

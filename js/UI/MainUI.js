@@ -24,7 +24,7 @@ class MainUI {
         this.#chooseShipUI = new ChooseShipUI(this.#handleShipSelection.bind(this));
         this.#inGameUI = new InGameUI(this.#player);
         this.#inGameUI.preload();
-        //this.#gameRewardUI = new GameRewardUI(0, this.#handleGameRewardSelection.bind(this));
+        this.#gameRewardUI = new GameRewardUI(this.#handleGameRewardSelection.bind(this));
         this.#mapUI = new MapUI(this.#handleGameMapSelection.bind(this));
         this.#mapUI.init();
     }

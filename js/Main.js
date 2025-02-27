@@ -5,6 +5,7 @@ class Main {
     #step = MAIN_STEP_START_UI;
     #cursorPos = null;
     #player = SHIP_MODEL[SHIP_MODEL_ERROR_TYPE];
+    #nextGameType;
     #gameReward = {
         gold : 0,
         buff : []
@@ -27,12 +28,21 @@ class Main {
         this.#game = new Game(
             (stepChangeType) => this.updateStep(stepChangeType)
         );
+
+        if (this.#nextGameType == GAME_TYPE_BOSS_ENEMY) {
+            this.#game.initBoss();
+        }
+        else if (this.#nextGameType == GAME_TYPE_NORMAL_ENEMY) {
+            this.#game.initEnemies();
+        }
+        
         this.#game.initPlayer(playerBasicStatus);
         this.#player = this.#game.getPlayer();
         this.#UI.setPlayer(this.#player);
-        this.#game.initEnemies();
+    
         this.#game.initIslands();
         this.#game.initBuilding();
+    
     }
 
     getPlayer() {
@@ -198,6 +208,15 @@ class Main {
     }
 
     chooseGameMap(gameType) {
+        if (gameType == GAME_TYPE_RANDOM_EVENT) {
+            this.updateStep(MAIN_STEP_RANDOM_EVENT);
+            return;
+        }
+        if (gameType == GAME_TYPE_SHOP) {
+            this.updateStep(MAIN_STEP_SHOP);
+            return;
+        }
+        this.#nextGameType = gameType;
         console.log(gameType);
 
     }
@@ -206,9 +225,7 @@ class Main {
         this.#status.setShipBasicStatus(shipType);
     }
 
-    callStartUI() {
-        this.#UI.showStartUI();
-    }
+
     callChooseShipUI() {
 
     }
