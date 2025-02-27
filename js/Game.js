@@ -174,8 +174,8 @@ class Game {
                 if (!enemy.isAlive) {
                     this.#enemies.splice(i, 1);
                 } else {
-                    enemy.updateWavePush(); 
                     enemy.enemyAI(this.#player.xCoordinate, this.#player.yCoordinate, enemy);
+                    enemy.updateWavePush(); 
                     enemy.show();
                 }
             }
@@ -364,8 +364,8 @@ class Game {
 
     playerMove(xMove, yMove) {
         
-        xMove += this.#player.wavePushX;
-        yMove += this.#player.wavePushY;
+        xMove += this.#player.wavePushX/this.#player.speed;
+        yMove += this.#player.wavePushY/this.#player.speed;
         
         if (this.checkCollidePlayer(xMove, yMove) == false) {
             this.#player.move(xMove, yMove);
