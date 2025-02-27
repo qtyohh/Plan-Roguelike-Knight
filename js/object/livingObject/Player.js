@@ -266,6 +266,11 @@ class Player extends BasicObject {
         if(xSpeed == 0  && ySpeed == 0  ){
 
             this. setAnimation('idleD');//调用向右移动帧
+
+        
+
+        
+            
         }
         
 

@@ -100,7 +100,7 @@ class Game {
                 this.addExplode(xCoor, yCoor, harm, attackBit, explodeType)
         );
         this.#buildings.push(building);
-        building.preload();
+        // building.preload();
     }
 
     getPlayer() {

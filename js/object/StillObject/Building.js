@@ -23,27 +23,28 @@ class Building extends BasicObject {
 
 
 
-    preload(){
+    // preload(){
 
-        this.img = loadImage('./img/png/building/4.png');
+    //     this.img = loadImage('./img/png/building/4.png');
 
-    }
+    // }
 
-    drawBuilding(){
+    // drawBuilding(){
 
 
-        image(this.img, this.xCoordinate, this. yCoordinate, 64, 74)
-    }
+    //     image(this.img, this.xCoordinate, this. yCoordinate, 64, 74)
+    // }
+    
     show() {
 
         
-        // fill(255, 255, 255);
-        // super.show();
+        fill(255, 255, 255);
+        super.show();
         if (this.modelType == BUILDING_MODEL_BOMB_TYPE) {
             this.updateHP(-1);
         }
 
-        this.drawBuilding();
+        // this.drawBuilding();
     }
     
     updateHP(change) {
