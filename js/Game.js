@@ -356,6 +356,7 @@ class Game {
             0,
             0
         );
+        this.ENEMY_BULLET_TYPE = ENEMY_BULLET_TYPE;
         this.#bullets.push(bullet);
     }
     
