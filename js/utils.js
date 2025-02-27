@@ -158,7 +158,7 @@ const BOSS_MODEL = [
         type : BOSS_MODEL_OCTOPUS_TYPE,
         xSize : 200,  
         ySize : 200,
-        HP : 50,
+        HP : 5,
         speed : 0,
         attackPower : 1.5,
         attackCD : 1,
@@ -178,6 +178,7 @@ function getBossModel(bossType) {
 /* basic values of islands */
 const ISLAND_MODEL_ERROR_TYPE = 0;
 const ISLAND_MODEL_1_TYPE = 1;
+const ISLAND_MODEL_BOSS_TYPE = 2;
 
 const ISLAND_MODEL = [
     {
@@ -190,7 +191,12 @@ const ISLAND_MODEL = [
         type : ISLAND_MODEL_1_TYPE,
         xSize : 50,
         ySize : 50
-    },
+    }, {
+        name : "island_boss",
+        type : ISLAND_MODEL_BOSS_TYPE,
+        xSize : 200,  
+        ySize : 200
+    }
 ]
 
 function getIslandModel(islandType) {

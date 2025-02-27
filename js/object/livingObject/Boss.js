@@ -102,6 +102,10 @@ class Boss extends BasicObject {
             this.attackPower
         );
     }
+
+    applyWaveForce(forceX, forceY) {
+
+    }
     
 }
 

@@ -81,7 +81,7 @@ class Game {
     initIslands() {
         const island = new Island(200, 300, ISLAND_MODEL_1_TYPE);
         this.#islands.push(island);
-        const island1 = new Island(width * 0.5, height * 0.3, ISLAND_MODEL_1_TYPE);
+        const island1 = new Island(width * 0.5, height * 0.3, ISLAND_MODEL_BOSS_TYPE);
         this.#islands.push(island1);
     }
 
@@ -200,7 +200,7 @@ class Game {
         }
         
         for (let enemy of this.#enemies) {
-            if (myCollide(enemy, bullet)) {
+            if ((bullet.attackBit & ENEMY_TYPE) && myCollide(enemy, bullet)) {
                 return true;
             }
         }
