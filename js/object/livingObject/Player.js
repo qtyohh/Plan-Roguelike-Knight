@@ -104,15 +104,6 @@ class Player extends BasicObject {
         }
     }
 
-    // setAnimation(type) {
-    //     if (type === 'S') {
-    //         this.currentFrames = this.framesS;
-    //     } else {
-    //         this.currentFrames = this.framesIdleS;
-    //     }
-    //     this.frameIndex = 0; // 重置动画索引
-    // }
-
     setAnimation(type) {
         if (type == 'D') {
             this.currentFrames = this.framesD;
