@@ -36,7 +36,7 @@ class Main {
         
         this.#game.initPlayer(playerBasicStatus);
     
-        this.#game.initEnemies();
+        //this.#game.initEnemies();
         this.#game.initIslands();
         this.#game.initBuilding();
     

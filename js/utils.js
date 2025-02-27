@@ -158,7 +158,7 @@ const BOSS_MODEL = [
         type : BOSS_MODEL_OCTOPUS_TYPE,
         xSize : 200,  
         ySize : 200,
-        HP : 50,
+        HP : 5,
         speed : 0,
         attackPower : 1.5,
         attackCD : 1,
