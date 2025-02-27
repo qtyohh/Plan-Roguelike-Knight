@@ -262,33 +262,6 @@ class Player extends BasicObject {
 
             this. setAnimation('idleW');//调用向右移动帧
         }
-        if(xSpeed == 0 && ySpeed == 0 ){
-
-            this. setAnimation('idleA');//调用向右移动帧
-        }
-        if(xSpeed ==0  && ySpeed == 0 > 0 && this.key === 83){
-
-            this. setAnimation('idleS');//调用向右移动帧
-        }
-        if(xSpeed ==0  && ySpeed == 0 > 0 && this.key ===68){
-
-            this. setAnimation('idleD');//调用向右移动帧
-        }
-
-        // if(xSpeed == 0  && ySpeed == 0 && this. playerControl.keyReleased.keyMap.up  ){
-
-        //     this. setAnimation('idleW');//调用向右移动帧
-        // }
-
-        // if(xSpeed == 0  && ySpeed == 0 && this. playerControl.keyReleased.keyMap.down == false ){
-
-        //     this. setAnimation('idleS');//调用向右移动帧
-        // }
-
-        // if(xSpeed == 0  && ySpeed == 0 && this. playerControl.keyReleased.keyMap.right== false ){
-
-        //     this. setAnimation('idleD');//调用向右移动帧
-        // }
 
         if(xSpeed == 0  && ySpeed == 0  ){
 
