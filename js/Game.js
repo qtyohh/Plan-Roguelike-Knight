@@ -203,7 +203,7 @@ class Game {
         }
         
         for (let enemy of this.#enemies) {
-            if (myCollide(enemy, bullet)) {
+            if ((bullet.attackBit & ENEMY_TYPE) && myCollide(enemy, bullet)) {
                 return true;
             }
         }

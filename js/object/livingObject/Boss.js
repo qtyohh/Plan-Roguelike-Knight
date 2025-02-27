@@ -103,5 +103,8 @@ class Boss extends BasicObject {
         );
     }
     
+    applyWaveForce(forceX, forceY) {
+        
+    }
 }
 
