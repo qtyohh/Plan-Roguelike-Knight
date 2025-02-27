@@ -53,8 +53,6 @@ class Enemy extends BasicObject {
         newY = constrain(newY, this.ySize / 2, height - this.ySize / 2);
         this.xCoordinate = newX;
         this.yCoordinate = newY;
-        this.wavePushX *= 0.95;
-        this.wavePushY *= 0.95;
     }
 
     enemyAI(playerX, playerY, enemy) {
@@ -63,10 +61,10 @@ class Enemy extends BasicObject {
             if (distance > this.seeRange) {
                 
             } else if (distance > this.attackRange && distance <= this.seeRange) {
-                let xSpeed = (playerX - this.xCoordinate) / distance * this.speed;
-                let ySpeed = (playerY - this.yCoordinate) / distance * this.speed;
-                xSpeed += this.wavePushX;
-                ySpeed += this.wavePushY;
+                let xSpeed = (playerX - this.xCoordinate) / distance;
+                let ySpeed = (playerY - this.yCoordinate) / distance;
+                /* xSpeed += this.wavePushX;
+                ySpeed += this.wavePushY; */
                 this.enemyMove(xSpeed, ySpeed, enemy);
             } else if (distance <= this.attackRange && millis() - this.lastAttackTime > this.attackCD * 1000) {
                 let xSpeed = (playerX - this.xCoordinate) / distance;
